@@ -1,0 +1,22 @@
+{
+  "name": "acme-cafe-backend",
+  "version": "1.0.0",
+  "description": "A café order system composed by two Android applications, one for hand-held devices and another for public display, as well as a REST service developed in the Mobile Computing (CMOV) course.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eduardo-LP-Silva/ACME-Cafe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eduardo-LP-Silva/ACME-Cafe/issues"
+  },
+  "homepage": "https://github.com/Eduardo-LP-Silva/ACME-Cafe#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
