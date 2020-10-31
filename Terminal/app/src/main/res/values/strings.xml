@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ACME-Cafe-Terminal</string>
+    <string name="recents">Recents</string>
+    <string name="favorites">Favorites</string>
+    <string name="nearby">Nearby</string>
+    <string name="new_item">New Order</string>
+    <string name="order">Order</string>
 </resources>
