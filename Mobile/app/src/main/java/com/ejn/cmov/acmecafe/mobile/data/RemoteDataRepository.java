@@ -6,9 +6,9 @@ import com.ejn.cmov.acmecafe.mobile.data.model.LoggedInUser;
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
-public class LoginRepository {
+public class RemoteDataRepository {
 
-    private static volatile LoginRepository instance;
+    private static volatile RemoteDataRepository instance;
 
     private RemoteDataSource dataSource;
 
@@ -17,13 +17,13 @@ public class LoginRepository {
     private LoggedInUser user = null;
 
     // private constructor : singleton access
-    private LoginRepository(RemoteDataSource dataSource) {
+    private RemoteDataRepository(RemoteDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public static LoginRepository getInstance(RemoteDataSource dataSource) {
+    public static RemoteDataRepository getInstance(RemoteDataSource dataSource) {
         if (instance == null) {
-            instance = new LoginRepository(dataSource);
+            instance = new RemoteDataRepository(dataSource);
         }
         return instance;
     }
