@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
 import com.ejn.cmov.acmecafe.mobile.data.RemoteDataSource;
-import com.ejn.cmov.acmecafe.mobile.data.LoginRepository;
+import com.ejn.cmov.acmecafe.mobile.data.RemoteDataRepository;
 import com.ejn.cmov.acmecafe.mobile.ui.login.LoginViewModel;
 import com.ejn.cmov.acmecafe.mobile.ui.register.RegisterViewModel;
 
@@ -24,8 +24,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(LoginViewModel.class) || modelClass.isAssignableFrom(RegisterViewModel.class)) {
             try {
-                Constructor<?> cons = modelClass.getConstructor(LoginRepository.class);
-                return (T) cons.newInstance(LoginRepository.getInstance(new RemoteDataSource()));
+                Constructor<?> cons = modelClass.getConstructor(RemoteDataRepository.class);
+                return (T) cons.newInstance(RemoteDataRepository.getInstance(new RemoteDataSource()));
             }
             catch(Exception e) {
                 Log.e("View Model Factory", e.toString());

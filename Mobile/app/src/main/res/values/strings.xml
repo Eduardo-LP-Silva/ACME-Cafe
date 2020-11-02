@@ -5,16 +5,22 @@
     <string name="prompt_name">Name</string>
     <string name="prompt_nif">NIF</string>
     <string name="prompt_card_no">Card Number</string>
-    <string name="prompt_card_expiration">Expiration Date - MM/YY</string>
+    <string name="prompt_card_expiration">Expiration Date - MMYY</string>
     <string name="prompt_cvv">CVV</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_confirm_password">Confirm Password</string>
     <string name="create_account">"Create Account"</string>
     <string name="action_sign_in">Sign in</string>
+    <string name="no_account_register">"No account? Register here"</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_name">Not a valid name</string>
+    <string name="invalid_nif">NIF must have 9 digits</string>
+    <string name="invalid_card_no">Card number must have 16 digits</string>
+    <string name="invalid_expiration_date">Expiration date must be in the format MMYY</string>
+    <string name="invalid_cvv">CVV must have 3 digits</string>
     <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_confirm_password">Passwords must match</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="no_account_register">"No account? Register here"</string>
     <string name="title_activity_register">RegisterActivity</string>
 </resources>
