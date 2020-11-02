@@ -26,7 +26,7 @@ router.post("/", async function (req, res) {
 
   const customer = new Customer(req.body);
   customer.save().then(val => {
-    res.status(201).json(val)
+    res.status(201).json({ "customer_id": val._id })
   }).catch(err => {
     console.log(err)
     res.status(500).send("Error creating customer")
