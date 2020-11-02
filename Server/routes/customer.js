@@ -5,27 +5,16 @@ const Customer = require('../models/customer');
 
 router.get("/:customer_id", async function (req, res) {
 
-  if (!validateGETQuery(req.query)) {
-    res.status(400).send("Missing offset and/or limit query params in request!");
-    return;
-  }
+  Customer.findById(req.params.customer_id, function (err, val) {
+    if (err){
+      console.log(err)
+      res.status(404).send(`No customer with id ${req.params.customer_id} found`)
+    }
+    else{
+      res.json(val)
+    }
+  });
 
-  let paper = await Paper.findAndCountAll(
-    {
-      where: { paper_id: req.params.paper_id },
-      attributes: ['id', 'paper_id', 'message', 'author', 'createdAt'],
-      order: [
-        ['createdAt', 'DESC']
-      ],
-      distinct: true,
-      limit: req.query.limit,
-      offset: req.query.offset
-    })
-  if (paper.length === 0) {
-    res.status(404).send(`No curation history for paper with id ${req.params.paper_id}`)
-    return
-  }
-  res.json(paper);
 });
 
 router.post("/", async function (req, res) {
