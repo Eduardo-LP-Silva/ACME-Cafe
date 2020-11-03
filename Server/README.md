@@ -3,7 +3,7 @@
 
 ### Registration
 - [x] Make a registration (name, credit/debit bank card and NIF (fiscal identification number – 9 digits) and a public key (in the form of a certificate, cryptographic RSA key pair)).
--[x] If operation succeeds, return a unique ‘user id’ (UUID)
+- [x] If operation succeeds, return a unique ‘user id’ (UUID)
 
 ### Available Items
 - [ ] Get available items in the cafeterias (always the same).
