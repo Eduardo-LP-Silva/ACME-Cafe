@@ -44,7 +44,7 @@ function validatePOSTRequest(request) {
       items: Joi.array().items(
         Joi.object({
           item_id: Joi.string().guid().required(),
-          quantity: Joi.number().required()
+          quantity: Joi.number().integer().required()
         })
       ).min(1).required(),
       vouchers: Joi.array().items(Joi.string().guid().required()),

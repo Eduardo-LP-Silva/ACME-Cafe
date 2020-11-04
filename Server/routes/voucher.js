@@ -57,7 +57,7 @@ function validatePOSTRequest(request) {
 
   try {
     const schema = Joi.object({
-      customer_id: Joi.string().required(),
+      customer_id: Joi.string().guid().required(),
       type: Joi.number().integer().min(0).max(1).required()
     });
 

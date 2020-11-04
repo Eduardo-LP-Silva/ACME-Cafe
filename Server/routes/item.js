@@ -53,7 +53,7 @@ function validatePOSTRequest(request) {
   try {
     const schema = Joi.object({
       name: Joi.string().required(),
-      quantity: Joi.number().required(),
+      quantity: Joi.number().integer().required(),
       price: Joi.number().required(),
       icon: Joi.string()
     });
