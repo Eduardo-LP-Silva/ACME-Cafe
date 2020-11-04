@@ -5,15 +5,18 @@ const Order = require('../models/order');
 
 router.get("/:order_id", async function (req, res) {
 
-  Order.findById(req.params.order_id, function (err, val) {
-    if (err){
-      console.log(err)
-      res.status(404).send(`No order with id ${req.params.order_id} found`)
-    }
-    else{
-      res.json(val)
-    }
-  });
+  Order.
+    findOne({ _id: req.params.order_id }).
+    populate('items.item').
+    exec(function (err, order) {
+      if (err){
+        console.log(err)
+        res.status(404).send(`No order with id ${req.params.order_id} found`)
+      }
+      else{
+        res.json(order)
+      }
+    });
 
 });
 
@@ -26,8 +29,7 @@ router.post("/", async function (req, res) {
 
   const order = new Order(req.body);
   order.save().then(val => {
-    // TODO: send used vouchers
-    res.status(201).json({ "order_id": val._id, "totalPrice": val.totalPrice })
+    res.status(201).json({ "order_id": val._id, "totalPrice": val.totalPrice, "vouchers": val.vouchers })
   }).catch(err => {
     res.status(500).send(err.message)
   })
@@ -38,14 +40,14 @@ function validatePOSTRequest(request) {
 
   try {
     const schema = Joi.object({
-      customer: Joi.string().required(),
+      customer_id: Joi.string().guid().required(),
       items: Joi.array().items(
         Joi.object({
-          item: Joi.string().required(),
+          item_id: Joi.string().guid().required(),
           quantity: Joi.number().required()
         })
       ).min(1).required(),
-      vouchers: Joi.array().items(Joi.string().required()),
+      vouchers: Joi.array().items(Joi.string().guid().required()),
     });
 
     const result = schema.validate(request)

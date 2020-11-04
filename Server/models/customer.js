@@ -26,6 +26,14 @@ const customerSchema = new mongoose.Schema({
   publicKey: {
     type: String,
     required: true
+  },
+  paidCoffees: {
+    type: Number,
+    default: 0
+  },
+  accumulatedPaidValue: {
+    type: Number,
+    default: 0.0
   }
 }, { timestamps: true })
 
