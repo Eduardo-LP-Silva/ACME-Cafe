@@ -3,11 +3,33 @@ var router = express.Router();
 const Joi = require('joi');
 const Order = require('../models/order');
 
+router.get("/receipt", async function (req, res) {
+
+  if(!req.query.customerId){
+    res.status(400).send(`Missing customer`)
+    return;
+  }
+  // TODO: Delete orders?
+  Order.
+    find({ customerId: req.query.customerId }).
+    populate('items.itemId').
+    exec(function (err, orders) {
+      if (err){
+        console.log(err)
+        res.status(404).send(`No orders found`)
+      }
+      else{
+        res.json(orders)
+      }
+   });
+
+});
+
 router.get("/:orderId", async function (req, res) {
 
   Order.
     findOne({ _id: req.params.orderId }).
-    populate('items.item').
+    populate('items.itemId').
     exec(function (err, order) {
       if (err){
         console.log(err)
@@ -44,7 +66,7 @@ function validatePOSTRequest(request) {
       items: Joi.array().items(
         Joi.object({
           itemId: Joi.string().guid().required(),
-          quantity: Joi.number().integer().required()
+          quantity: Joi.number().integer().min(0).required()
         })
       ).min(1).required(),
       vouchers: Joi.array().items(Joi.string().guid().required()),

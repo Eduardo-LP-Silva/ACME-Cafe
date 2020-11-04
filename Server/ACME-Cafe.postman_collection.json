@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "91aff9fe-d0e0-4dbf-af98-713de86ff7b1",
+		"_postman_id": "2a52f348-f211-485e-b616-38bc2ab9dd28",
 		"name": "ACME-Cafe",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -8,6 +8,26 @@
 		{
 			"name": "Customer",
 			"item": [
+				{
+					"name": "Get Customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customer/4fead650-1d58-11eb-b27e-6bab3a0fdcf2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"4fead650-1d58-11eb-b27e-6bab3a0fdcf2"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Create Customer",
 					"request": {
@@ -35,26 +55,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Get Customer",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/customer/4fead650-1d58-11eb-b27e-6bab3a0fdcf2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"customer",
-								"4fead650-1d58-11eb-b27e-6bab3a0fdcf2"
-							]
-						}
-					},
-					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -63,19 +63,10 @@
 			"name": "Item",
 			"item": [
 				{
-					"name": "Create Item",
+					"name": "Get Items",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Coffee\",\n    \"quantity\": 20,\n    \"price\": 13.2,\n    \"icon\": \"random/icon\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "http://localhost:8080/item",
 							"protocol": "http",
@@ -111,10 +102,19 @@
 					"response": []
 				},
 				{
-					"name": "Get Items",
+					"name": "Create Item",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Coffee\",\n    \"quantity\": 20,\n    \"price\": 13.2,\n    \"icon\": \"random/icon\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:8080/item",
 							"protocol": "http",
@@ -135,6 +135,26 @@
 		{
 			"name": "Order",
 			"item": [
+				{
+					"name": "Get Order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/order/7a6fc900-1e2d-11eb-b55e-d3ea279ce8d8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"order",
+								"7a6fc900-1e2d-11eb-b55e-d3ea279ce8d8"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Create Order",
 					"request": {
@@ -164,12 +184,12 @@
 					"response": []
 				},
 				{
-					"name": "Get Order",
+					"name": "Get Customer Order's Receipts",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/order/7a6fc900-1e2d-11eb-b55e-d3ea279ce8d8",
+							"raw": "http://localhost:8080/order/receipt?customerId=4fead650-1d58-11eb-b27e-6bab3a0fdcf2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -177,7 +197,13 @@
 							"port": "8080",
 							"path": [
 								"order",
-								"7a6fc900-1e2d-11eb-b55e-d3ea279ce8d8"
+								"receipt"
+							],
+							"query": [
+								{
+									"key": "customerId",
+									"value": "4fead650-1d58-11eb-b27e-6bab3a0fdcf2"
+								}
 							]
 						}
 					},
@@ -189,34 +215,6 @@
 		{
 			"name": "Voucher",
 			"item": [
-				{
-					"name": "Create Voucher",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"customerId\": \"4fead650-1d58-11eb-b27e-6bab3a0fdcf2\",\n    \"type\": 0\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/voucher",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"voucher"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Get Voucher",
 					"request": {
@@ -257,6 +255,34 @@
 									"key": "customerId",
 									"value": "4fead650-1d58-11eb-b27e-6bab3a0fdcf2"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Voucher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": \"4fead650-1d58-11eb-b27e-6bab3a0fdcf2\",\n    \"type\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/voucher",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"voucher"
 							]
 						}
 					},

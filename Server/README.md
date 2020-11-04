@@ -26,7 +26,7 @@
 - [ ] The user is identified (uuid), the signature verified (with the public key), and the validity of the vouchers is checked.
 - [x] (consider that the server always succeeds in performing that payment).
 - [x] Validation result - The server replies with the validation result, accepted vouchers and total value payed.
-- [ ] The server also generates a receipt and keep it associated with the user.
+- [x] The server also generates a receipt and keep it associated with the user.
 - [x] Non-applicable vouchers are ignored but can be retrieved again.
 
 ### Authentication
