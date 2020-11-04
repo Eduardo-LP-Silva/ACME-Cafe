@@ -3,12 +3,12 @@ var router = express.Router();
 const Joi = require('joi');
 const Item = require('../models/item');
 
-router.get("/:item_id", async function (req, res) {
+router.get("/:itemId", async function (req, res) {
 
-  Item.findById(req.params.item_id, function (err, val) {
+  Item.findById(req.params.itemId, function (err, val) {
     if (err){
       console.log(err)
-      res.status(404).send(`No item with id ${req.params.item_id} found`)
+      res.status(404).send(`No item with id ${req.params.itemId} found`)
     }
     else{
       res.json(val)
@@ -40,7 +40,7 @@ router.post("/", async function (req, res) {
 
   const item = new Item(req.body);
   item.save().then(val => {
-    res.status(201).json({ "item_id": val._id })
+    res.status(201).json({ "itemId": val._id })
   }).catch(err => {
     console.log(err)
     res.status(500).send("Error creating item")

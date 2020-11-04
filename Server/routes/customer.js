@@ -3,12 +3,12 @@ var router = express.Router();
 const Joi = require('joi');
 const Customer = require('../models/customer');
 
-router.get("/:customer_id", async function (req, res) {
+router.get("/:customerId", async function (req, res) {
 
-  Customer.findById(req.params.customer_id, function (err, val) {
+  Customer.findById(req.params.customerId, function (err, val) {
     if (err){
       console.log(err)
-      res.status(404).send(`No customer with id ${req.params.customer_id} found`)
+      res.status(404).send(`No customer with id ${req.params.customerId} found`)
     }
     else{
       res.json(val)
@@ -26,7 +26,7 @@ router.post("/", async function (req, res) {
 
   const customer = new Customer(req.body);
   customer.save().then(val => {
-    res.status(201).json({ "customer_id": val._id })
+    res.status(201).json({ "customerId": val._id })
   }).catch(err => {
     console.log(err)
     res.status(500).send("Error creating customer")

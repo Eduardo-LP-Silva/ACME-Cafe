@@ -3,12 +3,12 @@ var router = express.Router();
 const Joi = require('joi');
 const Voucher = require('../models/voucher');
 
-router.get("/:voucher_id", async function (req, res) {
+router.get("/:voucherId", async function (req, res) {
 
-  Voucher.findById(req.params.voucher_id, function (err, val) {
+  Voucher.findById(req.params.voucherId, function (err, val) {
     if (err){
       console.log(err)
-      res.status(404).send(`No voucher with id ${req.params.voucher_id} found`)
+      res.status(404).send(`No voucher with id ${req.params.voucherId} found`)
     }
     else{
       res.json(val)
@@ -19,12 +19,12 @@ router.get("/:voucher_id", async function (req, res) {
 
 router.get("/", async function (req, res) {
 
-  if(!req.query.customer_id){
+  if(!req.query.customerId){
     res.status(400).send(`Missing customer`)
     return;
   }
 
-  Voucher.find({ customer_id: req.query.customer_id, used: false }, function (err, val) {
+  Voucher.find({ customerId: req.query.customerId, used: false }, function (err, val) {
     if (err){
       console.log(err)
       res.status(404).send(`No vouchers found`)
@@ -45,7 +45,7 @@ router.post("/", async function (req, res) {
 
   const voucher = new Voucher(req.body);
   voucher.save().then(val => {
-    res.status(201).json({ "voucher_id": val._id })
+    res.status(201).json({ "voucherId": val._id })
   }).catch(err => {
     console.log(err)
     res.status(500).send("Error creating voucher")
@@ -57,7 +57,7 @@ function validatePOSTRequest(request) {
 
   try {
     const schema = Joi.object({
-      customer_id: Joi.string().guid().required(),
+      customerId: Joi.string().guid().required(),
       type: Joi.number().integer().min(0).max(1).required()
     });
 

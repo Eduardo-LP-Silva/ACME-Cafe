@@ -3,7 +3,7 @@ const uuid = require('uuid');
 
 const voucherSchema = new mongoose.Schema({
   _id: { type: String, default: uuid.v1 },
-  customer_id: { type: String, ref: 'Customer', required: true },
+  customerId: { type: String, ref: 'Customer', required: true },
   type: {
     type: Number,
     required: true,
