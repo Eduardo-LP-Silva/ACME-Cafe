@@ -78,7 +78,7 @@ orderSchema.pre('save', async function(next) {
   let voucher_type_1 = false;
   for (let i = 0; i < this.vouchers.length; i++) {
     const voucher = await Voucher.findById(this.vouchers[i])
-    if(!voucher.used) {
+    if(voucher && !voucher.used) {
       if(!voucher_type_1 && voucher.type === 1) {
         voucher_type_1 = true;
         usable_vouchers.push(this.vouchers[i])
@@ -119,8 +119,8 @@ orderSchema.post('save', async function (doc) {
     const customer = await Customer.findById(doc.customer_id);
     const accumulated_paid_value = customer.get("accumulatedPaidValue") || 0;
     const paid_coffees = customer.get("paidCoffees") || 0;
-
-    customer.set("accumulatedPaidValue", (accumulated_paid_value + doc.totalPrice).toFixed(2));
+    const new_accumulated_paid_value = (accumulated_paid_value + doc.totalPrice).toFixed(2);
+    customer.set("accumulatedPaidValue", new_accumulated_paid_value); // update accumulated paid value
 
     let num_coffee_vouchers = 0;
     const vouchers = doc.vouchers;
@@ -132,6 +132,7 @@ orderSchema.post('save', async function (doc) {
       voucher.save();
     }
 
+    let new_paid_coffees = 0;
     const coffee_item = await Item.findOne({ name: "Coffee" });
     if(coffee_item) {
       const coffee_item_id = coffee_item.get("_id");
@@ -140,17 +141,31 @@ orderSchema.post('save', async function (doc) {
         if(item.item_id === coffee_item_id) num_coffee_order += item.quantity;
       });
 
-      customer.set("paidCoffees", paid_coffees + num_coffee_order - num_coffee_vouchers);
+      new_paid_coffees = paid_coffees + num_coffee_order - num_coffee_vouchers;
+      customer.set("paidCoffees", new_paid_coffees); // update number of paid coffees
 
     } else {
       console.log("No Coffee item found");
     }
 
+    // New vouchers
+    for (let i = Math.floor(paid_coffees / 3); i < Math.floor(new_paid_coffees / 3); i++) {
+      try {
+        const new_voucher = new Voucher({ customer_id: doc.customer_id, type: 0})
+        new_voucher.save();
+      } catch (error) {
+        console.log("Error creating voucher of type 0", error)
+      }
+    }
+    for (let i = Math.floor(accumulated_paid_value / 100); i < Math.floor(new_accumulated_paid_value / 100); i++) {
+      try {
+        const new_voucher = new Voucher({ customer_id: doc.customer_id, type: 1})
+        new_voucher.save();
+      } catch (error) {
+        console.log("Error creating voucher of type 1", error)
+      }
 
-    // TODO: Create new vouchers
-    // One free coffee voucher is offered to the customer whenever he consumes 3 payed coffees
-    // Accumulated payed value of all orders from the customer surpasses a new multiple of €100.00
-
+    }
     customer.save();
   } catch (error) {
     console.log(error)
