@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.ejn.cmov.acmecafe.mobile.data.RemoteDataRepository;
+import com.ejn.cmov.acmecafe.mobile.data.DataRepository;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.LoggedInUser;
 import com.ejn.cmov.acmecafe.mobile.R;
@@ -13,9 +13,9 @@ public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private RemoteDataRepository remoteDataRepository;
+    private DataRepository remoteDataRepository;
 
-    public LoginViewModel(RemoteDataRepository remoteDataRepository) {
+    public LoginViewModel(DataRepository remoteDataRepository) {
         this.remoteDataRepository = remoteDataRepository;
     }
 

@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -72,14 +73,16 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        registerViewModel.getRegisterResult().observe(this, new Observer<RegisterResult>() {
+        registerViewModel.getRegisterResult().observe(this, new Observer<Boolean>() {
             @Override
-            public void onChanged(RegisterResult registerResult) {
+            public void onChanged(Boolean registerResult) {
                 if (registerResult == null)
                     return;
 
-                if (registerResult.getError() != null)
-                    showRegisterFailed(registerResult.getError());
+                if (registerResult)
+                    Toast.makeText(getApplicationContext(), "Registration Successful!", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(), "An error occurred, please try again.", Toast.LENGTH_SHORT).show();
 
                 /*
                 if (registerResult.getSuccess() != null) {
@@ -87,8 +90,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                  */
 
-                setResult(Activity.RESULT_OK);
-                finish();
+                //setResult(Activity.RESULT_OK);
+                //finish();
             }
         });
 
@@ -120,14 +123,16 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerViewModel.register(nameEditText.getText().toString(), nifEditText.getText().toString(),
-                        cardNoEditText.getText().toString(), expirationDateEditText.getText().toString(),
-                        cvvEditText.getText().toString());
+                registerViewModel.register(nameEditText.getText().toString(),
+                        nifEditText.getText().toString(),
+                        cardNoEditText.getText().toString(),
+                        expirationDateEditText.getText().toString(),
+                        cvvEditText.getText().toString(),
+                        usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString());
+
+                Toast.makeText(getApplicationContext(), "Processing...", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void showRegisterFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 }

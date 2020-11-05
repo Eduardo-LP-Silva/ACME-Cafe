@@ -1,7 +1,11 @@
 package com.ejn.cmov.acmecafe.mobile.ui.register;
 
+import android.util.Log;
+
 import com.ejn.cmov.acmecafe.mobile.R;
-import com.ejn.cmov.acmecafe.mobile.data.RemoteDataRepository;
+import com.ejn.cmov.acmecafe.mobile.data.DataRepository;
+import com.ejn.cmov.acmecafe.mobile.data.RemoteCallback;
+import com.ejn.cmov.acmecafe.mobile.data.Result;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,23 +13,35 @@ import androidx.lifecycle.ViewModel;
 
 public class RegisterViewModel extends ViewModel {
     private MutableLiveData<RegisterFormState> registerFormState = new MutableLiveData<>();
-    private MutableLiveData<RegisterResult> registerResult = new MutableLiveData<>();
-    private RemoteDataRepository remoteDataRepository;
+    private MutableLiveData<Boolean> registerResult = new MutableLiveData<>();
+    private DataRepository dataRepository;
 
-    public RegisterViewModel(RemoteDataRepository remoteDataRepository) {
-        this.remoteDataRepository = remoteDataRepository;
+    public RegisterViewModel(DataRepository remoteDataRepository) {
+        this.dataRepository = remoteDataRepository;
     }
 
     LiveData<RegisterFormState> getRegisterFormState() {
         return registerFormState;
     }
-    LiveData<RegisterResult> getRegisterResult() {
+    LiveData<Boolean> getRegisterResult() {
         return registerResult;
     }
 
-    //TODO
-    public void register(String name, String nif, String cardNo, String expirationDate, String cvv) {
+    public void register(String name, String nif, String cardNo, String expirationDate, String cvv, String username, String pw) {
+        registerResult.setValue(null);
         //TODO Generate public key - certificate
+        dataRepository.register(name, nif, cardNo, expirationDate, cvv, new RemoteCallback<String>() {
+            @Override
+            public void onComplete(Result<String> result) {
+                Log.i("REGISTRATION", "CALLBACK");
+                if (result instanceof Result.Success) {
+                    registerResult.postValue(true);
+                }
+                else {
+                    registerResult.postValue(false);
+                }
+            }
+        });
     }
 
     public void registerDataChanged(String name, String username, String nif, String cardNo, String expirationDate, String cvv,
@@ -68,7 +84,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     private boolean isTextValid(String text, int minLength) {
-        return text != null && text.length() >= minLength && !text.trim().isEmpty();
+        return text != null && text.length() >= minLength;
     }
 
     private boolean isNumberValid(String number, int length) {
