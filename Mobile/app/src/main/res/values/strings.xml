@@ -23,4 +23,10 @@
     <string name="invalid_confirm_password">Passwords must match</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_register">RegisterActivity</string>
+
+    <!-- Code -->
+    <string name="error_string">error</string>
+    <string name="user_id_preferences_file">com.ejn.cmov.acmecafe.mobile.registered_user_id</string>
+    <string name="user_id">user_id</string>
+    <string name="empty">empty</string>
 </resources>

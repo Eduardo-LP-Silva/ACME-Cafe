@@ -1,9 +1,7 @@
 package com.ejn.cmov.acmecafe.mobile.ui.register;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
@@ -73,25 +71,21 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        registerViewModel.getRegisterResult().observe(this, new Observer<Boolean>() {
+        registerViewModel.getRegisterResult().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Boolean registerResult) {
+            public void onChanged(String registerResult) {
                 if (registerResult == null)
                     return;
 
-                if (registerResult)
-                    Toast.makeText(getApplicationContext(), "Registration Successful!", Toast.LENGTH_SHORT).show();
-                else
+                if (registerResult.equals(getApplicationContext().getResources().getString(R.string.error_string))) {
                     Toast.makeText(getApplicationContext(), "An error occurred, please try again.", Toast.LENGTH_SHORT).show();
-
-                /*
-                if (registerResult.getSuccess() != null) {
-                    updateUiWithUser(registerResult.getSuccess());
                 }
-                 */
-
-                //setResult(Activity.RESULT_OK);
-                //finish();
+                else {
+                    registerViewModel.getLocalDataRepository().storeUserID(getApplicationContext(), registerResult);
+                    Toast.makeText(getApplicationContext(), "Registration Successful!", Toast.LENGTH_SHORT).show();
+                    setResult(Activity.RESULT_OK);
+                    finish();
+                }
             }
         });
 

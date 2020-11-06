@@ -6,14 +6,16 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
-import com.ejn.cmov.acmecafe.mobile.data.RemoteDataSource;
-import com.ejn.cmov.acmecafe.mobile.data.DataRepository;
+import com.ejn.cmov.acmecafe.mobile.data.local.LocalDataRepository;
+import com.ejn.cmov.acmecafe.mobile.data.local.LocalDataSource;
+import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataSource;
+import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
 import com.ejn.cmov.acmecafe.mobile.data.ThreadExecutor;
 import com.ejn.cmov.acmecafe.mobile.ui.login.LoginViewModel;
 import com.ejn.cmov.acmecafe.mobile.ui.register.RegisterViewModel;
+import com.ejn.cmov.acmecafe.mobile.ui.start.StartViewModel;
 
 import java.lang.reflect.Constructor;
-import java.util.concurrent.Executor;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
@@ -24,16 +26,30 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(LoginViewModel.class) || modelClass.isAssignableFrom(RegisterViewModel.class)) {
+        // Classes with both remote and local repository access
+        if (modelClass.isAssignableFrom(RegisterViewModel.class)) {
             try {
-                Constructor<?> cons = modelClass.getConstructor(DataRepository.class);
-                return (T) cons.newInstance(DataRepository.getInstance(new RemoteDataSource(), new ThreadExecutor()));
+                //TODO Add local repository too
+                Constructor<?> cons = modelClass.getConstructor(RemoteDataRepository.class, LocalDataRepository.class);
+                return (T) cons.newInstance(RemoteDataRepository.getInstance(new RemoteDataSource(), new ThreadExecutor()),
+                        LocalDataRepository.getInstance(new LocalDataSource(), new ThreadExecutor()));
             }
             catch(Exception e) {
                 Log.e("View Model Factory", e.toString());
                 return null;
             }
-        } else {
+        }   //Classes with only Local repository access
+        else if (modelClass.isAssignableFrom(StartViewModel.class)) {
+            try {
+                Constructor<?> cons = modelClass.getConstructor(LocalDataRepository.class);
+                return (T) cons.newInstance(LocalDataRepository.getInstance(new LocalDataSource(), new ThreadExecutor()));
+            }
+            catch(Exception e) {
+                Log.e("View Model Factory", e.toString());
+                return null;
+            }
+        }
+        else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }

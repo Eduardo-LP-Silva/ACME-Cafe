@@ -3,9 +3,13 @@ package com.ejn.cmov.acmecafe.mobile.ui.register;
 import android.util.Log;
 
 import com.ejn.cmov.acmecafe.mobile.R;
-import com.ejn.cmov.acmecafe.mobile.data.DataRepository;
+import com.ejn.cmov.acmecafe.mobile.data.local.LocalDataRepository;
+import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
 import com.ejn.cmov.acmecafe.mobile.data.RemoteCallback;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,32 +17,36 @@ import androidx.lifecycle.ViewModel;
 
 public class RegisterViewModel extends ViewModel {
     private MutableLiveData<RegisterFormState> registerFormState = new MutableLiveData<>();
-    private MutableLiveData<Boolean> registerResult = new MutableLiveData<>();
-    private DataRepository dataRepository;
+    private MutableLiveData<String> registerResult = new MutableLiveData<>();
+    private RemoteDataRepository remoteDataRepository;
+    private LocalDataRepository localDataRepository;
 
-    public RegisterViewModel(DataRepository remoteDataRepository) {
-        this.dataRepository = remoteDataRepository;
-    }
-
-    LiveData<RegisterFormState> getRegisterFormState() {
-        return registerFormState;
-    }
-    LiveData<Boolean> getRegisterResult() {
-        return registerResult;
+    public RegisterViewModel(RemoteDataRepository remoteDataRepository, LocalDataRepository localDataRepository) {
+        this.remoteDataRepository = remoteDataRepository;
+        this.localDataRepository = localDataRepository;
     }
 
     public void register(String name, String nif, String cardNo, String expirationDate, String cvv, String username, String pw) {
         registerResult.setValue(null);
         //TODO Generate public key - certificate
-        dataRepository.register(name, nif, cardNo, expirationDate, cvv, new RemoteCallback<String>() {
+        remoteDataRepository.register(name, nif, cardNo, expirationDate, cvv, new RemoteCallback<String>() {
             @Override
             public void onComplete(Result<String> result) {
-                Log.i("REGISTRATION", "CALLBACK");
+                Log.i("REGISTRATION RESPONSE", result.toString());
+
                 if (result instanceof Result.Success) {
-                    registerResult.postValue(true);
+                    try {
+                        JSONObject resJson = new JSONObject(((Result.Success<String>) result).getData());
+                        String userID = resJson.getString("customerId");
+
+                        registerResult.postValue(userID);
+                    }
+                    catch (JSONException e) {
+                        Log.e("REGISTRATION.RESPONSE", e.toString());
+                    }
                 }
                 else {
-                    registerResult.postValue(false);
+                    registerResult.postValue("error");
                 }
             }
         });
@@ -81,6 +89,18 @@ public class RegisterViewModel extends ViewModel {
         else {
             registerFormState.setValue(new RegisterFormState(true));
         }
+    }
+
+    LiveData<RegisterFormState> getRegisterFormState() {
+        return registerFormState;
+    }
+
+    LiveData<String> getRegisterResult() {
+        return registerResult;
+    }
+
+    public LocalDataRepository getLocalDataRepository() {
+        return localDataRepository;
     }
 
     private boolean isTextValid(String text, int minLength) {

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.ejn.cmov.acmecafe.mobile.data.DataRepository;
+import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.LoggedInUser;
 import com.ejn.cmov.acmecafe.mobile.R;
@@ -13,10 +13,10 @@ public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private DataRepository remoteDataRepository;
+    private RemoteDataRepository remoteLocalDataRepository;
 
-    public LoginViewModel(DataRepository remoteDataRepository) {
-        this.remoteDataRepository = remoteDataRepository;
+    public LoginViewModel(RemoteDataRepository remoteLocalDataRepository) {
+        this.remoteLocalDataRepository = remoteLocalDataRepository;
     }
 
     LiveData<LoginFormState> getLoginFormState() {
@@ -29,7 +29,7 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = remoteDataRepository.login(username, password);
+        Result<LoggedInUser> result = remoteLocalDataRepository.login(username, password);
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
