@@ -5,7 +5,7 @@ import android.util.Log;
 import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.local.LocalDataRepository;
 import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
-import com.ejn.cmov.acmecafe.mobile.data.RemoteCallback;
+import com.ejn.cmov.acmecafe.mobile.data.Callback;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 
 import org.json.JSONException;
@@ -29,7 +29,7 @@ public class RegisterViewModel extends ViewModel {
     public void register(String name, String nif, String cardNo, String expirationDate, String cvv, String username, String pw) {
         registerResult.setValue(null);
         //TODO Generate public key - certificate
-        remoteDataRepository.register(name, nif, cardNo, expirationDate, cvv, new RemoteCallback<String>() {
+        remoteDataRepository.register(name, nif, cardNo, expirationDate, cvv, new Callback<String>() {
             @Override
             public void onComplete(Result<String> result) {
                 Log.i("REGISTRATION RESPONSE", result.toString());

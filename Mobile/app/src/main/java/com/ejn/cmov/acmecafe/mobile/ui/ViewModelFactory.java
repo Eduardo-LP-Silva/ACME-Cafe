@@ -11,7 +11,7 @@ import com.ejn.cmov.acmecafe.mobile.data.local.LocalDataSource;
 import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataSource;
 import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
 import com.ejn.cmov.acmecafe.mobile.data.ThreadExecutor;
-import com.ejn.cmov.acmecafe.mobile.ui.login.LoginViewModel;
+import com.ejn.cmov.acmecafe.mobile.ui.items.ItemsViewModel;
 import com.ejn.cmov.acmecafe.mobile.ui.register.RegisterViewModel;
 import com.ejn.cmov.acmecafe.mobile.ui.start.StartViewModel;
 
@@ -27,9 +27,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         // Classes with both remote and local repository access
-        if (modelClass.isAssignableFrom(RegisterViewModel.class)) {
+        if (modelClass.isAssignableFrom(RegisterViewModel.class) || modelClass.isAssignableFrom(ItemsViewModel.class)) {
             try {
-                //TODO Add local repository too
                 Constructor<?> cons = modelClass.getConstructor(RemoteDataRepository.class, LocalDataRepository.class);
                 return (T) cons.newInstance(RemoteDataRepository.getInstance(new RemoteDataSource(), new ThreadExecutor()),
                         LocalDataRepository.getInstance(new LocalDataSource(), new ThreadExecutor()));

@@ -25,6 +25,14 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="registration">Registration</string>
 
+    <string name="temp_string">Temporary Text</string>
+    <string name="temp_price">XX.XX€</string>
+    <string name="item_icon_description">Item Icon</string>
+
+    <string name="menu_items">Available Items</string>
+    <string name="menu_order">Make Order</string>
+    <string name="menu_receipts">Receipts</string>
+
     <!-- Code -->
     <string name="error_string">error</string>
     <string name="user_id_preferences_file">com.ejn.cmov.acmecafe.mobile.registered_user_id</string>
@@ -37,8 +45,4 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
-    <string name="menu_items">Available Items</string>
-    <string name="menu_order">Make Order</string>
-    <string name="menu_receipts">Receipts</string>
 </resources>
