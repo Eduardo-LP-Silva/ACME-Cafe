@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.ejn.cmov.acmecafe.mobile.MainMenuActivity;
 import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.ui.ViewModelFactory;
 import com.ejn.cmov.acmecafe.mobile.ui.register.RegisterActivity;
@@ -31,17 +32,19 @@ public class StartActivity extends AppCompatActivity {
             public void run() {
                 Context appContext = getApplicationContext();
                 String userID = startViewModel.getLocalDataRepository().getStoredUserID(appContext);
+                Intent intent;
 
                 if (userID.equals(appContext.getResources().getString(R.string.empty))) {
-                    Intent registerIntent = new Intent(StartActivity.this, RegisterActivity.class);
-                    registerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                    startActivity(registerIntent);
-                    finish();
+                    intent = new Intent(StartActivity.this, RegisterActivity.class);
                 }
                 else {
-                    //TODO Redirect to main menu
-                    Toast.makeText(appContext, "Found User", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(appContext, "User Found", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(StartActivity.this, MainMenuActivity.class);
                 }
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                startActivity(intent);
+                finish();
             }
         };
 
