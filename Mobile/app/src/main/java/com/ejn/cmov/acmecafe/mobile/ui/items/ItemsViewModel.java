@@ -13,9 +13,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class ItemsViewModel extends ViewModel {
-    private RemoteDataRepository remoteDataRepository;
-    private LocalDataRepository localDataRepository;
-    private MutableLiveData<ItemModel[]> items;
+    private final RemoteDataRepository remoteDataRepository;
+    private final LocalDataRepository localDataRepository;
+    private final MutableLiveData<ItemModel[]> items;
 
     public ItemsViewModel(RemoteDataRepository remoteDataRepository, LocalDataRepository localDataRepository) {
         this.remoteDataRepository = remoteDataRepository;
@@ -52,7 +52,7 @@ public class ItemsViewModel extends ViewModel {
                                     return;
                                 }
                         }
-
+                        
                         items.postValue(localItems);
                     }
                 });

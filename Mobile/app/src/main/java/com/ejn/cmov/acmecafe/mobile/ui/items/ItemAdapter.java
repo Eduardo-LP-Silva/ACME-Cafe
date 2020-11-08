@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemAdapter extends RecyclerView.Adapter {
-    private ItemModel[] items;
+    private final ItemModel[] items;
 
     public ItemAdapter(ItemModel[] items) {
         this.items = items;

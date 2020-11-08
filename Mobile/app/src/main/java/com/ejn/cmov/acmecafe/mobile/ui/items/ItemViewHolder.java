@@ -1,7 +1,6 @@
 package com.ejn.cmov.acmecafe.mobile.ui.items;
 
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,9 +13,9 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder {
-    private ImageView itemIconView;
-    private TextView itemNameView;
-    private TextView itemPriceView;
+    private final ImageView itemIconView;
+    private final TextView itemNameView;
+    private final TextView itemPriceView;
 
     public ItemViewHolder(@NonNull View itemView) {
         super(itemView);

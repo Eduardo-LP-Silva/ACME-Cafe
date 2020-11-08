@@ -1,7 +1,9 @@
-package com.ejn.cmov.acmecafe.mobile;
+package com.ejn.cmov.acmecafe.mobile.ui;
 
 import android.os.Bundle;
 import android.view.Menu;
+
+import com.ejn.cmov.acmecafe.mobile.R;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.ActionBar;

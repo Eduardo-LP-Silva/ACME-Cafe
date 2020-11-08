@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
-import com.ejn.cmov.acmecafe.mobile.MainMenuActivity;
+import com.ejn.cmov.acmecafe.mobile.ui.MainMenuActivity;
 import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.ui.ViewModelFactory;
 import com.ejn.cmov.acmecafe.mobile.ui.register.RegisterActivity;

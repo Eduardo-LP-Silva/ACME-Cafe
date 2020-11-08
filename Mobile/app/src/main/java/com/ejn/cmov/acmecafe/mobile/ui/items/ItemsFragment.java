@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ejn.cmov.acmecafe.mobile.R;
-import com.ejn.cmov.acmecafe.mobile.data.Callback;
-import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.ui.ViewModelFactory;
 
@@ -49,12 +47,6 @@ public class ItemsFragment extends Fragment {
             itemsViewModel = new ViewModelProvider(this, new ViewModelFactory()).get(ItemsViewModel.class);
 
         itemsViewModel.populateItems(getContext());
-        /*
-        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.item_list);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        */
 
         return inflater.inflate(R.layout.fragment_items, container, false);
     }
