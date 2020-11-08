@@ -48,6 +48,31 @@ public class RemoteDataSource {
         }
     }
 
+    public Result<String> register(JSONObject jsonBody) {
+        HttpURLConnection httpConnection = null;
+
+        try {
+            httpConnection = createRequest("customer", "POST", jsonBody);
+            int responseCode = httpConnection.getResponseCode();
+
+            if (responseCode == 201) {
+                String response = readStream(httpConnection.getInputStream());
+                return new Result.Success<>(response);
+            }
+            else {
+                String errorCode = Integer.toString(responseCode);
+                return new Result.Error<>(errorCode);
+            }
+        }
+        catch (Exception e) {
+            return new Result.Error<>(e.getMessage());
+        }
+        finally {
+            if (httpConnection != null)
+                httpConnection.disconnect();
+        }
+    }
+
     private HttpURLConnection createRequest(String endpoint, String requestMethod, @Nullable JSONObject jsonBody) throws Exception {
         URL url = new URL(this.apiURL + endpoint);
         HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
@@ -67,45 +92,6 @@ public class RemoteDataSource {
         }
 
         return httpConnection;
-    }
-
-    //TODO Refactor with createRequest
-    public Result<String> register(JSONObject jsonBody) {
-        String endpoint = this.apiURL + "customer";
-        URL url;
-        HttpURLConnection httpConnection = null;
-
-        try {
-            url = new URL(endpoint);
-            httpConnection = (HttpURLConnection) url.openConnection();
-            httpConnection.setRequestMethod("POST");
-            httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-            httpConnection.setRequestProperty("Accept", "application/json");
-            httpConnection.setDoOutput(true);
-
-            DataOutputStream dos = new DataOutputStream(httpConnection.getOutputStream());
-            dos.writeBytes(jsonBody.toString());
-            dos.flush();
-            dos.close();
-
-            int responseCode = httpConnection.getResponseCode();
-
-            if (responseCode == 201) {
-                String response = readStream(httpConnection.getInputStream());
-                return new Result.Success<String>(response);
-            }
-            else {
-                String errorCode = Integer.toString(responseCode);
-                return new Result.Error<String>(errorCode);
-            }
-        }
-        catch (Exception e) {
-            return new Result.Error<String>(e.getMessage());
-        }
-        finally {
-            if (httpConnection != null)
-                httpConnection.disconnect();
-        }
     }
 
     public Result<LoggedInUser> login(String username, String password) {

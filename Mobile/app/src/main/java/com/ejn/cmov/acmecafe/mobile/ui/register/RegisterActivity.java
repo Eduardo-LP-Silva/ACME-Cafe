@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,7 +16,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ejn.cmov.acmecafe.mobile.R;
+import com.ejn.cmov.acmecafe.mobile.ui.MainMenuActivity;
 import com.ejn.cmov.acmecafe.mobile.ui.ViewModelFactory;
+import com.ejn.cmov.acmecafe.mobile.ui.start.StartActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -83,6 +86,11 @@ public class RegisterActivity extends AppCompatActivity {
                 else {
                     registerViewModel.getLocalDataRepository().storeUserID(getApplicationContext(), registerResult);
                     Toast.makeText(getApplicationContext(), "Registration Successful!", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(RegisterActivity.this, MainMenuActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                    startActivity(intent);
+
                     setResult(Activity.RESULT_OK);
                     finish();
                 }
