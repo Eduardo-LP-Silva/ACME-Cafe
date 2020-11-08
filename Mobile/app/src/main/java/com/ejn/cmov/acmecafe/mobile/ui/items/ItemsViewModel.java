@@ -52,7 +52,7 @@ public class ItemsViewModel extends ViewModel {
                                     return;
                                 }
                         }
-                        
+
                         items.postValue(localItems);
                     }
                 });

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.ejn.cmov.acmecafe.mobile.ui.MainMenuActivity;
@@ -38,7 +39,7 @@ public class StartActivity extends AppCompatActivity {
                     intent = new Intent(StartActivity.this, RegisterActivity.class);
                 }
                 else {
-                    Toast.makeText(appContext, "User Found", Toast.LENGTH_SHORT).show();
+                    Log.i("START", "USER FOUND");
                     intent = new Intent(StartActivity.this, MainMenuActivity.class);
                 }
 
