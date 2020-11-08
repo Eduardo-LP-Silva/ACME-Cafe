@@ -1,5 +1,6 @@
 package com.ejn.cmov.acmecafe.mobile.ui.items;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -24,11 +26,13 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(final ItemModel itemModel) {
-        Uri iconUri = Uri.parse(String.format("@drawable/%s", itemModel.getIcon()));
+        String drawableUri = String.format("@drawable/%s", itemModel.getIcon());
+        int icoResource = itemView.getResources().getIdentifier(drawableUri, null, itemView.getContext().getPackageName());
+        Drawable drawable = ResourcesCompat.getDrawable(itemView.getResources(), icoResource, null);
 
         itemIconView.setImageURI(null); //To refresh
-        itemIconView.setImageURI(iconUri);
+        itemIconView.setImageDrawable(drawable);
         itemNameView.setText(itemModel.getName());
-        itemPriceView.setText(itemModel.getPrice());
+        itemPriceView.setText(String.format("%s€", itemModel.getPrice()));
     }
 }
