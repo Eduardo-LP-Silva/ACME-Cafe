@@ -42,7 +42,7 @@ public class RegisterViewModel extends ViewModel {
                         registerResult.postValue(userID);
                     }
                     catch (JSONException e) {
-                        Log.e("REGISTRATION.RESPONSE", e.toString());
+                        Log.e("REGISTRATION RESPONSE", e.toString());
                     }
                 }
                 else {

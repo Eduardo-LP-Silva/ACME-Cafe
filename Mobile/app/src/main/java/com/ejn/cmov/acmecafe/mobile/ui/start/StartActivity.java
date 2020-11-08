@@ -39,8 +39,9 @@ public class StartActivity extends AppCompatActivity {
                     intent = new Intent(StartActivity.this, RegisterActivity.class);
                 }
                 else {
-                    Log.i("START", "USER FOUND");
+                    Log.i("START", String.format("USER %s FOUND", userID));
                     intent = new Intent(StartActivity.this, MainMenuActivity.class);
+                    intent.putExtra("userID", userID);
                 }
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);

@@ -89,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(RegisterActivity.this, MainMenuActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                    intent.putExtra("userID", registerResult);
                     startActivity(intent);
 
                     setResult(Activity.RESULT_OK);
