@@ -69,7 +69,7 @@ function validatePOSTRequest(request) {
           quantity: Joi.number().integer().min(0).required()
         })
       ).min(1).required(),
-      vouchers: Joi.array().items(Joi.string().guid().required()),
+      vouchers: Joi.array().items(Joi.string().guid()),
     });
 
     const result = schema.validate(request)

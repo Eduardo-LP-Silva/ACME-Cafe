@@ -36,3 +36,9 @@
 
 ### Receipts
 - [ ] The user can also ask for the receipts of previous purchases. If the server has them, they are transmitted to the user (only once) and deleted from the server.
+
+### New functionalities
+- [ ] emission of receipts electronically by the server
+- [ ] consultation of past transactions (in the server or locally)
+- [ ] gains obtained so far
+- [ ] ...
