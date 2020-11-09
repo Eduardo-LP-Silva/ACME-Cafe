@@ -29,7 +29,7 @@ public class ReceiptModel implements Serializable {
         return total;
     }
 
-    public boolean isDiscountVoucher() {
+    public boolean hasDiscountVoucher() {
         return discountVoucher;
     }
 
