@@ -31,8 +31,10 @@ public class MainMenuActivity extends AppCompatActivity {
 
         ActionBar supportBar = getSupportActionBar();
 
-        if (supportBar != null)
+        if (supportBar != null) {
+            supportBar.setDisplayShowCustomEnabled(true);
             supportBar.setDisplayShowTitleEnabled(false);
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -59,5 +61,9 @@ public class MainMenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public String getUserID() {
+        return userID;
     }
 }

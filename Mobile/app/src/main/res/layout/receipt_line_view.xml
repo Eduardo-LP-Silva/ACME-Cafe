@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/receipt_line_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:background="@color/colorPrimaryLight"
+    android:paddingHorizontal="15dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/receipt_line_text"
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/temp_string"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/receipt_line_quantity"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/temp_quantity"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/receipt_line_cost"
+        android:layout_width="65dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/temp_price"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+</LinearLayout>

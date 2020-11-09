@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -36,7 +37,6 @@ public class ItemsFragment extends Fragment {
                 ItemAdapter itemAdapter = new ItemAdapter(itemModels);
                 RecyclerView recyclerView = requireActivity().findViewById(R.id.item_list);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerView.setHasFixedSize(true);
                 recyclerView.setAdapter(itemAdapter);
             }
         });

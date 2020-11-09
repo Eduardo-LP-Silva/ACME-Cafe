@@ -21,7 +21,30 @@ import androidx.annotation.Nullable;
  * Class that handles requests to the REST API
  */
 public class RemoteDataSource {
-    private final String apiURL = "http://192.168.1.91:8080/";
+    public Result<String> getReceipts(String userID) {
+        HttpURLConnection httpConnection = null;
+
+        try {
+            httpConnection = createRequest(String.format("order/receipt?customerId=%s", userID), "GET", null);
+            int responseCode = httpConnection.getResponseCode();
+
+            if (responseCode == 200) {
+                String response = readStream(httpConnection.getInputStream());
+                return new Result.Success<>(response);
+            }
+            else {
+                String errorCode = Integer.toString(responseCode);
+                return new Result.Error<>(errorCode);
+            }
+        }
+        catch (Exception e) {
+            return new Result.Error<>(e.getMessage());
+        }
+        finally {
+            if (httpConnection != null)
+                httpConnection.disconnect();
+        }
+    }
 
     public Result<String> getItems() {
         HttpURLConnection httpConnection = null;
@@ -74,7 +97,8 @@ public class RemoteDataSource {
     }
 
     private HttpURLConnection createRequest(String endpoint, String requestMethod, @Nullable JSONObject jsonBody) throws Exception {
-        URL url = new URL(this.apiURL + endpoint);
+        final String apiURL = "http://192.168.1.91:8080/";
+        URL url = new URL(apiURL + endpoint);
         HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
 
         httpConnection.setRequestMethod(requestMethod);

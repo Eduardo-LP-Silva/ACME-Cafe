@@ -2,19 +2,25 @@ package com.ejn.cmov.acmecafe.mobile.data.model;
 
 import java.io.Serializable;
 
+import androidx.annotation.Nullable;
+
 public class ItemModel implements Serializable {
     private String id;
     private String name;
     private String price;
     private String icon;
     private String lastUpdate;
+    private String quantity;
 
-    public ItemModel(String id, String name, String price, String icon, String lastUpdate) {
+    public ItemModel(String id, String name, String price, String icon, String lastUpdate, @Nullable String quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.icon = icon;
         this.lastUpdate = lastUpdate;
+
+        if (quantity != null)
+            this.quantity = quantity;
     }
 
     @Override
@@ -49,5 +55,9 @@ public class ItemModel implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getQuantity() {
+        return quantity;
     }
 }

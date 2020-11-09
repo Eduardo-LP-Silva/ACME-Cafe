@@ -12,6 +12,7 @@ import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataSource;
 import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
 import com.ejn.cmov.acmecafe.mobile.data.ThreadExecutor;
 import com.ejn.cmov.acmecafe.mobile.ui.items.ItemsViewModel;
+import com.ejn.cmov.acmecafe.mobile.ui.receipts.ReceiptsViewModel;
 import com.ejn.cmov.acmecafe.mobile.ui.register.RegisterViewModel;
 import com.ejn.cmov.acmecafe.mobile.ui.start.StartViewModel;
 
@@ -27,7 +28,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         // Classes with both remote and local repository access
-        if (modelClass.isAssignableFrom(RegisterViewModel.class) || modelClass.isAssignableFrom(ItemsViewModel.class)) {
+        if (modelClass.isAssignableFrom(RegisterViewModel.class) || modelClass.isAssignableFrom(ItemsViewModel.class)
+            || modelClass.isAssignableFrom(ReceiptsViewModel.class)) {
             try {
                 Constructor<?> cons = modelClass.getConstructor(RemoteDataRepository.class, LocalDataRepository.class);
                 return (T) cons.newInstance(RemoteDataRepository.getInstance(new RemoteDataSource(), new ThreadExecutor()),

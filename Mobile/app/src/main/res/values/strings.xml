@@ -33,6 +33,14 @@
     <string name="menu_order">Make Order</string>
     <string name="menu_receipts">Receipts</string>
 
+    <string name="receipt_total">Total:</string>
+    <string name="temp_date">DD-MM-YYYY HH:MM</string>
+    <string name="temp_quantity">QQ</string>
+
+    <string name="generic_error">An error occurred, please try again</string>
+
+    <string name="update_receipts">Update Receipts</string>
+
     <!-- Code -->
     <string name="error_string">error</string>
     <string name="user_id_preferences_file">com.ejn.cmov.acmecafe.mobile.registered_user_id</string>

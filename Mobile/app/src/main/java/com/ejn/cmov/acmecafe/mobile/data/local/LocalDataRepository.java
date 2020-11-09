@@ -8,6 +8,7 @@ import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.Callback;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
+import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
 
 import java.util.concurrent.Executor;
 
@@ -28,6 +29,26 @@ public class LocalDataRepository {
             instance = new LocalDataRepository(dataSource, executor);
 
         return instance;
+    }
+
+    public void storeReceipts(final Context appContext, final ReceiptModel[] receipts) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dataSource.storeReceipts(appContext, receipts);
+                Log.i("LDR \\ Stored Receipts", String.format("Items Length: %d", receipts.length));
+            }
+        });
+    }
+
+    public void getStoredReceipts(final Context appContext, final Callback<ReceiptModel[]> callback) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Result<ReceiptModel[]> res = dataSource.getReceipts(appContext);
+                callback.onComplete(res);
+            }
+        });
     }
 
     public void storeItems(final Context appContext, final ItemModel[] items) {

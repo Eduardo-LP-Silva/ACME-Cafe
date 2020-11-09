@@ -7,6 +7,7 @@ import android.util.Log;
 import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
+import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +18,34 @@ import java.io.ObjectOutputStream;
 
 public class LocalDataSource {
     final String itemsFilePath = "menu_items.srl";
+    final String receiptsFilePath = "receipts.srl";
+
+    public void storeReceipts(Context appContext, ReceiptModel[] receipts) {
+        try {
+            ObjectOutput objOut = new ObjectOutputStream(new FileOutputStream(new File(appContext.getFilesDir(), "")
+                    + File.separator + receiptsFilePath));
+            objOut.writeObject(receipts);
+            objOut.close();
+        }
+        catch (Exception e) {
+            Log.e("LDS \\ STORE RECEIPTS", e.toString());
+        }
+    }
+
+    public Result<ReceiptModel[]> getReceipts(Context appContext) {
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(new File(new File(appContext.getFilesDir(), "")
+                    + File.separator + receiptsFilePath)));
+            ReceiptModel[] receipts = (ReceiptModel[]) inputStream.readObject();
+            inputStream.close();
+
+            return new Result.Success<>(receipts);
+        }
+        catch (Exception e) {
+            Log.e("LDS \\ READ RECEIPTS", e.toString());
+            return new Result.Error<>(new ReceiptModel[0]);
+        }
+    }
 
     public void storeItems(Context appContext, ItemModel[] items) {
         try {
@@ -41,7 +70,7 @@ public class LocalDataSource {
         }
         catch (Exception e) {
             Log.e("LDS \\ READ ITEMS", e.toString());
-            return new Result.Error<ItemModel[]>(new ItemModel[0]);
+            return new Result.Error<>(new ItemModel[0]);
         }
     }
 
