@@ -6,15 +6,18 @@ import android.view.ViewGroup;
 
 import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
+import com.ejn.cmov.acmecafe.mobile.ui.OnRecyclerItemClickListener;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemAdapter extends RecyclerView.Adapter {
     private final ItemModel[] items;
+    private final OnRecyclerItemClickListener onItemClickListener;
 
-    public ItemAdapter(ItemModel[] items) {
+    public ItemAdapter(ItemModel[] items, OnRecyclerItemClickListener onItemClickListener) {
         this.items = items;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -22,7 +25,7 @@ public class ItemAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
 
-        return new ItemViewHolder(view);
+        return new ItemViewHolder(view, onItemClickListener);
     }
 
     @Override

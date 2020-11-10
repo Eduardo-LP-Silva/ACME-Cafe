@@ -11,6 +11,7 @@ public class ItemModel implements Serializable {
     private String icon;
     private String lastUpdate;
     private String quantity;
+    private boolean selected;
 
     public ItemModel(String id, String name, String price, String icon, String lastUpdate, @Nullable String quantity) {
         this.id = id;
@@ -18,6 +19,7 @@ public class ItemModel implements Serializable {
         this.price = price;
         this.icon = icon;
         this.lastUpdate = lastUpdate;
+        this.selected = false;
 
         if (quantity != null)
             this.quantity = quantity;
@@ -59,5 +61,13 @@ public class ItemModel implements Serializable {
 
     public String getQuantity() {
         return quantity;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

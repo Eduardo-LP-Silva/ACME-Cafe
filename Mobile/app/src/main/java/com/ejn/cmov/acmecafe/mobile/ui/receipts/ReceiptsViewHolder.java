@@ -34,6 +34,6 @@ public class ReceiptsViewHolder extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View view) {
-        onItemClickListener.onItemClick(getAdapterPosition());
+        onItemClickListener.onItemClick(view, getAdapterPosition());
     }
 }

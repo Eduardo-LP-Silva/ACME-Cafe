@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -70,7 +69,7 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(View view, int position) {
         if(receiptsViewModel.getReceipts().getValue() != null) {
             ReceiptModel receipt = receiptsViewModel.getReceipts().getValue()[position];
             ReceiptFragment receiptFragment = new ReceiptFragment();
