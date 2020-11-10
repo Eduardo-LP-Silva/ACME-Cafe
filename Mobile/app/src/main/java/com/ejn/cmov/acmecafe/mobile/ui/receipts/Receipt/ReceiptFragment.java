@@ -3,6 +3,8 @@ package com.ejn.cmov.acmecafe.mobile.ui.receipts.Receipt;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ejn.cmov.acmecafe.mobile.R;
+import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
+import com.ejn.cmov.acmecafe.mobile.ui.items.ItemAdapter;
 
 public class ReceiptFragment extends Fragment {
     private static final String RECEIPT_PARAM = "receipt";
@@ -44,6 +48,13 @@ public class ReceiptFragment extends Fragment {
             discountVoucherView.setText(discountVoucher);
             totalView.setText(total);
             dateView.setText(receiptModel.getDate());
+
+            ItemModel[] items = receiptModel.getItems();
+
+            ReceiptAdapter receiptAdapter = new ReceiptAdapter(items);
+            RecyclerView recyclerView = requireActivity().findViewById(R.id.receipt_item_list);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(receiptAdapter);
         }
     }
 

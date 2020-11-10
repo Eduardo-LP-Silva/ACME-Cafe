@@ -79,7 +79,7 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
             receiptArgs.putSerializable("receipt", receipt);
             receiptFragment.setArguments(receiptArgs);
 
-            requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment, receiptFragment).commit();
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, receiptFragment).commit();
         }
 
     }
