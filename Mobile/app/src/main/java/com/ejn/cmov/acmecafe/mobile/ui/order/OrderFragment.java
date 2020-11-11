@@ -5,13 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ejn.cmov.acmecafe.mobile.R;
+import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.VoucherModel;
 import com.ejn.cmov.acmecafe.mobile.ui.MainMenuActivity;
 import com.ejn.cmov.acmecafe.mobile.ui.ViewModelFactory;
@@ -32,15 +36,20 @@ public class OrderFragment extends Fragment {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         if (getArguments() != null) {
-            //TODO Fill recycler view with items data
+            ArrayList<ItemModel> items = (ArrayList<ItemModel>) getArguments().getSerializable(ORDER_PARAM);
+            OrderItemsAdapter adapter = new OrderItemsAdapter(items);
+            RecyclerView recyclerView = requireActivity().findViewById(R.id.order_items_list);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(adapter);
         }
 
         getVouchersBtn = requireActivity().findViewById(R.id.order_get_vouchers);
-        //getVouchersBtn.setActivated(false);
+        getVouchersBtn.setActivated(false);
 
         orderViewModel.getVouchers().observe(requireActivity(), new Observer<Hashtable<Integer, ArrayList<VoucherModel>>>() {
             @Override
@@ -61,13 +70,13 @@ public class OrderFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 orderViewModel.getNewVouchers(getContext(), ((MainMenuActivity) requireActivity()).getUserID());
+                Toast.makeText(getContext(), getString(R.string.fetching_vouchers), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        orderViewModel.loadLocalVouchers(getContext());
         return inflater.inflate(R.layout.fragment_orders, container, false);
     }
 }

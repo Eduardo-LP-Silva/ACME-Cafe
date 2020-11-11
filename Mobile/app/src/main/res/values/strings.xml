@@ -41,6 +41,8 @@
 
     <string name="generic_error">An error occurred, please try again</string>
 
+    <string name="make_order_error">You must select at least one item to make an order</string>
+
     <string name="update_receipts">Update Receipts</string>
     <string name="update_vouchers">Update Vouchers</string>
 
@@ -51,6 +53,8 @@
     <string name="coffee_vouchers">Free Coffee Vouchers (%d left):</string>
     <string name="discount_voucher">Discount Voucher (%d left)</string>
     <string name="place_order">Place Order</string>
+    <string name="fetching_vouchers">Retrieving new vouchers</string>
+    <string name="item_quantity_error">Item quantity must be greater than 0</string>
 
     <!-- Code -->
     <string name="error_string">error</string>

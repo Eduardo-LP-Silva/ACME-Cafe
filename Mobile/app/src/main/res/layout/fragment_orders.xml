@@ -13,8 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.086"
+        android:layout_marginStart="@dimen/general_h_padding"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,7 +21,8 @@
         android:id="@+id/order_coffee_vouchers_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="@dimen/general_h_padding"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_items_list">
@@ -42,6 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:autofillHints="@string/quantity_hint"
+            android:hint="@string/quantity_hint"
             android:digits="0123456789"
             android:fontFamily="sans-serif-medium"
             android:inputType="number"
@@ -56,7 +57,7 @@
         android:id="@+id/order_discount_voucher_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="@dimen/general_h_padding"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_coffee_vouchers_layout">
@@ -84,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_gravity="start"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="@dimen/general_h_padding"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_corners"
         android:enabled="true"

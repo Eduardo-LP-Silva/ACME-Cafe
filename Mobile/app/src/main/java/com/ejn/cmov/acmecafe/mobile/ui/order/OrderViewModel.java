@@ -23,16 +23,23 @@ public class OrderViewModel extends ViewModel {
     public OrderViewModel(RemoteDataRepository remoteDataRepository, LocalDataRepository localDataRepository) {
         this.remoteDataRepository = remoteDataRepository;
         this.localDataRepository = localDataRepository;
-
-        Hashtable<Integer, ArrayList<VoucherModel>> voucherTable = new Hashtable<>();
-        voucherTable.put(0, new ArrayList<VoucherModel>());
-        voucherTable.put(1, new ArrayList<VoucherModel>());
-
-        this.vouchers = new MutableLiveData<>(voucherTable);
+        this.vouchers = new MutableLiveData<>();
     }
 
-    public void loadLocalVouchers() {
+    public void loadLocalVouchers(Context appContext) {
+        localDataRepository.getStoredVouchers(appContext, new Callback<Hashtable<Integer, ArrayList<VoucherModel>>>() {
+            @Override
+            public void onComplete(Result<Hashtable<Integer, ArrayList<VoucherModel>>> result) {
+                Hashtable<Integer, ArrayList<VoucherModel>> localTable;
 
+                if(result instanceof Result.Success)
+                    localTable = ((Result.Success<Hashtable<Integer, ArrayList<VoucherModel>>>) result).getData();
+                else
+                    localTable = ((Result.Error<Hashtable<Integer, ArrayList<VoucherModel>>>) result).getError();
+
+                vouchers.postValue(localTable);
+            }
+        });
     }
 
     public void getNewVouchers(final Context appContext, String userID) {

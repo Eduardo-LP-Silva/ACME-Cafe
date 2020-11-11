@@ -45,6 +45,16 @@ public class LocalDataRepository {
         });
     }
 
+    public void getStoredVouchers(final Context appContext, final Callback<Hashtable<Integer, ArrayList<VoucherModel>>> callback) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Result<Hashtable<Integer, ArrayList<VoucherModel>>> res = dataSource.getVouchers(appContext);
+                callback.onComplete(res);
+            }
+        });
+    }
+
     public void storeReceipts(final Context appContext, final ReceiptModel[] receipts) {
         executor.execute(new Runnable() {
             @Override

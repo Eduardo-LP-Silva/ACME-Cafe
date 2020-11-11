@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -58,11 +59,17 @@ public class ItemsFragment extends Fragment implements OnRecyclerItemClickListen
         newOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 ArrayList<ItemModel> selectedItems = new ArrayList<>();
 
                 for (ItemModel item : itemsViewModel.getItems().getValue()) {
                     if (item.isSelected())
                         selectedItems.add(item);
+                }
+
+                if (selectedItems.size() == 0) {
+                    Toast.makeText(getContext(), getString(R.string.make_order_error), Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 OrderFragment orderFragment = new OrderFragment();
@@ -71,7 +78,11 @@ public class ItemsFragment extends Fragment implements OnRecyclerItemClickListen
                 orderArgs.putSerializable("items", selectedItems);
                 orderFragment.setArguments(orderArgs);
 
-                requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment, orderFragment).commit();
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .add(R.id.nav_host_fragment, orderFragment)
+                        .commit();
             }
         });
     }

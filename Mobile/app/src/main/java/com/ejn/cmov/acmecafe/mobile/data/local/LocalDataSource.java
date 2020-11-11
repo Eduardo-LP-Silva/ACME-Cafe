@@ -35,6 +35,25 @@ public class LocalDataSource {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public Result<Hashtable<Integer, ArrayList<VoucherModel>>> getVouchers(Context appContext) {
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(new File(new File(appContext.getFilesDir(), "")
+                    + File.separator + vouchersFilePath)));
+            Hashtable<Integer, ArrayList<VoucherModel>> vouchers = (Hashtable<Integer, ArrayList<VoucherModel>>) inputStream.readObject();
+            inputStream.close();
+
+            return new Result.Success<>(vouchers);
+        }
+        catch (Exception e) {
+            Log.e("LDS \\ READ VOUCHERS", e.toString());
+            Hashtable<Integer, ArrayList<VoucherModel>> emptyTable = new Hashtable<>();
+            emptyTable.put(0, new ArrayList<VoucherModel>());
+            emptyTable.put(1, new ArrayList<VoucherModel>());
+            return new Result.Error<>(emptyTable);
+        }
+    }
+
     public void storeReceipts(Context appContext, ReceiptModel[] receipts) {
         try {
             ObjectOutput objOut = new ObjectOutputStream(new FileOutputStream(new File(appContext.getFilesDir(), "")
