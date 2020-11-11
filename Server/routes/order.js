@@ -9,16 +9,18 @@ router.get("/receipt", async function (req, res) {
     res.status(400).send(`Missing customer`)
     return;
   }
-  // TODO: Delete orders?
+
   Order.
-    find({ customerId: req.query.customerId }).
+    find({ customerId: req.query.customerId, receipt: false }).
     populate('items.itemId').
+    populate('vouchers').
     exec(function (err, orders) {
       if (err){
         console.log(err)
         res.status(404).send(`No orders found`)
       }
       else{
+        Order.updateMany({ customerId: req.query.customerId, receipt: false }, {"$set":{"receipt": true}}, {"multi": true}, (err, writeResult) => {})
         res.json(orders)
       }
    });

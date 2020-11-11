@@ -19,7 +19,14 @@ app.use("/item", itemRouter);
 app.use("/order", orderRouter);
 app.use("/voucher", voucherRouter);
 
-mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:27017/${process.env.DB_NAME}`, {useNewUrlParser: true, useUnifiedTopology: true });
+
+function hasEnv(envVar) {
+  return envVar !== undefined && envVar !== "";
+}
+
+let hasMongoUsername = hasEnv(process.env.DB_USER) && hasEnv(process.env.DB_PASS !== undefined);
+let mongoURL = `mongodb://${hasMongoUsername ? process.env.DB_USER+':'+process.env.DB_PASS+'@' : ''}${process.env.DB_HOST}:27017/${process.env.DB_NAME}`;
+mongoose.connect(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.once('open',function(){
   console.log('Database connected Successfully');

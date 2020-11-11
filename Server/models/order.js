@@ -20,6 +20,7 @@ const orderSchema = new mongoose.Schema({
   vouchers: [
     { type: String, ref: 'Voucher' }
   ],
+  receipt: { type: Boolean, default: false },
   totalPrice: { type: Number }
 }, { timestamps: true })
 
