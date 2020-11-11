@@ -21,6 +21,31 @@ import androidx.annotation.Nullable;
  * Class that handles requests to the REST API
  */
 public class RemoteDataSource {
+    public Result<String> getVouchers(String userID) {
+        HttpURLConnection httpConnection = null;
+
+        try {
+            httpConnection = createRequest(String.format("voucher?customerId=%s", userID), "GET", null);
+            int responseCode = httpConnection.getResponseCode();
+
+            if (responseCode == 200) {
+                String response = readStream(httpConnection.getInputStream());
+                return new Result.Success<>(response);
+            }
+            else {
+                String errorCode = Integer.toString(responseCode);
+                return new Result.Error<>(errorCode);
+            }
+        }
+        catch (Exception e) {
+            return new Result.Error<>(e.getMessage());
+        }
+        finally {
+            if (httpConnection != null)
+                httpConnection.disconnect();
+        }
+    }
+
     public Result<String> getReceipts(String userID) {
         HttpURLConnection httpConnection = null;
 

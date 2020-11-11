@@ -12,6 +12,7 @@ import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataSource;
 import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
 import com.ejn.cmov.acmecafe.mobile.data.ThreadExecutor;
 import com.ejn.cmov.acmecafe.mobile.ui.items.ItemsViewModel;
+import com.ejn.cmov.acmecafe.mobile.ui.order.OrderViewModel;
 import com.ejn.cmov.acmecafe.mobile.ui.receipts.ReceiptsViewModel;
 import com.ejn.cmov.acmecafe.mobile.ui.register.RegisterViewModel;
 import com.ejn.cmov.acmecafe.mobile.ui.start.StartViewModel;
@@ -29,7 +30,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         // Classes with both remote and local repository access
         if (modelClass.isAssignableFrom(RegisterViewModel.class) || modelClass.isAssignableFrom(ItemsViewModel.class)
-            || modelClass.isAssignableFrom(ReceiptsViewModel.class)) {
+            || modelClass.isAssignableFrom(ReceiptsViewModel.class) || modelClass.isAssignableFrom(OrderViewModel.class)) {
             try {
                 Constructor<?> cons = modelClass.getConstructor(RemoteDataRepository.class, LocalDataRepository.class);
                 return (T) cons.newInstance(RemoteDataRepository.getInstance(new RemoteDataSource(), new ThreadExecutor()),
@@ -39,7 +40,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                 Log.e("View Model Factory", e.toString());
                 return null;
             }
-        }   //Classes with only Local repository access
+        }   // Classes with only local repository access
         else if (modelClass.isAssignableFrom(StartViewModel.class)) {
             try {
                 Constructor<?> cons = modelClass.getConstructor(LocalDataRepository.class);
@@ -49,7 +50,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                 Log.e("View Model Factory", e.toString());
                 return null;
             }
-        }
+        }   // Classes with only remote repository access
         else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

@@ -8,6 +8,7 @@ import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
+import com.ejn.cmov.acmecafe.mobile.data.model.VoucherModel;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,10 +16,24 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class LocalDataSource {
     final String itemsFilePath = "menu_items.srl";
     final String receiptsFilePath = "receipts.srl";
+    final String vouchersFilePath = "vouchers.srl";
+
+    public void storeVouchers(Context appContext, Hashtable<Integer, ArrayList<VoucherModel>> vouchers) {
+        try {
+            ObjectOutput objOut = new ObjectOutputStream(new FileOutputStream(new File(appContext.getFilesDir(), "")
+                    + File.separator + vouchersFilePath));
+            objOut.writeObject(vouchers);
+        }
+        catch (Exception e) {
+            Log.e("LDS \\ STORE VOUCHERS", e.toString());
+        }
+    }
 
     public void storeReceipts(Context appContext, ReceiptModel[] receipts) {
         try {

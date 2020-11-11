@@ -9,7 +9,10 @@ import com.ejn.cmov.acmecafe.mobile.data.Callback;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
+import com.ejn.cmov.acmecafe.mobile.data.model.VoucherModel;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.concurrent.Executor;
 
 public class LocalDataRepository {
@@ -29,6 +32,17 @@ public class LocalDataRepository {
             instance = new LocalDataRepository(dataSource, executor);
 
         return instance;
+    }
+
+    public void storeVouchers(final Context appContext, final Hashtable<Integer, ArrayList<VoucherModel>> vouchers) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dataSource.storeVouchers(appContext, vouchers);
+                Log.i("LDR \\ Stored Vouchers", String.format("Coffee Vouchers: %d | Discount Vouchers: %d", vouchers.get(0).size(),
+                        vouchers.get(1).size()));
+            }
+        });
     }
 
     public void storeReceipts(final Context appContext, final ReceiptModel[] receipts) {

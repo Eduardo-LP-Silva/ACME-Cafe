@@ -8,6 +8,7 @@ import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.LoggedInUser;
 import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
+import com.ejn.cmov.acmecafe.mobile.data.model.VoucherModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +39,41 @@ public class RemoteDataRepository {
             instance = new RemoteDataRepository(dataSource, executor);
 
         return instance;
+    }
+
+    public void getVouchers(final String userID, final Callback<VoucherModel[]> callback) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Result<String> res = dataSource.getVouchers(userID);
+                VoucherModel[] vouchers;
+
+                if (res instanceof Result.Success) {
+                    try {
+                        JSONArray remoteVouchers = new JSONArray(((Result.Success<String>) res).getData());
+                        vouchers = new VoucherModel[remoteVouchers.length()];
+
+                        for (int i = 0; i < remoteVouchers.length(); i++) {
+                            JSONObject voucher = remoteVouchers.getJSONObject(i);
+                            vouchers[i] = new VoucherModel(voucher.getString("_id"), voucher.getInt("type"));
+                        }
+
+                        Log.i("RDR \\ GET VOUCHERS", String.format("%d fetched", vouchers.length));
+                        callback.onComplete(new Result.Success<>(vouchers));
+                    }
+                    catch (JSONException e) {
+                        Log.e("RDR \\ GET VOUCHERS", e.toString());
+                        vouchers = new VoucherModel[0];
+                        callback.onComplete(new Result.Error<>(vouchers));
+                    }
+                }
+                else {
+                    Log.e("RDR \\ GET VOUCHERS", ((Result.Error<String>) res).getError());
+                    vouchers = new VoucherModel[0];
+                    callback.onComplete(new Result.Error<>(vouchers));
+                }
+            }
+        });
     }
 
     public void getReceipts(final String userID, final Callback<ReceiptModel[]> callback) {

@@ -4,19 +4,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:background="@color/colorPrimaryLight"
     tools:context=".ui.order.OrderFragment">
 
-    <TextView
-        android:id="@+id/text_gallery"
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/order_items_list"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/order_coffee_vouchers_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/order_items_list">
+
+        <TextView
+            android:id="@+id/order_coffee_vouchers_label"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
+            android:text="@string/coffee_vouchers"
+            android:textColor="@color/textBrown"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/order_coffee_vouchers_no"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:autofillHints="@string/quantity_hint"
+            android:digits="0123456789"
+            android:fontFamily="sans-serif-medium"
+            android:inputType="number"
+            android:maxLength="2"
+            android:text="@string/default_coffee_voucher_no"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/order_discount_voucher_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/order_coffee_vouchers_layout">
+
+        <TextView
+            android:id="@+id/order_discount_voucher_label"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
+            android:text="@string/discount_voucher"
+            android:textColor="@color/textBrown"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/order_discount_voucher"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:buttonTint="@color/colorAccent" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/order_place_order"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_gravity="start"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corners"
+        android:enabled="true"
+        android:paddingHorizontal="@dimen/general_h_padding"
+        android:text="@string/place_order"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/order_discount_voucher_layout" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/order_get_vouchers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="64dp"
+        android:layout_marginEnd="56dp"
+        android:clickable="true"
+        android:contentDescription="@string/update_vouchers"
+        android:focusable="true"
+        android:src="@drawable/ic_voucher"
+        app:fabCustomSize="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
