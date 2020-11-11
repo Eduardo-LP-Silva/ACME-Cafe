@@ -37,7 +37,7 @@
     <string name="receipt_coffee_voucher_no">Coffee Vouchers:</string>
     <string name="receipt_total">Total:</string>
     <string name="temp_date">DD-MM-YYYY HH:MM</string>
-    <string name="temp_quantity">QQ</string>
+    <string name="temp_quantity">x QQ</string>
 
     <string name="generic_error">An error occurred, please try again</string>
 

@@ -1,4 +1,4 @@
-package com.ejn.cmov.acmecafe.mobile.ui.items;
+package com.ejn.cmov.acmecafe.mobile.ui.receipts.Receipt;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,18 +6,15 @@ import android.view.ViewGroup;
 
 import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
-import com.ejn.cmov.acmecafe.mobile.ui.OnRecyclerItemClickListener;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemAdapter extends RecyclerView.Adapter {
+public class ReceiptAdapter extends RecyclerView.Adapter {
     private final ItemModel[] items;
-    private final OnRecyclerItemClickListener onItemClickListener;
 
-    public ItemAdapter(ItemModel[] items, OnRecyclerItemClickListener onItemClickListener) {
+    public ReceiptAdapter(ItemModel[] items) {
         this.items = items;
-        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -25,12 +22,12 @@ public class ItemAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
 
-        return new ItemViewHolder(view, onItemClickListener);
+        return new ReceiptViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ItemViewHolder) holder).bindData(items[position]);
+        ((ReceiptViewHolder) holder).bindData(items[position]);
     }
 
     @Override
@@ -40,6 +37,6 @@ public class ItemAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(final int position) {
-        return R.layout.item_view;
+        return R.layout.receipt_line_view;
     }
 }
