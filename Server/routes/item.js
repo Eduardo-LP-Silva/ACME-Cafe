@@ -19,7 +19,7 @@ router.get("/:itemId", async function (req, res) {
 
 router.get("/", async function (req, res) {
 
-  Item.find({}, function (err, val) {
+  Item.find({ quantity: { $gt: 0 } }, function (err, val) {
     if (err){
       console.log(err)
       res.status(404).send(`No items found`)
