@@ -2,6 +2,7 @@ package com.ejn.cmov.acmecafe.mobile.data.remote;
 
 import android.util.Log;
 
+import com.ejn.cmov.acmecafe.mobile.data.Authentication;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.LoggedInUser;
 
@@ -25,10 +26,38 @@ public class RemoteDataSource {
         HttpURLConnection httpConnection = null;
 
         try {
-            httpConnection = createRequest(String.format("voucher?customerId=%s", userID), "GET", null);
+            httpConnection = createRequest(String.format("voucher%s", Authentication.buildQuerySignedMessage(userID)), "GET",
+                    null);
             int responseCode = httpConnection.getResponseCode();
 
             if (responseCode == 200) {
+                String response = readStream(httpConnection.getInputStream());
+                return new Result.Success<>(response);
+            }
+            else {
+                String errorCode = Integer.toString(responseCode);
+                return new Result.Error<>(errorCode);
+            }
+        }
+        catch (Exception e) {
+            return new Result.Error<>(e.getMessage());
+        }
+        finally {
+            if (httpConnection != null)
+                httpConnection.disconnect();
+        }
+    }
+
+    public Result<String> sendOrder(JSONObject payload) {
+        HttpURLConnection httpConnection = null;
+
+        try {
+            httpConnection = createRequest("order", "POST", payload);
+            int responseCode = httpConnection.getResponseCode();
+
+            Log.i("RDS \\ SEND ORDER", Integer.toString(responseCode));
+
+            if (responseCode == 201) {
                 String response = readStream(httpConnection.getInputStream());
                 return new Result.Success<>(response);
             }
@@ -50,7 +79,7 @@ public class RemoteDataSource {
         HttpURLConnection httpConnection = null;
 
         try {
-            httpConnection = createRequest(String.format("order/receipt?customerId=%s", userID), "GET", null);
+            httpConnection = createRequest(String.format("order/receipt%s", Authentication.buildQuerySignedMessage(userID)), "GET", null);
             int responseCode = httpConnection.getResponseCode();
 
             if (responseCode == 200) {
@@ -125,7 +154,7 @@ public class RemoteDataSource {
         ////http://192.168.1.7:8080
         //http://192.168.1.5:8080/
         //http://192.168.1.91:8080/
-        final String apiURL = "http://192.168.1.7:8080/";
+        final String apiURL = "http://188.82.183.12:80/";
         URL url = new URL(apiURL + endpoint);
         HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
 

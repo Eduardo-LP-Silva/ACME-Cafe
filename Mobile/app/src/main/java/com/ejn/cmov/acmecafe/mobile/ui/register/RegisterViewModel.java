@@ -1,5 +1,6 @@
 package com.ejn.cmov.acmecafe.mobile.ui.register;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.ejn.cmov.acmecafe.mobile.R;
@@ -26,10 +27,9 @@ public class RegisterViewModel extends ViewModel {
         this.localDataRepository = localDataRepository;
     }
 
-    public void register(String name, String nif, String cardNo, String expirationDate, String cvv, String username, String pw) {
+    public void register(Context appContext, String name, String nif, String cardNo, String expirationDate, String cvv, String username, String pw) {
         registerResult.setValue(null);
-        //TODO Generate public key - certificate
-        remoteDataRepository.register(name, nif, cardNo, expirationDate, cvv, new Callback<String>() {
+        remoteDataRepository.register(appContext, name, nif, cardNo, expirationDate, cvv, new Callback<String>() {
             @Override
             public void onComplete(Result<String> result) {
                 Log.i("REGISTRATION RESPONSE", result.toString());

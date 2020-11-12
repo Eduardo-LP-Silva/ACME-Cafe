@@ -1,8 +1,10 @@
 package com.ejn.cmov.acmecafe.mobile.data.remote;
 
+import android.content.Context;
 import android.telecom.Call;
 import android.util.Log;
 
+import com.ejn.cmov.acmecafe.mobile.data.Authentication;
 import com.ejn.cmov.acmecafe.mobile.data.Callback;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
@@ -40,6 +42,20 @@ public class RemoteDataRepository {
             instance = new RemoteDataRepository(dataSource, executor);
 
         return instance;
+    }
+
+    public void sendOrder(final JSONObject payload) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Result<String> res = dataSource.sendOrder(payload);
+
+                if (res instanceof Result.Success)
+                    Log.i("RDR \\ SEND ORDER", ((Result.Success<String>) res).getData());
+                else
+                    Log.e("RDR \\ SEND ORDER", ((Result.Error<String>) res).getError());
+            }
+        });
     }
 
     public void getVouchers(final String userID, final Callback<VoucherModel[]> callback) {
@@ -178,28 +194,30 @@ public class RemoteDataRepository {
         });
     }
 
-    public void register(String name, String nif, String cardNo, String expirationDate, String cvv,
+    public void register(final Context appContext, final String name, final String nif, final String cardNo, final String expirationDate, final String cvv,
                          final Callback<String> callback) {
-        try {
-            final JSONObject json = new JSONObject();
-            json.put("name", name);
-            json.put("bankCardNumber", cardNo);
-            json.put("bankCardExpiry", expirationDate);
-            json.put("bankCardCVV", cvv);
-            json.put("nif", nif);
-            json.put("publicKey", "f4r34frgw4g3");
 
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    Result<String> res = dataSource.register(json);
-                    callback.onComplete(res);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                final JSONObject json = new JSONObject();
+
+                try {
+                    json.put("name", name);
+                    json.put("bankCardNumber", cardNo);
+                    json.put("bankCardExpiry", expirationDate);
+                    json.put("bankCardCVV", cvv);
+                    json.put("nif", nif);
+                    json.put("publicKey", Authentication.getCertificate(appContext));
                 }
-            });
-        }
-        catch(JSONException e) {
-            Log.e("REGISTER JSON EXCEPTION", e.toString());
-        }
+                catch(JSONException e) {
+                    Log.e("REGISTER JSON EXCEPTION", e.toString());
+                }
+
+                Result<String> res = dataSource.register(json);
+                callback.onComplete(res);
+            }
+        });
     }
 
     private void setLoggedInUser(LoggedInUser user) {

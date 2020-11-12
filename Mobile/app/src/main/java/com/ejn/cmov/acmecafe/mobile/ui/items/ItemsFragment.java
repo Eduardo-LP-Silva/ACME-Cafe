@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+//TODO On resume fetch items again (same in other fragments?)
 public class ItemsFragment extends Fragment implements OnRecyclerItemClickListener {
 
     private ItemsViewModel itemsViewModel = null;
