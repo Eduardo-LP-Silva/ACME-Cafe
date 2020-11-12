@@ -56,7 +56,7 @@ public class ReceiptsViewModel extends ViewModel {
                 }
                 else {
                     Log.e("RVM \\ GET REM. RECEIPTS", "COULDN'T FETCH RECEIPTS");
-                    Toast.makeText(appContext, appContext.getResources().getString(R.string.generic_error), Toast.LENGTH_SHORT).show();
+                     //Toast.makeText(appContext, appContext.getResources().getString(R.string.generic_error), Toast.LENGTH_SHORT).show();
                 }
 
             }

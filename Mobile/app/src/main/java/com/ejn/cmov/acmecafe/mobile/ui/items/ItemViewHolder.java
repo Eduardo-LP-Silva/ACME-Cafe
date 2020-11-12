@@ -32,10 +32,21 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public void bindData(final ItemModel itemModel) {
         String drawableUri = String.format("@drawable/%s", itemModel.getIcon());
         int icoResource = itemView.getResources().getIdentifier(drawableUri, null, itemView.getContext().getPackageName());
-        Drawable drawable = ResourcesCompat.getDrawable(itemView.getResources(), icoResource, null);
+        Drawable drawable;
 
-        itemIconView.setImageURI(null); //To refresh
-        itemIconView.setImageDrawable(drawable);
+        if (icoResource != 0) {
+            drawable = ResourcesCompat.getDrawable(itemView.getResources(), icoResource, null);
+            itemIconView.setImageURI(null); //To refresh
+            itemIconView.setImageDrawable(drawable);
+        }
+        else {
+            icoResource = itemView.getResources().getIdentifier("@drawable/ic_item_default", null,
+                    itemView.getContext().getPackageName());
+            drawable = ResourcesCompat.getDrawable(itemView.getResources(), icoResource, null);
+            itemIconView.setImageURI(null); //To refresh
+            itemIconView.setImageDrawable(drawable);
+        }
+
         itemNameView.setText(itemModel.getName());
         itemPriceView.setText(String.format("%s€", itemModel.getPrice()));
     }

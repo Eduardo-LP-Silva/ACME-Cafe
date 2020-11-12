@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ejn.cmov.acmecafe.mobile.R;
+import com.ejn.cmov.acmecafe.mobile.data.Authentication;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.VoucherModel;
 import com.ejn.cmov.acmecafe.mobile.ui.MainMenuActivity;
@@ -102,7 +103,7 @@ public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushComp
                 priceDiscountVoucherLabel.setText(String.format(getString(R.string.discount_voucher), voucherTable.get(1).size()));
 
                 if (vouchers.get(0).size() <= 0) {
-                    coffeeVoucherEditor.setText(0);
+                    coffeeVoucherEditor.setText("0");
                     coffeeVoucherEditor.setActivated(false);
                 }
                 else
@@ -133,6 +134,10 @@ public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushComp
 
         if(payload == null)
             return;
+
+        //orderViewModel.sendOrder(Authentication.buildBodySignedMessage(payload));
+
+        payload = Authentication.buildBodySignedMessage(payload);
 
         NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getContext());
 
@@ -245,6 +250,7 @@ public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushComp
 
         getVouchersBtn.setActivated(true);
         placeOrderBtn.setActivated(true);
+        discountVoucherCheckBox.setActivated(orderViewModel.getVouchers().getValue().get(1).size() > 0);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -126,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerViewModel.register(nameEditText.getText().toString(),
+                registerViewModel.register(getApplicationContext(), nameEditText.getText().toString(),
                         nifEditText.getText().toString(),
                         cardNoEditText.getText().toString(),
                         expirationDateEditText.getText().toString(),

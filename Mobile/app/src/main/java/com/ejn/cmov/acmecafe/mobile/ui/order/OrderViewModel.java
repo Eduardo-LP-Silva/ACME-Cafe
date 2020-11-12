@@ -10,6 +10,8 @@ import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.VoucherModel;
 import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -27,6 +29,10 @@ public class OrderViewModel extends ViewModel {
         this.localDataRepository = localDataRepository;
         this.vouchers = new MutableLiveData<>();
         this.dataLoaded = new MutableLiveData<>();
+    }
+
+    public void sendOrder(JSONObject payload) {
+        remoteDataRepository.sendOrder(payload);
     }
 
     public void loadLocalVouchers(Context appContext) {
