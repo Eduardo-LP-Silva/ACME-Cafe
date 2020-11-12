@@ -5,26 +5,26 @@ const itemSchema = new mongoose.Schema({
   _id: { type: String, default: uuid.v1 },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   quantity: {
     type: Number,
-    required: true
+    required: true,
   },
   price: {
     type: Number,
-    required: true
+    required: true,
   },
   icon: {
-    type: String
-  }
-}, { timestamps: true })
+    type: String,
+  },
+}, { timestamps: true });
 
-itemSchema.methods.toJSON = function() {
-  var obj = this.toObject()
-  delete obj.__v
-  delete obj.createdAt
-  return obj
-}
+itemSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.__v;
+  delete obj.createdAt;
+  return obj;
+};
 
-module.exports = mongoose.model('Item', itemSchema)
+module.exports = mongoose.model('Item', itemSchema);

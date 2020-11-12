@@ -7,7 +7,7 @@
 
 ### Available Items
 - [x] Get available items in the cafeterias (always the same).
-- [ ] Save update date because the app needs to know.
+- [x] Save update date because the app needs to know.
 - [x] MUST HAVE COFFEE.
 
 ### Vouchers
@@ -35,10 +35,10 @@
 - [ ] The server should define a small tolerance for verification
 
 ### Receipts
-- [ ] The user can also ask for the receipts of previous purchases. If the server has them, they are transmitted to the user (only once) and deleted from the server.
+- [x] The user can also ask for the receipts of previous purchases. If the server has them, they are transmitted to the user (only once) and deleted from the server.
 
 ### New functionalities
-- [ ] emission of receipts electronically by the server
+- [x] emission of receipts electronically by the server
 - [ ] consultation of past transactions (in the server or locally)
 - [ ] gains obtained so far
 - [ ] ...
