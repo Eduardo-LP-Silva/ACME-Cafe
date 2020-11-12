@@ -1,15 +1,16 @@
 package com.ejn.cmov.acmecafe.mobile.data.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ReceiptModel implements Serializable {
     private ItemModel[] items;
     private String date;
     private String total;
-    private boolean discountVoucher;
-    private int coffeeVouchers;
+    private VoucherModel discountVoucher;
+    private ArrayList<VoucherModel> coffeeVouchers;
 
-    public ReceiptModel(ItemModel[] items, String date, String total, boolean discountVoucher, int coffeeVouchers) {
+    public ReceiptModel(ItemModel[] items, String date, String total, VoucherModel discountVoucher, ArrayList<VoucherModel> coffeeVouchers) {
         this.items = items;
         this.date = date;
         this.total = total;
@@ -29,11 +30,11 @@ public class ReceiptModel implements Serializable {
         return total;
     }
 
-    public boolean hasDiscountVoucher() {
+    public VoucherModel getDiscountVoucher() {
         return discountVoucher;
     }
 
-    public int getCoffeeVouchers() {
+    public ArrayList<VoucherModel> getCoffeeVouchers() {
         return coffeeVouchers;
     }
 }

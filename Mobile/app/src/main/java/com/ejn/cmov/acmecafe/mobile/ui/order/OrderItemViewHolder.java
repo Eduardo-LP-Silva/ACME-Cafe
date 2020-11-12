@@ -12,7 +12,6 @@ import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class OrderItemViewHolder extends RecyclerView.ViewHolder {
@@ -43,6 +42,8 @@ public class OrderItemViewHolder extends RecyclerView.ViewHolder {
 
                 if (itemQuantity <= 0)
                     itemQuantityEditor.setError("Item quantity must be greater than 0");
+
+                itemModel.setQuantity(Integer.toString(itemQuantity));
             }
         });
     }

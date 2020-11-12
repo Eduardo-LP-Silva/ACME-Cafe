@@ -70,4 +70,8 @@ public class ItemModel implements Serializable {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
 }

@@ -33,9 +33,9 @@ public class ReceiptFragment extends Fragment {
             final TextView dateView = requireActivity().findViewById(R.id.receipt_date);
 
             String coffeeVouchers = requireActivity().getResources().getString(R.string.receipt_coffee_voucher_no) + " "
-                    + receiptModel.getCoffeeVouchers();
+                    + receiptModel.getCoffeeVouchers().size();
             String discountVoucher = requireActivity().getResources().getString(R.string.receipt_discount_voucher) + " "
-                    + (receiptModel.hasDiscountVoucher() ? "Yes" : "No");
+                    + (receiptModel.getDiscountVoucher() != null ? "Yes" : "No");
             String total = requireActivity().getResources().getString(R.string.receipt_total) + " "
                     + receiptModel.getTotal() + "€";
 

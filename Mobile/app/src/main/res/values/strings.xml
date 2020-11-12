@@ -55,6 +55,10 @@
     <string name="place_order">Place Order</string>
     <string name="fetching_vouchers">Retrieving new vouchers</string>
     <string name="item_quantity_error">Item quantity must be greater than 0</string>
+    <string name="coffee_voucher_empty_error">A number is required</string>
+    <string name="coffee_voucher_high_error">Not enough vouchers</string>
+    <string name="nfc_error">NFC is not available on this device.</string>
+    <string name="nfc_hold">Hold the device close to the terminal</string>
 
     <!-- Code -->
     <string name="error_string">error</string>

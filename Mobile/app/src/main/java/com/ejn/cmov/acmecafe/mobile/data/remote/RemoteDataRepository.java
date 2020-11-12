@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executor;
 
 /**
@@ -103,12 +104,24 @@ public class RemoteDataRepository {
                                         remoteItemDetails.getString("updatedAt"), remoteItem.getString("quantity"));
                             }
 
-                            //TODO Parse Vouchers
+                            JSONArray remoteVouchers = receipt.getJSONArray("vouchers");
+                            VoucherModel discountVoucher = null;
+                            ArrayList<VoucherModel> coffeeVouchers = new ArrayList<>();
+
+                            for (int j = 0; j < remoteVouchers.length(); j++) {
+                                JSONObject remoteVoucher = remoteVouchers.getJSONObject(j);
+
+                                if (remoteVoucher.getInt("type") == 0)
+                                    coffeeVouchers.add(new VoucherModel(remoteVoucher.getString("_id"), 0));
+                                else
+                                    discountVoucher = new VoucherModel(remoteVoucher.getString("_id"), 1);
+                            }
+
                             String date = receipt.getString("createdAt");
                             date = date.substring(0, 16);
                             date = date.replace('T', ' ');
                             receipts[i] = new ReceiptModel(items, date, receipt.getString("totalPrice"),
-                                    false, 0);
+                                    discountVoucher, coffeeVouchers);
                         }
 
                         Log.i("RDR \\ GET RECEIPTS", String.format("%d fetched", receipts.length));
