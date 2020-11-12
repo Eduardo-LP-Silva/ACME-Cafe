@@ -102,7 +102,7 @@ public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushComp
                 priceDiscountVoucherLabel.setText(String.format(getString(R.string.discount_voucher), voucherTable.get(1).size()));
 
                 if (vouchers.get(0).size() <= 0) {
-                    coffeeVoucherEditor.setText(0);
+                    coffeeVoucherEditor.setText("0");
                     coffeeVoucherEditor.setActivated(false);
                 }
                 else
