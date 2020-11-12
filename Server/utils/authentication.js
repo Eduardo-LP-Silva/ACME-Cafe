@@ -3,6 +3,7 @@ const Customer = require('../models/customer');
 
 const ALGORITHM = 'sha256WithRSAEncryption';
 const SIGNATURE_FORMAT = 'hex';
+const REQUEST_TOLERANCE = 5; // seconds
 
 const validateSignature = (certificate, data, signature) => {
   try {
@@ -27,7 +28,12 @@ const authenticateRequest = (res, customerId, data, signature, timestamp) => new
         reject();
       }
 
-      // TODO: VALIDATE TIMESTAMP
+      const currentTime = Math.floor(Date.now() / 1000);
+      const requestTime = parseInt(timestamp, 10);
+      if ((requestTime + REQUEST_TOLERANCE < currentTime) || (requestTime > currentTime)) {
+        res.status(400).send('Invalid request: timestamp does not fulfil the requests tolerance');
+        reject();
+      }
 
       resolve();
     }

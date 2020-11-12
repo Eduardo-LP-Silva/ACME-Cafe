@@ -21,7 +21,6 @@ const postSchema = Joi.object({
 router.get('/:voucherId', async (req, res) => {
   Voucher.findById(req.params.voucherId, (err, voucher) => {
     if (err || voucher === null) {
-      console.log(err);
       res.status(404).send(`No voucher with id ${req.params.voucherId} found`);
     } else {
       res.json(voucher);
