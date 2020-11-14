@@ -1,5 +1,19 @@
-## Server To Do
+## Development
 
+`npm run start-dev`
+
+## Production
+
+`npm start`
+
+## Seed Database
+
+`./node_modules/mongo-seeding-cli/bin/seed.js -u mongodb://admin:admin@localhost:27017/cmov ./data`
+
+* Note: replace with your mongodb address and authentication credentials
+
+
+## Server To Do
 
 ### Registration
 - [x] Make a registration (name, credit/debit bank card and NIF (fiscal identification number – 9 digits) and a public key (in the form of a certificate, cryptographic RSA key pair)).
@@ -23,7 +37,7 @@
 
 
 ### Validate Order
-- [ ] The user is identified (uuid), the signature verified (with the public key), and the validity of the vouchers is checked.
+- [x] The user is identified (uuid), the signature verified (with the public key), and the validity of the vouchers is checked.
 - [x] (consider that the server always succeeds in performing that payment).
 - [x] Validation result - The server replies with the validation result, accepted vouchers and total value payed.
 - [x] The server also generates a receipt and keep it associated with the user.

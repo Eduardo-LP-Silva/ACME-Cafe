@@ -14,7 +14,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/customer/4fead650-1d58-11eb-b27e-6bab3a0fdcf2",
+							"raw": "http://localhost:8080/customer/f08aa2d0-24ff-11eb-9e41-995bcb66b787",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -22,7 +22,7 @@
 							"port": "8080",
 							"path": [
 								"customer",
-								"4fead650-1d58-11eb-b27e-6bab3a0fdcf2"
+								"f08aa2d0-24ff-11eb-9e41-995bcb66b787"
 							]
 						}
 					},
@@ -35,7 +35,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"John Doe\",\n    \"bankCardNumber\": \"1234123412341234\",\n    \"bankCardExpiry\": \"5673\",\n    \"bankCardCVV\": \"789\",\n    \"nif\": \"123123123\",\n    \"publicKey\": \"f4r34frgw4g3\"\n}",
+							"raw": "{\n    \"name\": \"Joana Doi\",\n    \"bankCardNumber\": \"1234123412341234\",\n    \"bankCardExpiry\": \"5673\",\n    \"bankCardCVV\": \"789\",\n    \"nif\": \"123123123\",\n    \"publicKey\": \"MIIBITCBzKADAgECAgQAuPR8MA0GCSqGSIb3DQEBCwUAMBgxFjAUBgNVBAMTDWVqbi5hY21lLmNhZmUwHhcNMjAxMTEyMTU1ODQ0WhcNNDAxMTEyMTU1ODQ0WjAYMRYwFAYDVQQDEw1lam4uYWNtZS5jYWZlMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAI7qca2GtAnbnNywJkGDZBkC5PYx0kKhNTBLPS6T1/dFwwaOBkrnA3BeWMwDzbAPhyrdLOs823oVTrM3HeFnygUCAwEAATANBgkqhkiG9w0BAQsFAANBAB/W1UnJBOarwQaGXFEbFKlBo28si70Ca596s5Ao46bLi+Bp+LQIcOtpDp+FdbaKF1B+Fm9hTwND6hgfQcyoywg=\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -108,7 +108,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Coffee\",\n    \"quantity\": 20,\n    \"price\": 13.2,\n    \"icon\": \"random/icon\"\n}",
+							"raw": "{\n    \"name\": \"Coffee\",\n    \"quantity\": 20,\n    \"price\": 0.6,\n    \"icon\": \"random/icon\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -141,7 +141,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/order/f0905760-23bb-11eb-840c-bfd4b5a1f5c0",
+							"raw": "http://localhost:8080/order/8adba720-268c-11eb-b17c-3b1d8e56a11a",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -149,7 +149,7 @@
 							"port": "8080",
 							"path": [
 								"order",
-								"f0905760-23bb-11eb-840c-bfd4b5a1f5c0"
+								"8adba720-268c-11eb-b17c-3b1d8e56a11a"
 							]
 						}
 					},
@@ -229,7 +229,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/voucher/868767e0-1e2b-11eb-84e6-5d923d285907",
+							"raw": "http://localhost:8080/voucher/e4c1dfc0-268c-11eb-908b-69792046c821",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -237,7 +237,7 @@
 							"port": "8080",
 							"path": [
 								"voucher",
-								"868767e0-1e2b-11eb-84e6-5d923d285907"
+								"e4c1dfc0-268c-11eb-908b-69792046c821"
 							]
 						}
 					},
@@ -283,7 +283,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"customerId\": \"4fead650-1d58-11eb-b27e-6bab3a0fdcf2\",\n    \"type\": 0\n}",
+							"raw": "{\n    \"customerId\": \"f08aa2d0-24ff-11eb-9e41-995bcb66b787\",\n    \"type\": 0\n}",
 							"options": {
 								"raw": {
 									"language": "json"

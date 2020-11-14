@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "e4c1dfc0-268c-11eb-908b-69792046c821",
+    "used": false,
+    "customerId": "f08aa2d0-24ff-11eb-9e41-995bcb66b787",
+    "type": 0,
+    "createdAt": { "$date": { "$numberLong": "1605368824000" } },
+    "updatedAt": { "$date": { "$numberLong": "1605368824000" } },
+    "__v": 0
+  },
+  {
+    "_id": "e8bed6f0-268c-11eb-908b-69792046c821",
+    "used": false,
+    "customerId": "f08aa2d0-24ff-11eb-9e41-995bcb66b787",
+    "type": 1,
+    "createdAt": { "$date": { "$numberLong": "1605368824000" } },
+    "updatedAt": { "$date": { "$numberLong": "1605368824000" } },
+    "__v": 0
+  }
+]

@@ -42,7 +42,7 @@ router.get('/receipt', async (req, res) => {
       .populate('vouchers')
       .exec((error, orders) => {
         if (error || orders.length === 0) {
-          res.status(404).send('No orders found');
+          res.status(404).send('No receipts found');
         } else {
           Order.updateMany({ customerId, receipt: false }, { $set: { receipt: true } }, { multi: true }, () => {});
           res.json(orders);
