@@ -1,5 +1,6 @@
 package com.ejn.cmov.acmecafe.mobile.ui.order;
 
+import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -7,6 +8,7 @@ import android.nfc.NfcEvent;
 import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +42,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushCompleteCallback {
+public class OrderFragment extends Fragment {
     private static final String ORDER_PARAM = "items";
     private OrderViewModel orderViewModel;
     private FloatingActionButton getVouchersBtn;
@@ -48,7 +50,6 @@ public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushComp
     private CheckBox discountVoucherCheckBox;
     private Button placeOrderBtn;
     private ArrayList<ItemModel> orderItems;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,8 +80,9 @@ public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushComp
         getVouchersBtn = requireActivity().findViewById(R.id.order_get_vouchers);
         placeOrderBtn = requireActivity().findViewById(R.id.order_place_order);
 
-        coffeeVoucherEditor.setActivated(false);
-        discountVoucherCheckBox.setActivated(false);
+        coffeeVoucherEditor.setEnabled(false);
+        coffeeVoucherEditor.setInputType(InputType.TYPE_NULL);
+        discountVoucherCheckBox.setEnabled(false);
         getVouchersBtn.setActivated(false);
         placeOrderBtn.setActivated(false);
 
@@ -104,12 +106,15 @@ public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushComp
 
                 if (vouchers.get(0).size() <= 0) {
                     coffeeVoucherEditor.setText("0");
-                    coffeeVoucherEditor.setActivated(false);
+                    coffeeVoucherEditor.setEnabled(false);
+                    coffeeVoucherEditor.setInputType(InputType.TYPE_NULL);
                 }
-                else
-                    coffeeVoucherEditor.setActivated(true);
+                else {
+                    coffeeVoucherEditor.setEnabled(true);
+                    coffeeVoucherEditor.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }
 
-                discountVoucherCheckBox.setActivated(vouchers.get(1).size() > 0);
+                discountVoucherCheckBox.setEnabled(vouchers.get(1).size() > 0);
             }
         });
 
@@ -138,26 +143,9 @@ public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushComp
         //orderViewModel.sendOrder(Authentication.buildBodySignedMessage(payload));
 
         payload = Authentication.buildBodySignedMessage(payload);
-
-        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getContext());
-
-        if (nfcAdapter == null) {
-            Toast.makeText(getContext(), getString(R.string.nfc_error), Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        NdefMessage msg = new NdefMessage(new NdefRecord[] {createMimeRecord("application/nfc.ejn.acmecafe.order",
-                payload.toString())});
-
-        nfcAdapter.setNdefPushMessage(msg, getActivity());
-        Toast.makeText(getContext(), getString(R.string.nfc_hold), Toast.LENGTH_LONG).show();
-        nfcAdapter.setOnNdefPushCompleteCallback(this, getActivity());
-    }
-
-    private NdefRecord createMimeRecord(String mimeType, String payload) {
-        byte[] mimeBytes = mimeType.getBytes(StandardCharsets.ISO_8859_1);
-        byte[] payloadBytes = payload.getBytes(StandardCharsets.ISO_8859_1);
-        return new NdefRecord(NdefRecord.TNF_MIME_MEDIA, mimeBytes, new byte[0], payloadBytes);
+        Intent intent = new Intent(getContext(), SendOrderNFCActivity.class);
+        intent.putExtra(SendOrderNFCActivity.getPayloadArg(), payload.toString());
+        startActivity(intent);
     }
 
     private JSONObject buildJSONPayload() {
@@ -250,22 +238,10 @@ public class OrderFragment extends Fragment implements NfcAdapter.OnNdefPushComp
 
         getVouchersBtn.setActivated(true);
         placeOrderBtn.setActivated(true);
-        discountVoucherCheckBox.setActivated(orderViewModel.getVouchers().getValue().get(1).size() > 0);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         orderViewModel.loadLocalVouchers(getContext());
         return inflater.inflate(R.layout.fragment_orders, container, false);
-    }
-
-    @Override
-    public void onNdefPushComplete(NfcEvent nfcEvent) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getContext(), "Order sent", Toast.LENGTH_SHORT).show();
-                requireActivity().getSupportFragmentManager().popBackStack();
-            }
-        });
     }
 }
