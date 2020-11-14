@@ -1,0 +1,19 @@
+[
+  {
+    "_id": "8adba720-268c-11eb-b17c-3b1d8e56a11a",
+    "vouchers": [],
+    "receipt": false,
+    "items": [
+      {
+        "itemId": "c2fbeb40-1e87-11eb-930b-6bf5be424b1f",
+        "quantity": 1,
+        "price": 1
+      }
+    ],
+    "customerId": "f08aa2d0-24ff-11eb-9e41-995bcb66b787",
+    "totalPrice": 1,
+    "createdAt": { "$date": { "$numberLong": "1605368824000" } },
+    "updatedAt": { "$date": { "$numberLong": "1605368824000" } },
+    "__v": 0
+  }
+]

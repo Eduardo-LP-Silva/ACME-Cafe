@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "f08aa2d0-24ff-11eb-9e41-995bcb66b787",
+    "paidCoffees": 2,
+    "accumulatedPaidValue": 90,
+    "name": "John Doe",
+    "bankCardNumber": "1234567891011121",
+    "bankCardExpiry": "1220",
+    "bankCardCVV": "123",
+    "nif": "123456789",
+    "publicKey": "MIIBITCBzKADAgECAgQAuPR8MA0GCSqGSIb3DQEBCwUAMBgxFjAUBgNVBAMTDWVqbi5hY21lLmNhZmUwHhcNMjAxMTEyMTU1ODQ0WhcNNDAxMTEyMTU1ODQ0WjAYMRYwFAYDVQQDEw1lam4uYWNtZS5jYWZlMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAI7qca2GtAnbnNywJkGDZBkC5PYx0kKhNTBLPS6T1/dFwwaOBkrnA3BeWMwDzbAPhyrdLOs823oVTrM3HeFnygUCAwEAATANBgkqhkiG9w0BAQsFAANBAB/W1UnJBOarwQaGXFEbFKlBo28si70Ca596s5Ao46bLi+Bp+LQIcOtpDp+FdbaKF1B+Fm9hTwND6hgfQcyoywg=",
+    "createdAt": { "$date": { "$numberLong": "1605368824000" } },
+    "updatedAt": { "$date": { "$numberLong": "1605368824000" } },
+    "__v": 0
+  }
+]

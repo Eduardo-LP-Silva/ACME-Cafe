@@ -8,12 +8,12 @@ const voucherSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 0,
-    max: 1
+    max: 1,
   },
-  used: { type: Boolean, default: false }
-}, { timestamps: true })
+  used: { type: Boolean, default: false },
+}, { timestamps: true });
 
 // type = 0 -> One free coffee voucher is offered to the customer whenever he consumes 3 payed coffees.
 // type = 1 -> A 5% discount voucher is offered whenever the accumulated payed value of all orders from the customer surpasses a new multiple of €100.00.
 
-module.exports = mongoose.model('Voucher', voucherSchema)
+module.exports = mongoose.model('Voucher', voucherSchema);

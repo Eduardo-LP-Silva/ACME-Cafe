@@ -5,36 +5,36 @@ const customerSchema = new mongoose.Schema({
   _id: { type: String, default: uuid.v1 },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   bankCardNumber: {
     type: String,
-    required: true
+    required: true,
   },
   bankCardExpiry: {
     type: String,
-    required: true
+    required: true,
   },
   bankCardCVV: {
     type: String,
-    required: true
+    required: true,
   },
   nif: {
     type: String,
-    required: true
+    required: true,
   },
   publicKey: {
     type: String,
-    required: true
+    required: true,
   },
   paidCoffees: {
     type: Number,
-    default: 0
+    default: 0,
   },
   accumulatedPaidValue: {
     type: Number,
-    default: 0.0
-  }
-}, { timestamps: true })
+    default: 0.0,
+  },
+}, { timestamps: true });
 
-module.exports = mongoose.model('Customer', customerSchema)
+module.exports = mongoose.model('Customer', customerSchema);

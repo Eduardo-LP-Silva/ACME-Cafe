@@ -1,72 +1,48 @@
-var express = require("express");
-var router = express.Router();
+const express = require('express');
+
+const router = express.Router();
 const Joi = require('joi');
 const Item = require('../models/item');
+const { validatePOSTRequest } = require('../utils/validator');
 
-router.get("/:itemId", async function (req, res) {
-
-  Item.findById(req.params.itemId, function (err, val) {
-    if (err){
-      console.log(err)
-      res.status(404).send(`No item with id ${req.params.itemId} found`)
-    }
-    else{
-      res.json(val)
-    }
-  });
-
+const postSchema = Joi.object({
+  name: Joi.string().required(),
+  quantity: Joi.number().integer().min(0).required(),
+  price: Joi.number().min(0).required(),
+  icon: Joi.string(),
 });
 
-router.get("/", async function (req, res) {
-
-  Item.find({ quantity: { $gt: 0 } }, function (err, val) {
-    if (err){
-      console.log(err)
-      res.status(404).send(`No items found`)
-    }
-    else{
-      res.json(val)
+router.get('/:itemId', async (req, res) => {
+  Item.findById(req.params.itemId, (err, item) => {
+    if (err || item === null) {
+      res.status(404).send(`No item with id ${req.params.itemId} found`);
+    } else {
+      res.json(item);
     }
   });
-
 });
 
-router.post("/", async function (req, res) {
+router.get('/', async (req, res) => {
+  Item.find({ quantity: { $gt: 0 } }, (err, items) => {
+    if (err || items.length === 0) {
+      res.status(404).send('No items found');
+    } else {
+      res.json(items);
+    }
+  });
+});
 
-  if (!validatePOSTRequest(req.body)) {
-    res.status(400).send("Request body is wrong");
+router.post('/', async (req, res) => {
+  if (!validatePOSTRequest(res, postSchema, req.body)) {
     return;
   }
 
   const item = new Item(req.body);
-  item.save().then(val => {
-    res.status(201).json({ "itemId": val._id })
-  }).catch(err => {
-    console.log(err)
-    res.status(500).send("Error creating item")
-  })
-
+  item.save().then((val) => {
+    res.status(201).json({ itemId: val._id });
+  }).catch((err) => {
+    res.status(500).send(`Error creating item: ${err}`);
+  });
 });
-
-function validatePOSTRequest(request) {
-
-  try {
-    const schema = Joi.object({
-      name: Joi.string().required(),
-      quantity: Joi.number().integer().min(0).required(),
-      price: Joi.number().min(0).required(),
-      icon: Joi.string()
-    });
-
-    const result = schema.validate(request)
-    if (result.error) {
-      return false;
-    }
-  } catch (error) {
-    return false
-  }
-
-  return true
-}
 
 module.exports = router;

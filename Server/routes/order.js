@@ -1,91 +1,84 @@
-var express = require("express");
-var router = express.Router();
+const express = require('express');
+
+const router = express.Router();
 const Joi = require('joi');
 const Order = require('../models/order');
+const { authenticateRequest } = require('../utils/authentication');
+const { validateGETRequest, validatePOSTRequest } = require('../utils/validator');
 
-router.get("/receipt", async function (req, res) {
+const getSchema = Joi.object({
+  customerId: Joi.string().required(),
+  timestamp: Joi.string().required(),
+  signature: Joi.string().required(),
+});
 
-  if(!req.query.customerId){
-    res.status(400).send(`Missing customer`)
+const postSchema = Joi.object({
+  data: Joi.object({
+    customerId: Joi.string().guid().required(),
+    items: Joi.array().items(
+      Joi.object({
+        itemId: Joi.string().guid().required(),
+        quantity: Joi.number().integer().min(0).required(),
+      }),
+    ).min(1).required(),
+    vouchers: Joi.array().items(Joi.string().guid()),
+    timestamp: Joi.string().required(),
+  }),
+  signature: Joi.string().required(),
+});
+
+router.get('/receipt', async (req, res) => {
+  if (!validateGETRequest(res, getSchema, req.query)) {
     return;
   }
 
-  Order.
-    find({ customerId: req.query.customerId, receipt: false }).
-    populate('items.itemId').
-    populate('vouchers').
-    exec(function (err, orders) {
-      if (err){
-        console.log(err)
-        res.status(404).send(`No orders found`)
-      }
-      else{
-        Order.updateMany({ customerId: req.query.customerId, receipt: false }, {"$set":{"receipt": true}}, {"multi": true}, (err, writeResult) => {})
-        res.json(orders)
-      }
-   });
+  const { customerId, signature, timestamp } = req.query;
+  const data = JSON.stringify({ customerId, timestamp });
 
+  authenticateRequest(res, customerId, data, signature, timestamp).then(() => {
+    Order
+      .find({ customerId, receipt: false })
+      .populate('items.itemId')
+      .populate('vouchers')
+      .exec((error, orders) => {
+        if (error || orders.length === 0) {
+          res.status(404).send('No receipts found');
+        } else {
+          Order.updateMany({ customerId, receipt: false }, { $set: { receipt: true } }, { multi: true }, () => {});
+          res.json(orders);
+        }
+      });
+  }).catch(() => {});
 });
 
-router.get("/:orderId", async function (req, res) {
-
-  Order.
-    findOne({ _id: req.params.orderId }).
-    populate('items.itemId').
-    exec(function (err, order) {
-      if (err){
-        console.log(err)
-        res.status(404).send(`No order with id ${req.params.orderId} found`)
-      }
-      else{
-        res.json(order)
+router.get('/:orderId', async (req, res) => {
+  Order
+    .findOne({ _id: req.params.orderId })
+    .populate('items.itemId')
+    .exec((err, order) => {
+      if (err || order === null) {
+        res.status(404).send(`No order with id ${req.params.orderId} found`);
+      } else {
+        res.json(order);
       }
     });
-
 });
 
-router.post("/", async function (req, res) {
-
-  if (!validatePOSTRequest(req.body)) {
-    res.status(400).send("Request body is wrong");
+router.post('/', async (req, res) => {
+  if (!validatePOSTRequest(res, postSchema, req.body)) {
     return;
   }
 
-  const order = new Order(req.body);
-  order.save().then(val => {
-    res.status(201).json({ "orderId": val._id, "totalPrice": val.totalPrice, "vouchers": val.vouchers })
-  }).catch(err => {
-    res.status(500).send(err.message)
-  })
+  const { data, signature } = req.body;
 
-});
-
-function validatePOSTRequest(request) {
-
-  try {
-    const schema = Joi.object({
-      customerId: Joi.string().guid().required(),
-      items: Joi.array().items(
-        Joi.object({
-          itemId: Joi.string().guid().required(),
-          quantity: Joi.number().integer().min(0).required()
-        })
-      ).min(1).required(),
-      vouchers: Joi.array().items(Joi.string().guid()),
+  authenticateRequest(res, data.customerId, JSON.stringify(data), signature, data.timestamp).then(() => {
+    const order = new Order(data);
+    order.save().then((newOrder) => {
+      res.status(201).json({ orderId: newOrder._id, totalPrice: newOrder.totalPrice, vouchers: newOrder.vouchers });
+    }).catch((error) => {
+      res.status(500).send(`Error creating order: ${error.message}`);
     });
-
-    const result = schema.validate(request)
-
-    if (result.error) {
-      console.log(result.error)
-      return false;
-    }
-  } catch (error) {
-    console.log(error)
-    return false
-  }
-
-  return true
-}
+  }).catch(() => {});
+});
 
 module.exports = router;

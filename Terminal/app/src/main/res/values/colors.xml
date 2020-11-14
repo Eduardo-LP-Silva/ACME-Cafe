@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#FFC993</color>
+    <color name="colorPrimaryLight">#FBE3C9</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#7C2700</color>
+    <color name="textBrown">#331200</color>
+    <color name="white">#FFFFFF</color>
+    <color name="item_ico">#FFB911</color>
 </resources>
