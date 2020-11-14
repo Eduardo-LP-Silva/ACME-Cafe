@@ -7,23 +7,19 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.ejn.cmov.acmecafe.mobile.R;
 
 import java.nio.charset.StandardCharsets;
 
-public class SendOrderNFCActivity extends AppCompatActivity implements NfcAdapter.OnNdefPushCompleteCallback {
+public class SendOrderActivity extends AppCompatActivity implements NfcAdapter.OnNdefPushCompleteCallback {
     private static final String PAYLOAD_ARG = "payload";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_send_order_nfc);
+        setContentView(R.layout.activity_send_order);
 
         Bundle extras = getIntent().getExtras();
         String payload = extras.getString(PAYLOAD_ARG);

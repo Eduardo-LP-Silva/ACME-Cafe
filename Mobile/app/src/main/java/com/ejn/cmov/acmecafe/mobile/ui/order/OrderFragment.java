@@ -143,8 +143,8 @@ public class OrderFragment extends Fragment {
         //orderViewModel.sendOrder(Authentication.buildBodySignedMessage(payload));
 
         payload = Authentication.buildBodySignedMessage(payload);
-        Intent intent = new Intent(getContext(), SendOrderNFCActivity.class);
-        intent.putExtra(SendOrderNFCActivity.getPayloadArg(), payload.toString());
+        Intent intent = new Intent(getContext(), SendOrderActivity.class);
+        intent.putExtra(SendOrderActivity.getPayloadArg(), payload.toString());
         startActivity(intent);
     }
 
