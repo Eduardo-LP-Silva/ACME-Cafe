@@ -3,6 +3,7 @@ package com.ejn.cmov.acmecafe.terminal;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.nfc.NdefRecord;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -16,6 +17,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         ChangeOrderTextViewVisibility(View.INVISIBLE);
 
         executor = new ThreadExecutor();
-        repository = RemoteDataRepository.getInstance(executor, "192.168.1.88", 8080);
+        repository = RemoteDataRepository.getInstance(executor, "192.168.1.70", 8080);
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Simulate an NFC order
                 try {
-                    String orderMsg = "{\"data\":{\"items\":[{\"itemId\":\"7d6f18e0-21a7-11eb-a07e-a1e4fadec5f9\",\"quantity\":\"1\"}],\"vouchers\":[],\"customerId\":\"6ba3dcd0-2504-11eb-9aa5-4b07902eb05c\", \"timestamp\":\"123\"}, \"signature\":\"123\"}";
+                    String orderMsg = "{\"data\":{\"items\":[{\"itemId\":\"e43d8eb0-1df3-11eb-8bf4-0346e6a5d6a0\",\"quantity\":\"1\"},{\"itemId\":\"c2fbeb40-1e87-11eb-930b-6bf5be424b1f\",\"quantity\":\"1\"}],\"vouchers\":[],\"customerId\":\"7208ce00-269e-11eb-8a16-5db0387a37f8\",\"timestamp\":\"1605378731\"},\"signature\":\"68ffc857ba50b3ad06c5a90be13edd28e711ca04db3b2a1a7fa11b9ea351249352e5ffc3ad1f11eb3130b1654c3df210897eee2e404abe8c46dab9c9650ac4e7\"}";
                     JSONObject orderJson = new JSONObject(orderMsg);
                     ProcessIncomingOrder(orderJson);
 
@@ -75,12 +78,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void ProcessIncomingOrder(final JSONObject order)
     {
-        boolean debug = true;
+        boolean debug = false;
 
         if (debug) {
 
             try {
-                String orderResponseMessage = "{ \"orderId\": \"123\", \"totalPrice\": \"23.81\", \"vouchers\": \"\" }";
+                String orderResponseMessage = "{\"orderId\":\"b82c0a60-26a7-11eb-8a16-5db0387a37f8\",\"totalPrice\":\"3.5\",\"vouchers\":\"[]\"}";
                 orderResponse = new JSONObject(orderResponseMessage);
                 Log.e("test", orderResponse.toString());
                 showOrder();
@@ -101,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onComplete(Result.Error<ReceiptModel[]> error) {
-                    Log.e("SendRequest", error.toString());
+                public void onComplete(Result.Error<String> error) {
+                    Log.e("SendRequest", String.valueOf(error));
                 }
             }));
         }
@@ -129,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onComplete(Result.Error<ReceiptModel[]> error) {
-                Log.e("SendRequest", error.toString());
+            public void onComplete(Result.Error<String> error) {
+                Log.e("SendRequest", String.valueOf(error));
             }
         };
     }
@@ -173,28 +176,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //    /* The NFC messages are received in their own activities and sent to the MainActivity */
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        int type = getIntent().getIntExtra("type", 0);        // type of NFC message (key(1) or order(2))
-//
-//        if (type == 2) {
-//            String message = new String(getIntent().getByteArrayExtra("order"));// get the NFC message (order)
-//            try {
-//                JSONObject orderJson = new JSONObject(message);
-//
-//                repository.createOrder(orderJson, ProcessServerResponse());
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//                Log.e("NFC", "Received an invalid JSON message");
-//            }
-//        }
-//        else {
-//            Log.e("NFC", "Received an NFC message type other than 2 (order)");
-//        }
-//
-//    }
+    /* The NFC messages are received in their own activities and sent to the MainActivity */
+    @Override
+    public void onResume() {
+        super.onResume();
+        int type = getIntent().getIntExtra("type", 0);        // type of NFC message (key(1) or order(2))
+
+        if (type == 2) {
+            String message = new String(getIntent().getByteArrayExtra("order"));// get the NFC message (order)
+            try {
+                JSONObject orderJson = new JSONObject(message);
+                System.out.println(orderJson.toString());
+                ProcessIncomingOrder(orderJson);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("NFC", "Received an invalid JSON message");
+            }
+        }
+        else {
+            Log.e("NFC", "Received an NFC message type other than 2 (order)");
+        }
+
+    }
 
 
 }

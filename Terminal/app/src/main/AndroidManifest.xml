@@ -33,7 +33,7 @@
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="application/nfc.feup.apm.ordermsg"/>
+                <data android:mimeType="application/nfc.ejn.acmecafe.order"/>
             </intent-filter>
         </activity>
     </application>

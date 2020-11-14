@@ -53,108 +53,6 @@ public class RemoteDataSource {
         return instance;
     }
 
-    public static Result<String> getReceipts(String userID) {
-        HttpURLConnection httpConnection = null;
-
-        try {
-            httpConnection = createRequest(String.format("order/receipt?customerId=%s", userID), "GET", null);
-            int responseCode = httpConnection.getResponseCode();
-
-            if (responseCode == 200) {
-                String response = readStream(httpConnection.getInputStream());
-                return new Result.Success<>(response);
-            }
-            else {
-                String errorCode = Integer.toString(responseCode);
-                return new Result.Error<>(errorCode);
-            }
-        }
-        catch (Exception e) {
-            return new Result.Error<>(e.getMessage());
-        }
-        finally {
-            if (httpConnection != null)
-                httpConnection.disconnect();
-        }
-    }
-
-    public static Result<String> getItems() {
-        HttpURLConnection httpConnection = null;
-
-        try {
-            httpConnection = createRequest("item", "GET", null);
-            int responseCode = httpConnection.getResponseCode();
-
-            if (responseCode == 200) {
-                String response = readStream(httpConnection.getInputStream());
-                return new Result.Success<>(response);
-            }
-            else {
-                String errorCode = Integer.toString(responseCode);
-                return new Result.Error<>(errorCode);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return new Result.Error<>(e.getMessage());
-        }
-        finally {
-            if (httpConnection != null)
-                httpConnection.disconnect();
-        }
-    }
-
-    public static Result<String> getCostumers() {
-        HttpURLConnection httpConnection = null;
-
-        try {
-            httpConnection = createRequest("customer", "GET", null);
-            int responseCode = httpConnection.getResponseCode();
-
-            if (responseCode == 200) {
-                String response = readStream(httpConnection.getInputStream());
-                return new Result.Success<>(response);
-            }
-            else {
-                String errorCode = Integer.toString(responseCode);
-                return new Result.Error<>(errorCode);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return new Result.Error<>(e.getMessage());
-        }
-        finally {
-            if (httpConnection != null)
-                httpConnection.disconnect();
-        }
-    }
-
-    public static Result<String> register(JSONObject jsonBody) {
-        HttpURLConnection httpConnection = null;
-
-        try {
-            httpConnection = createRequest("customer", "POST", jsonBody);
-            int responseCode = httpConnection.getResponseCode();
-
-            if (responseCode == 201) {
-                String response = readStream(httpConnection.getInputStream());
-                return new Result.Success<>(response);
-            }
-            else {
-                String errorCode = Integer.toString(responseCode);
-                return new Result.Error<>(errorCode);
-            }
-        }
-        catch (Exception e) {
-            return new Result.Error<>(e.getMessage());
-        }
-        finally {
-            if (httpConnection != null)
-                httpConnection.disconnect();
-        }
-    }
-
     public static Result<String> createOrder(JSONObject jsonBody) {
         HttpURLConnection httpConnection = null;
 
@@ -180,7 +78,6 @@ public class RemoteDataSource {
         }
     }
 
-
     private static HttpURLConnection createRequest(String endpoint, String requestMethod, @Nullable JSONObject jsonBody) throws Exception {
         final String apiURL = "http://" + host + ":8080/";
         URL url = new URL(apiURL + endpoint);
@@ -201,19 +98,6 @@ public class RemoteDataSource {
         }
 
         return httpConnection;
-    }
-
-    public static Result<LoggedInUser> login(String username, String password) {
-        try {
-            // TODO: handle loggedInUser authentication
-            LoggedInUser fakeUser =
-                    new LoggedInUser(
-                            java.util.UUID.randomUUID().toString(),
-                            "Jane Doe");
-            return new Result.Success<>(fakeUser);
-        } catch (Exception e) {
-            return new Result.Error<>(null);
-        }
     }
 
     private static String readStream(InputStream in) {
