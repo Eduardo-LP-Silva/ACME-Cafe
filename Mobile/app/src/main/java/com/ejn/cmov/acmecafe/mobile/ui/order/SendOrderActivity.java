@@ -29,6 +29,7 @@ public class SendOrderActivity extends AppCompatActivity implements NfcAdapter.O
         if (nfcAdapter == null) {
             Toast.makeText(this, getString(R.string.nfc_error), Toast.LENGTH_LONG).show();
             finish();
+            return;
         }
 
         NdefMessage msg = new NdefMessage(new NdefRecord[] {createMimeRecord("application/nfc.ejn.acmecafe.order", payload)});
