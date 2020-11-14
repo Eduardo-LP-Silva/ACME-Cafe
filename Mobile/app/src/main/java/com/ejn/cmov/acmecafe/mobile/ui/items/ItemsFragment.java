@@ -1,6 +1,7 @@
 package com.ejn.cmov.acmecafe.mobile.ui.items;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +27,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-//TODO On resume fetch items again (same in other fragments?)
 public class ItemsFragment extends Fragment implements OnRecyclerItemClickListener {
 
     private ItemsViewModel itemsViewModel = null;
@@ -41,9 +42,6 @@ public class ItemsFragment extends Fragment implements OnRecyclerItemClickListen
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        newOrderBtn = requireActivity().findViewById(R.id.new_order);
-        newOrderBtn.setActivated(false);
-
         itemsViewModel.getItems().observe(requireActivity(), new Observer<ItemModel[]>() {
             @Override
             public void onChanged(ItemModel[] itemModels) {
@@ -51,17 +49,32 @@ public class ItemsFragment extends Fragment implements OnRecyclerItemClickListen
                     newOrderBtn.setActivated(true);
 
                 ItemAdapter itemAdapter = new ItemAdapter(itemModels, ItemsFragment.this);
-                RecyclerView recyclerView = requireActivity().findViewById(R.id.item_list);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerView.setAdapter(itemAdapter);
+
+                if (isAdded()) {
+                    RecyclerView recyclerView = requireActivity().findViewById(R.id.item_list);
+
+                    if (recyclerView != null) {
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        recyclerView.setAdapter(itemAdapter);
+                    }
+                }
             }
         });
+    }
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_items, container, false);
+        itemsViewModel.populateItems(getContext());
+
+        newOrderBtn = view.findViewById(R.id.new_order);
+        newOrderBtn.setActivated(false);
 
         newOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 ArrayList<ItemModel> selectedItems = new ArrayList<>();
+                Log.i("IF", "WTFFFFFFFFFFFF");
 
                 for (ItemModel item : itemsViewModel.getItems().getValue()) {
                     if (item.isSelected())
@@ -73,24 +86,14 @@ public class ItemsFragment extends Fragment implements OnRecyclerItemClickListen
                     return;
                 }
 
-                OrderFragment orderFragment = new OrderFragment();
                 Bundle orderArgs = new Bundle();
-
                 orderArgs.putSerializable("items", selectedItems);
-                orderFragment.setArguments(orderArgs);
 
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .add(R.id.nav_host_fragment, orderFragment)
-                        .commit();
+                Navigation.findNavController(view).navigate(R.id.action_nav_items_to_compose_order, orderArgs);
             }
         });
-    }
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        itemsViewModel.populateItems(getContext());
-        return inflater.inflate(R.layout.fragment_items, container, false);
+        return view;
     }
 
     @Override

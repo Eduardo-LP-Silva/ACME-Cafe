@@ -23,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -129,23 +131,23 @@ public class OrderFragment extends Fragment {
         placeOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                placeOrder();
+                placeOrder(view);
             }
         });
     }
 
-    private void placeOrder() {
+    private void placeOrder(View view) {
         JSONObject payload = buildJSONPayload();
 
         if(payload == null)
             return;
 
         //orderViewModel.sendOrder(Authentication.buildBodySignedMessage(payload));
-
         payload = Authentication.buildBodySignedMessage(payload);
-        Intent intent = new Intent(getContext(), SendOrderActivity.class);
-        intent.putExtra(SendOrderActivity.getPayloadArg(), payload.toString());
-        startActivity(intent);
+        Bundle sendOrderArgs = new Bundle();
+        sendOrderArgs.putString(SendOrderActivity.getPayloadArg(), payload.toString());
+        Navigation.findNavController(view).navigate(R.id.action_nav_order_to_nav_send_order, sendOrderArgs);
+        Navigation.findNavController(view).navigate(R.id.action_nav_order_to_items_back);
     }
 
     private JSONObject buildJSONPayload() {

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,9 +37,6 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getReceiptsBtn = requireActivity().findViewById(R.id.get_receipts);
-        getReceiptsBtn.setActivated(false);
-
         receiptsViewModel.getReceipts().observe(requireActivity(), new Observer<ReceiptModel[]>() {
             @Override
             public void onChanged(ReceiptModel[] receipts) {
@@ -53,6 +51,15 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
                 recyclerView.setAdapter(receiptsAdapter);
             }
         });
+    }
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_receipts, container, false);
+
+        receiptsViewModel.loadLocalReceipts(getContext());
+
+        getReceiptsBtn = view.findViewById(R.id.get_receipts);
+        getReceiptsBtn.setActivated(false);
 
         getReceiptsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,24 +68,18 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
                 Toast.makeText(getContext(), "Updating Receipts...", Toast.LENGTH_SHORT).show();
             }
         });
-    }
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        receiptsViewModel.loadLocalReceipts(getContext());
-        return inflater.inflate(R.layout.fragment_receipts, container, false);
+        return view;
     }
 
     @Override
     public void onItemClick(View view, int position) {
         if(receiptsViewModel.getReceipts().getValue() != null) {
             ReceiptModel receipt = receiptsViewModel.getReceipts().getValue()[position];
-            ReceiptFragment receiptFragment = new ReceiptFragment();
             Bundle receiptArgs = new Bundle();
-
             receiptArgs.putSerializable("receipt", receipt);
-            receiptFragment.setArguments(receiptArgs);
 
-            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, receiptFragment).commit();
+            Navigation.findNavController(view).navigate(R.id.action_nav_receipts_to_nav_receipt, receiptArgs);
         }
 
     }

@@ -154,7 +154,7 @@ public class RemoteDataSource {
         ////http://192.168.1.7:8080
         //http://192.168.1.5:8080/
         //http://192.168.1.91:8080/
-        final String apiURL = "http://192.168.1.70:8080/";
+        final String apiURL = "http://192.168.1.7:8080/";
         URL url = new URL(apiURL + endpoint);
         HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
 

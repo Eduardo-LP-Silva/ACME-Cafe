@@ -9,17 +9,44 @@
         android:id="@+id/nav_items"
         android:name="com.ejn.cmov.acmecafe.mobile.ui.items.ItemsFragment"
         android:label="@string/menu_items"
-        tools:layout="@layout/fragment_items" />
+        tools:layout="@layout/fragment_items" >
+        <action
+            android:id="@+id/action_nav_items_to_compose_order"
+            app:destination="@id/nav_order" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_order"
         android:name="com.ejn.cmov.acmecafe.mobile.ui.order.OrderFragment"
         android:label="@string/menu_order"
-        tools:layout="@layout/fragment_orders" />
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/action_nav_order_to_nav_send_order"
+            app:destination="@id/nav_send_order" />
+        <action
+            android:id="@+id/action_nav_order_to_items_back"
+            app:destination="@id/nav_items" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_receipts"
         android:name="com.ejn.cmov.acmecafe.mobile.ui.receipts.ReceiptsFragment"
         android:label="@string/menu_receipts"
-        tools:layout="@layout/fragment_receipts" />
+        tools:layout="@layout/fragment_receipts" >
+        <action
+            android:id="@+id/action_nav_receipts_to_nav_receipt"
+            app:destination="@id/nav_receipt" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_receipt"
+        android:name="com.ejn.cmov.acmecafe.mobile.ui.receipts.Receipt.ReceiptFragment"
+        android:label="@string/menu_receipt"
+        tools:layout="@layout/fragment_receipt" />
+
+    <activity
+        android:id="@+id/nav_send_order"
+        android:name="com.ejn.cmov.acmecafe.mobile.ui.order.SendOrderActivity"
+        android:label="@string/menu_send_order"
+        tools:layout="@layout/activity_send_order" />
 </navigation>

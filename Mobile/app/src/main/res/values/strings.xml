@@ -32,6 +32,8 @@
     <string name="menu_items">Available Items</string>
     <string name="menu_order">Make Order</string>
     <string name="menu_receipts">Receipts</string>
+    <string name="menu_receipt">Receipt</string>
+    <string name="menu_send_order">Send Order</string>
 
     <string name="receipt_discount_voucher">Discount Voucher:</string>
     <string name="receipt_coffee_voucher_no">Coffee Vouchers:</string>
