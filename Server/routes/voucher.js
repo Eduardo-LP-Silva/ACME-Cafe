@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const Joi = require('joi');
+const { statusCode, handleError, errorTypes } = require('../utils/errorHandler');
 const Voucher = require('../models/voucher');
 const { authenticateRequest } = require('../utils/authentication');
 const { validateGETRequest, validatePOSTRequest } = require('../utils/validator');
@@ -21,7 +22,7 @@ const postSchema = Joi.object({
 router.get('/:voucherId', async (req, res) => {
   Voucher.findById(req.params.voucherId, (err, voucher) => {
     if (err || voucher === null) {
-      res.status(404).send(`No voucher with id ${req.params.voucherId} found`);
+      handleError(errorTypes.INVALID_ITEM_ID, req.params.voucherId, res);
     } else {
       res.json(voucher);
     }
@@ -39,7 +40,7 @@ router.get('/', async (req, res) => {
   authenticateRequest(res, customerId, data, signature, timestamp).then(() => {
     Voucher.find({ customerId, used: false }, (error, vouchers) => {
       if (error || vouchers.length === 0) {
-        res.status(404).send('No vouchers found');
+        handleError(errorTypes.NO_VOUCHERS_FOUND, null, res);
       } else {
         res.json(vouchers);
       }
@@ -54,9 +55,9 @@ router.post('/', async (req, res) => {
 
   const voucher = new Voucher(req.body);
   voucher.save().then((val) => {
-    res.status(201).json({ voucherId: val._id });
+    res.status(statusCode.CREATED).json({ voucherId: val._id });
   }).catch((err) => {
-    res.status(500).send(`Error creating voucher: ${err}`);
+    handleError(errorTypes.ERROR_CREATING_VOUCHERS, err.message, res);
   });
 });
 

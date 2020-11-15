@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const Customer = require('../models/customer');
+const { handleError, errorTypes } = require('./errorHandler');
 
 const ALGORITHM = 'sha256WithRSAEncryption';
 const SIGNATURE_FORMAT = 'hex';
@@ -18,12 +19,13 @@ const validateSignature = (certificate, data, signature) => {
 const authenticateRequest = (res, customerId, data, signature, timestamp) => new Promise((resolve, reject) => {
   Customer.findById(customerId, (err, customer) => {
     if (err || customer === null) {
-      res.status(404).send(`Invalid customerId ${customerId}`);
+      handleError(errorTypes.INVALID_CUSTOMER_ID, customerId, res);
       reject();
     } else {
       const certificate = `-----BEGIN CERTIFICATE-----\n${customer.publicKey}\n-----END CERTIFICATE-----`;
 
       if (!validateSignature(certificate, data, signature)) {
+        handleError(errorTypes.INVALID_SIGNATURE, null, res);
         res.status(400).send('Invalid request: Signature does not match data');
         reject();
       }
@@ -32,7 +34,7 @@ const authenticateRequest = (res, customerId, data, signature, timestamp) => new
       // const currentTime = Math.floor(Date.now() / 1000);
       // const requestTime = parseInt(timestamp, 10);
       // if ((requestTime + REQUEST_TOLERANCE < currentTime) || (requestTime > currentTime)) {
-      //   res.status(400).send('Invalid request: timestamp does not fulfil the requests tolerance');
+      //   handleError(errorTypes.INVALID_TIMESTAMP, null, res);
       //   reject();
       // }
 
