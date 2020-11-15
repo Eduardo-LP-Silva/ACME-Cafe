@@ -1,13 +1,15 @@
+const { handleError, errorTypes } = require('./errorHandler');
+
 function validateGETRequest(res, schema, query) {
   try {
     const result = schema.validate(query);
 
     if (result.error) {
-      res.status(400).send(`Invalid query: ${result.error.message}`);
+      handleError(errorTypes.INVALID_QUERY, result.error.message, res);
       return false;
     }
   } catch (error) {
-    res.status(400).send(`Invalid query: ${error.message}`);
+    handleError(errorTypes.INVALID_QUERY, error.message, res);
     return false;
   }
 
@@ -19,11 +21,11 @@ function validatePOSTRequest(res, schema, body) {
     const result = schema.validate(body);
 
     if (result.error) {
-      res.status(400).send(`Invalid body: ${result.error.message}`);
+      handleError(errorTypes.INVALID_BODY, result.error.message, res);
       return false;
     }
   } catch (error) {
-    res.status(400).send(`Invalid body: ${error.message}`);
+    handleError(errorTypes.INVALID_BODY, error.message, res);
     return false;
   }
 

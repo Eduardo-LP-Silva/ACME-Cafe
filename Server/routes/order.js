@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const Joi = require('joi');
+const { statusCode, handleError, errorTypes } = require('../utils/errorHandler');
 const Order = require('../models/order');
 const { authenticateRequest } = require('../utils/authentication');
 const { validateGETRequest, validatePOSTRequest } = require('../utils/validator');
@@ -38,11 +39,12 @@ router.get('/receipt', async (req, res) => {
   authenticateRequest(res, customerId, data, signature, timestamp).then(() => {
     Order
       .find({ customerId, receipt: false })
+      .sort({ createdAt: -1 })
       .populate('items.itemId')
       .populate('vouchers')
       .exec((error, orders) => {
         if (error || orders.length === 0) {
-          res.status(404).send('No receipts found');
+          handleError(errorTypes.NO_RECEIPTS_FOUND, null, res);
         } else {
           Order.updateMany({ customerId, receipt: false }, { $set: { receipt: true } }, { multi: true }, () => {});
           res.json(orders);
@@ -57,7 +59,7 @@ router.get('/:orderId', async (req, res) => {
     .populate('items.itemId')
     .exec((err, order) => {
       if (err || order === null) {
-        res.status(404).send(`No order with id ${req.params.orderId} found`);
+        handleError(errorTypes.INVALID_ORDER_ID, req.params.orderId, res);
       } else {
         res.json(order);
       }
@@ -74,9 +76,9 @@ router.post('/', async (req, res) => {
   authenticateRequest(res, data.customerId, JSON.stringify(data), signature, data.timestamp).then(() => {
     const order = new Order(data);
     order.save().then((newOrder) => {
-      res.status(201).json({ orderId: newOrder._id, totalPrice: newOrder.totalPrice, vouchers: newOrder.vouchers });
-    }).catch((error) => {
-      res.status(500).send(`Error creating order: ${error.message}`);
+      res.status(statusCode.CREATED).json({ orderId: newOrder._id, totalPrice: newOrder.totalPrice, vouchers: newOrder.vouchers });
+    }).catch((err) => {
+      handleError(errorTypes.ERROR_CREATING_ORDER, err.message, res);
     });
   }).catch(() => {});
 });
