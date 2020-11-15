@@ -7,6 +7,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.ejn.cmov.acmecafe.mobile.R;
@@ -49,8 +50,14 @@ public class SendOrderActivity extends AppCompatActivity implements NfcAdapter.O
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "Order sent", Toast.LENGTH_SHORT).show();
-                finish();
+                Toast.makeText(getApplicationContext(), "Order sent", Toast.LENGTH_LONG).show();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 1000);
             }
         });
     }

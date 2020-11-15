@@ -74,7 +74,6 @@ public class ItemsFragment extends Fragment implements OnRecyclerItemClickListen
             public void onClick(View view) {
 
                 ArrayList<ItemModel> selectedItems = new ArrayList<>();
-                Log.i("IF", "WTFFFFFFFFFFFF");
 
                 for (ItemModel item : itemsViewModel.getItems().getValue()) {
                     if (item.isSelected())
