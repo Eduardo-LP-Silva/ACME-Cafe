@@ -15,5 +15,22 @@
     "createdAt": { "$date": { "$numberLong": "1605368824000" } },
     "updatedAt": { "$date": { "$numberLong": "1605368824000" } },
     "__v": 0
+  },
+  {
+    "_id": "07e80852-b37f-4517-ade3-b204d07f4979",
+    "vouchers": [],
+    "receipt": false,
+    "items": [
+      {
+        "itemId": "c2fbeb40-1e87-11eb-930b-6bf5be424b1f",
+        "quantity": 4,
+        "price": 1
+      }
+    ],
+    "customerId": "f08aa2d0-24ff-11eb-9e41-995bcb66b787",
+    "totalPrice": 4,
+    "createdAt": { "$date": { "$numberLong": "1605378824000" } },
+    "updatedAt": { "$date": { "$numberLong": "1605378824000" } },
+    "__v": 0
   }
 ]

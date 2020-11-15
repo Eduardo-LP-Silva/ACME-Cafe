@@ -39,6 +39,7 @@ router.get('/receipt', async (req, res) => {
   authenticateRequest(res, customerId, data, signature, timestamp).then(() => {
     Order
       .find({ customerId, receipt: false })
+      .sort({ createdAt: -1 })
       .populate('items.itemId')
       .populate('vouchers')
       .exec((error, orders) => {
