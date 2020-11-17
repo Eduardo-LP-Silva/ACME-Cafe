@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1= title
+  h4(class='second-header')= "Café overview"
+
+  if error
+    p(class='description') Error getting dynamic content.
+  else
+    p(class='description') The café has the following record counts:
+
+    ul
+      li #[strong No. Customers:] !{data.customers_count}
+      li #[strong No. Items:] !{data.items_count}
+      li #[strong No. Orders:] !{data.orders_count}
+      li #[strong No. Used Vouchers:] !{data.vouchers_used_count}
+      li #[strong No. Unused Vouchers:] !{data.vouchers_unused_count}
+      li #[strong Gains obtained so far:] !{data.gains_count[0].total}€

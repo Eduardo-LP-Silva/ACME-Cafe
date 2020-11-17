@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  h1= title
+  h4(class='second-header')= "Orders"
+
+  if error
+    p(class='description') Error getting orders.
+  else
+    p(class='description') The café has the following orders:
+
+    table.table
+      tr
+        th Order id
+        th Customer
+        th Total Paid (€)
+        th Date
+        th
+      each order in orders
+        tr
+          td #{order._id}
+          td #{order.customerId.name}
+          td #{order.totalPrice}
+          td #{order.createdAt}
+          td
+            button(class="btn btn-small" type="button" onClick='move(\'' + order._id + '\')') #[strong Open order]
+
+  script.
+    function move(id) {
+      window.location.href = '/admin/order/' + id;
+    }

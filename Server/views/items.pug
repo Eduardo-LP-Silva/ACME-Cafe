@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1= title
+  h4(class='second-header')= "Items"
+
+  if error
+    p(class='description') Error getting items.
+  else
+    p(class='description') The café has the following items:
+
+    table.table
+      tr
+        th Name
+        th Quantity
+        th Price (€)
+      each item in items
+        tr
+          td #{item.name}
+          td #{item.quantity}
+          td #{item.price}
