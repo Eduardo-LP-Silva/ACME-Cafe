@@ -6,5 +6,6 @@
     <string name="new_item">New Order</string>
     <string name="order">Order</string>
     <string name="send_order">Send order to server</string>
+    <string name="thank_order">Thank you for ordering</string>
 
 </resources>
