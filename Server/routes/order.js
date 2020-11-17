@@ -75,8 +75,12 @@ router.post('/', async (req, res) => {
 
   authenticateRequest(res, data.customerId, JSON.stringify(data), signature, data.timestamp).then(() => {
     const order = new Order(data);
-    order.save().then((newOrder) => {
-      res.status(statusCode.CREATED).json({ orderId: newOrder._id, totalPrice: newOrder.totalPrice, vouchers: newOrder.vouchers });
+    order.save().then((obj) => {
+      obj.populate('items.itemId').execPopulate().then((newOrder) => {
+        res.status(statusCode.CREATED).json({
+          orderId: newOrder._id, totalPrice: newOrder.totalPrice, vouchers: newOrder.vouchers, items: newOrder.items,
+        });
+      });
     }).catch((err) => {
       handleError(errorTypes.ERROR_CREATING_ORDER, err.message, res);
     });
