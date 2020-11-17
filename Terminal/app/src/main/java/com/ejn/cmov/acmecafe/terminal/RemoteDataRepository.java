@@ -57,4 +57,41 @@ public class RemoteDataRepository {
             }
         });
     }
+
+    public void getItems(final Callback<ItemModel[]> callback) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Result<String> res = dataSource.getItems();
+                ItemModel[] items;
+
+                if (res instanceof  Result.Success) {
+                    try {
+                        JSONArray jsonArray = new JSONArray(((Result.Success<String>) res).getData());
+                        items = new ItemModel[jsonArray.length()];
+
+                        for (int i = 0; i < items.length; i++) {
+                            JSONObject item = jsonArray.getJSONObject(i);
+                            items[i] = new ItemModel(item.getString("_id"), item.getString("name"), item.getString("price"),
+                                    item.getString("icon"), item.getString("updatedAt"), null);
+                        }
+
+                        Log.i("RDR \\ GET ITEMS", String.format("%d fetched", items.length));
+                        callback.onComplete(new Result.Success<>(items));
+                    }
+                    catch (JSONException e) {
+                        Log.e("RDR \\ GET ITEMS", e.toString());
+                        items = new ItemModel[0];
+                        callback.onComplete(new Result.Error<>(items));
+                    }
+                }
+                else {
+                    Log.e("RDR \\ GET ITEMS", ((Result.Error<String>) res).getError());
+                    items = new ItemModel[0];
+                    callback.onComplete(new Result.Error<>(items));
+                }
+            }
+        });
+    }
+
 }

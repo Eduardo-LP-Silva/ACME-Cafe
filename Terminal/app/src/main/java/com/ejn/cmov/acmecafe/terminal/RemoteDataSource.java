@@ -65,8 +65,37 @@ public class RemoteDataSource {
                 return new Result.Success<>(response);
             }
             else {
-                String errorCode = Integer.toString(responseCode);
-                return new Result.Error<>(errorCode);
+                JSONObject errJson = new JSONObject();
+                errJson.put("errorCode", Integer.toString(responseCode));
+                errJson.put("errorMsg", getAllFromStream(httpConnection.getErrorStream()));
+                return new Result.Error<String>(errJson.toString());
+            }
+        }
+        catch (Exception e) {
+            return new Result.Error<>(e.getMessage());
+        }
+        finally {
+            if (httpConnection != null)
+                httpConnection.disconnect();
+        }
+    }
+
+    public Result<String> getItems() {
+        HttpURLConnection httpConnection = null;
+
+        try {
+            httpConnection = createRequest("item", "GET", null);
+            int responseCode = httpConnection.getResponseCode();
+
+            if (responseCode == 200) {
+                String response = readStream(httpConnection.getInputStream());
+                return new Result.Success<>(response);
+            }
+            else {
+                JSONObject errJson = new JSONObject();
+                errJson.put("errorCode", Integer.toString(responseCode));
+                errJson.put("errorMsg", getAllFromStream(httpConnection.getErrorStream()));
+                return new Result.Error<String>(errJson.toString());
             }
         }
         catch (Exception e) {
@@ -127,5 +156,21 @@ public class RemoteDataSource {
         }
 
         return response.toString();
+    }
+
+    private static String getAllFromStream(InputStream is) {
+        try {
+            int ch;
+            StringBuilder sb = new StringBuilder();
+            while (true) {
+                if (!((ch = is.read()) != -1)) break;
+                sb.append((char) ch);
+            }
+            return sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

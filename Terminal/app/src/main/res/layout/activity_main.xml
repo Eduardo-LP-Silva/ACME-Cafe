@@ -17,60 +17,82 @@
         app:itemTextColor="@android:color/white"
         app:menu="@menu/bottom_nav_menu" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="147dp"
-        android:layout_height="81dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="131dp"
-        android:layout_marginTop="363dp"
-        android:text="@string/send_order" />
-
     <TextView
         android:id="@+id/orderIDTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="230dp"
+        android:layout_height="106dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="239dp"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        android:text="Order ID:" />
-
-    <TextView
-        android:id="@+id/amountValueTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="229dp"
-        android:layout_marginEnd="168dp"
-        android:text="yyy" />
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="83dp"
+        android:layout_marginBottom="601dp"
+        android:text="Order number:"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/orderIDValueTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="133dp"
+        android:layout_height="96dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="137dp"
-        android:layout_marginEnd="167dp"
-        android:text="xxx" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="262dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="610dp"
+        android:text="xxx"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/amountTextView"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button"
+        android:layout_width="279dp"
+        android:layout_height="96dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="131dp"
+        android:layout_marginTop="459dp"
+        android:layout_marginEnd="133dp"
+        android:layout_marginBottom="176dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/send_order" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="351dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="228dp"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        android:text="Total:" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="159dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="177dp"/>
+
+    <TextView
+        android:id="@+id/thankOrderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="98dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="102dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="557dp"
+        android:text="@string/thank_order"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
 
 </RelativeLayout>
