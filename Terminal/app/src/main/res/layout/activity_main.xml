@@ -19,18 +19,35 @@
 
     <TextView
         android:id="@+id/orderIDTextView"
-        android:layout_width="230dp"
-        android:layout_height="106dp"
+        android:layout_width="300dp"
+        android:layout_height="142dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="98dp"
+        android:layout_marginStart="106dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="83dp"
-        android:layout_marginBottom="601dp"
-        android:text="Order number:"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="565dp"
+        android:text="@string/order_number"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/waitingOrderTextView"
+        android:layout_width="300dp"
+        android:layout_height="142dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="513dp"
+        android:text="@string/waiting_order"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp" />
 
@@ -42,11 +59,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="262dp"
+        android:layout_marginStart="267dp"
         android:layout_marginTop="25dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="610dp"
-        android:text="xxx"
+        android:text="@string/order"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp" />
 

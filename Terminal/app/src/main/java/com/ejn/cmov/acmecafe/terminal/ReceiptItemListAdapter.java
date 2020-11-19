@@ -42,7 +42,9 @@ public class ReceiptItemListAdapter extends ArrayAdapter<ReceiptItem> {
         TextView itemNameView = (TextView) convertView.findViewById(R.id.item_name_view);
         TextView amountView = (TextView) convertView.findViewById(R.id.item_amount_view);
         TextView unitPriceView = (TextView) convertView.findViewById(R.id.unit_price_view);
+        unitPriceView.setText("");
         TextView subTotalView = (TextView) convertView.findViewById(R.id.sub_total_view);
+        subTotalView.setText("");
 
         itemNameView.setText(name);
         if (amount != -1) {
