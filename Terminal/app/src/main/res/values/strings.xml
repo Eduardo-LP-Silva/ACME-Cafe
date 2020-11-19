@@ -7,5 +7,8 @@
     <string name="order">Order</string>
     <string name="send_order">Send order to server</string>
     <string name="thank_order">Thank you for ordering</string>
+    <string name="order_number">Order number:</string>
+    <string name="waiting_order">Please make an order</string>
+
 
 </resources>

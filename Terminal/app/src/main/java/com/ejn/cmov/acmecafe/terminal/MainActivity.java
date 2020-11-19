@@ -20,6 +20,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Pair<String, Integer>> orderNumbers;
     // Tracks the current order number
     int currentOrderNumber;
-
-    ItemModel[] storeItems;
 
 
     @Override
@@ -61,30 +62,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ChangeOrderTextViewVisibility(View.INVISIBLE);
+        ChangeOrderUIVisibility(false);
 
         executor = new ThreadExecutor();
         repository = RemoteDataRepository.getInstance(executor, "192.168.1.88", 8080);
 
         orderNumbers = new ArrayList<>();
         currentOrderNumber = 0;
-
-        repository.getItems(new Callback<ItemModel[]>() {
-            @Override
-            public void onComplete(Result<ItemModel[]> result) {
-
-                if (result instanceof Result.Success) {
-                    Result.Success<ItemModel[]> newResult = (Result.Success<ItemModel[]>) result;
-                    storeItems = newResult.getData();
-                }
-
-            }
-
-            @Override
-            public void onComplete(Result.Error<String> error) {
-                Log.e("get_items", error.getError());
-            }
-        });
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Simulate an NFC order
                 try {
-                    String orderMsg = "{\"data\":{\"items\":[{\"itemId\":\"e43d8eb0-1df3-11eb-8bf4-0346e6a5d6a0\",\"quantity\":\"1\"},{\"itemId\":\"c2fbeb40-1e87-11eb-930b-6bf5be424b1f\",\"quantity\":\"1\"}],\"vouchers\":[],\"customerId\":\"f08aa2d0-24ff-11eb-9e41-995bcb66b787\",\"timestamp\":\"1605378731\"},\"signature\":\"68ffc857ba50b3ad06c5a90be13edd28e711ca04db3b2a1a7fa11b9ea351249352e5ffc3ad1f11eb3130b1654c3df210897eee2e404abe8c46dab9c9650ac4e7\"}";
+                    String orderMsg = "{ \"data\": { \"items\": [ { \"itemId\": \"e43d8eb0-1df3-11eb-8bf4-0346e6a5d6a0\", \"quantity\": \"1\" }, { \"itemId\": \"c2fbeb40-1e87-11eb-930b-6bf5be424b1f\", \"quantity\": \"1\" } ], \"vouchers\": [], \"customerId\": \"f08aa2d0-24ff-11eb-9e41-995bcb66b787\", \"timestamp\": \"1605378731\" }, \"signature\": \"68ffc857ba50b3ad06c5a90be13edd28e711ca04db3b2a1a7fa11b9ea351249352e5ffc3ad1f11eb3130b1654c3df210897eee2e404abe8c46dab9c9650ac4e7\" }";
                     JSONObject orderJson = new JSONObject(orderMsg);
                     ProcessIncomingOrder(orderJson);
 
@@ -106,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void ProcessIncomingOrder(final JSONObject order)
     {
-        boolean debug = true;
+        boolean debug = false;
 
         if (debug) {
 
             try {
-                String orderResponseMessage = "{\"orderId\":\"b82c0a60-26a7-11eb-8a16-5db0387a37f8\",\"totalPrice\":\"3.5\",\"vouchers\":\"[]\"}";
+                String orderResponseMessage = "{ \"orderId\": \"45dd5ac0-294c-11eb-bcb7-2109dc46080a\", \"totalPrice\": 3.5, \"vouchers\": [], \"items\": [ { \"_id\": \"5fb491c1658f0e33b0264498\", \"itemId\": { \"_id\": \"e43d8eb0-1df3-11eb-8bf4-0346e6a5d6a0\", \"name\": \"Coffee\", \"quantity\": 198, \"price\": 1.5, \"icon\": \"random/icon\", \"updatedAt\": \"2020-11-18T03:15:13.144Z\" }, \"quantity\": 1, \"price\": 1.5 }, { \"_id\": \"5fb491c1658f0e33b0264499\", \"itemId\": { \"_id\": \"c2fbeb40-1e87-11eb-930b-6bf5be424b1f\", \"name\": \"Red Bull\", \"quantity\": 398, \"price\": 2, \"icon\": \"random/icon\", \"updatedAt\": \"2020-11-18T03:15:13.146Z\" }, \"quantity\": 1, \"price\": 2 } ] }";
                 JSONObject orderResponseJson = new JSONObject(orderResponseMessage);
                 Log.e("test", orderResponseJson.toString());
 
@@ -199,17 +183,29 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    // Hide TextViews related to order info (orderID and amount)
-    private void ChangeOrderTextViewVisibility(int visibility)
+    // Hides or shows TextViews related to order info (orderID and amount)
+    private void ChangeOrderUIVisibility(final boolean visibility)
     {
-        TextView textView = (TextView) findViewById(R.id.orderIDTextView);
-        textView.setVisibility(visibility);
-        textView = (TextView) findViewById(R.id.orderIDValueTextView);
-        textView.setVisibility(visibility);
-        textView = (TextView) findViewById(R.id.thankOrderTextView);
-        textView.setVisibility(visibility);
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setVisibility(visibility);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                int vis = visibility ? View.VISIBLE : View.INVISIBLE;
+                int opostiveVis = visibility ?  View.INVISIBLE : View.VISIBLE;
+
+                TextView textView = (TextView) findViewById(R.id.orderIDTextView);
+                textView.setVisibility(vis);
+                textView = (TextView) findViewById(R.id.waitingOrderTextView);
+                textView.setVisibility(opostiveVis);
+                textView = (TextView) findViewById(R.id.orderIDValueTextView);
+                textView.setVisibility(vis);
+                textView = (TextView) findViewById(R.id.thankOrderTextView);
+                textView.setVisibility(vis);
+                ListView listView = (ListView) findViewById(R.id.listView);
+                listView.setVisibility(vis);
+
+            }
+        });
     }
 
     public void showOrder()
@@ -218,39 +214,41 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    ChangeOrderTextViewVisibility(View.VISIBLE);
-
                     TextView orderIdTextView = (TextView) findViewById(R.id.orderIDValueTextView);
                     orderIdTextView.setText(Integer.toString(currentOrderNumber));
 
-//                    TextView amountIdTextView = (TextView) findViewById(R.id.amountValueTextView);
-//                    amountIdTextView.setText(orderResponse.get("totalPrice").toString()+"€");
-
                     //MAKE SHIT DYNAMIC (Adapters)
-                    JSONArray items = orderReceived.getJSONObject("data").getJSONArray("items");
+                    JSONArray items = orderResponse.getJSONArray("items");
                     ArrayList<ReceiptItem> list = new ArrayList<>();
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject JSONItem = items.getJSONObject(i);
-                        String itemId = JSONItem.getString("itemId");
+
+                        String name = JSONItem.getJSONObject("itemId").getString("name");
                         int amount = JSONItem.getInt("quantity");
-                        ItemModel itemModel = GetItemByID(itemId);
+                        double unitPrice = JSONItem.getDouble("price");
 
-//                        if (itemModel != null) {
-                            double unitPrice = Double.parseDouble(itemModel.getPrice());
-                            String name = itemModel.getName();
-
-                            ReceiptItem receiptItem = new ReceiptItem(name, amount, unitPrice);
-                            list.add(receiptItem);
-//                        }
-//                        else {
-//                            Log.e("", "NULL");
-//                        }
+                        ReceiptItem receiptItem = new ReceiptItem(name, amount, unitPrice);
+                        list.add(receiptItem);
                     }
-                    list.add(new ReceiptItem("Total", -1, orderResponse.getDouble("totalPrice")));
+//                    list.add(new ReceiptItem("Total", -1, orderResponse.getDouble("totalPrice")));
 
-                    ReceiptItemListAdapter adapter = new ReceiptItemListAdapter(ACME_Cafe_Terminal.getAppContext(), R.layout.adapter_view_layout, list);
+                    final ReceiptItemListAdapter adapter = new ReceiptItemListAdapter(ACME_Cafe_Terminal.getAppContext(), R.layout.adapter_view_layout, list);
                     ListView listView = (ListView) findViewById(R.id.listView);
                     listView.setAdapter(adapter);
+
+                    ChangeOrderUIVisibility(true);
+
+
+                    Calendar calendar = Calendar.getInstance(); // gets a calendar using the default time zone and locale.
+                    calendar.add(Calendar.SECOND, 5);
+                    Timer timer = new Timer(); // creating timer
+                    TimerTask task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            ChangeOrderUIVisibility(false);
+                        }
+                    }; // creating timer task
+                    timer.schedule(task, calendar.getTime()); // scheduling the task
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -284,15 +282,4 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-    private ItemModel GetItemByID(String id) {
-        for (int i = 0; i < storeItems.length; i++) {
-            if (storeItems[i].getId().equals(id)) {
-                return storeItems[i];
-            }
-        }
-
-        return null;
-    }
-
 }
