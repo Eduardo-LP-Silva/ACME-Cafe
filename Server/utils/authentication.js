@@ -26,7 +26,6 @@ const authenticateRequest = (res, customerId, data, signature, timestamp) => new
 
       if (!validateSignature(certificate, data, signature)) {
         handleError(errorTypes.INVALID_SIGNATURE, null, res);
-        res.status(400).send('Invalid request: Signature does not match data');
         reject();
       }
 
