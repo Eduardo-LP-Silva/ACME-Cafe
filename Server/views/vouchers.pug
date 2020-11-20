@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h1= title
+  h4(class='second-header')= "Vouchers"
+
+  if error
+    p(class='description') Error getting vouchers.
+  else
+    p(class='description') The café has the following vouchers:
+
+    table.table
+      tr
+        th Voucher id
+        th Customer
+        th Type
+        th Used
+        th Date
+      each voucher in vouchers
+        tr
+          td #{voucher._id}
+          td #{voucher.customerId.name}
+          if voucher.type == 0
+            td "Free Coffee"
+          else
+            td "5% Discount"
+          td #{voucher.used}
+          td #{voucher.createdAt}

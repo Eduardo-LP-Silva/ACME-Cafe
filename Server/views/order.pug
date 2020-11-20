@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1= title
+  h4(class='second-header')= "Order " + order._id
+
+  if error
+    p(class='description') Error getting order information.
+  else
+    p(class='description')
+    li #[strong Customer:] !{order.customerId.name}
+    li #[strong Total Paid:] !{order.totalPrice}€
+    li #[strong Generated receipt:] !{order.receipt}
+    li #[strong Items:]
+      each item in order.items
+        ul
+          li #[strong Name:] !{item.itemId.name}
+          li #[strong Quantity:] !{item.quantity}
+          li #[strong Paid price (for each unit):] !{item.price}€
+          hr
+    li #[strong Vouchers:]
+      if order.vouchers.length > 0
+        each voucher in order.vouchers
+          ul
+            li #[strong Id:] !{voucher._id}
+            if voucher.type == 0
+              li #[strong Type:] "Free Coffee"
+            else
+              li #[strong Type:] "5% Discount"
+            hr
+      else
+        p No vouchers found

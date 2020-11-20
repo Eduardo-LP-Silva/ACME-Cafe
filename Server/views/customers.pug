@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1= title
+  h4(class='second-header')= "Customers"
+
+  if error
+    p(class='description') Error getting customers.
+  else
+    p(class='description') The café has the following customers:
+
+    table.table
+      tr
+        th Customer id
+        th Name
+        th NIF
+        th Paid Coffees
+        th Accumulated Paid Amount (€)
+      each customer in customers
+        tr
+          td #{customer._id}
+          td #{customer.name}
+          td #{customer.nif}
+          td #{customer.paidCoffees}
+          td #{customer.accumulatedPaidValue}

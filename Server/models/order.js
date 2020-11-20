@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema({
     price: {
       type: Number,
     },
-  })],
+  }, { _id: false })],
   vouchers: [
     { type: String, ref: 'Voucher' },
   ],
