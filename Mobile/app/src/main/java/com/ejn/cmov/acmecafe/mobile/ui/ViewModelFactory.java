@@ -50,7 +50,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                 Log.e("View Model Factory", e.toString());
                 return null;
             }
-        }   // Classes with only remote repository access
+        }
         else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

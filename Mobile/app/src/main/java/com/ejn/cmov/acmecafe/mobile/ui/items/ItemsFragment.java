@@ -1,7 +1,6 @@
 package com.ejn.cmov.acmecafe.mobile.ui.items;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.ui.OnRecyclerItemClickListener;
 import com.ejn.cmov.acmecafe.mobile.ui.ViewModelFactory;
-import com.ejn.cmov.acmecafe.mobile.ui.order.OrderFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;

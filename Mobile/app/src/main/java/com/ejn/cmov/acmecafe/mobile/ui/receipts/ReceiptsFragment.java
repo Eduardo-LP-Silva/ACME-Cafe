@@ -16,10 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
-import com.ejn.cmov.acmecafe.mobile.ui.MainMenuActivity;
 import com.ejn.cmov.acmecafe.mobile.ui.OnRecyclerItemClickListener;
 import com.ejn.cmov.acmecafe.mobile.ui.ViewModelFactory;
-import com.ejn.cmov.acmecafe.mobile.ui.receipts.Receipt.ReceiptFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickListener {
@@ -64,7 +62,7 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
         getReceiptsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                receiptsViewModel.loadRemoteReceipts(getContext(), ((MainMenuActivity) requireActivity()).getUserID());
+                receiptsViewModel.loadRemoteReceipts(getContext(), receiptsViewModel.getUserID());
                 Toast.makeText(getContext(), "Updating Receipts...", Toast.LENGTH_SHORT).show();
             }
         });

@@ -95,25 +95,31 @@ public class LocalDataRepository {
         });
     }
 
-    public String getStoredUserID(Context appContext) {
-        String storedUserID = ((Result.Success<String>) dataSource.getUserID(appContext)).getData();
+    public String[] getStoredUserCredentials(Context appContext) {
+        String[] storedUserCredentials = ((Result.Success<String[]>) dataSource.getUserCredentials(appContext)).getData();
 
-        if (this.userID == null)
-            this.userID = storedUserID;
+        if (this.userID == null && !storedUserCredentials[0].equals(appContext.getString(R.string.empty)))
+            this.userID = storedUserCredentials[0];
 
-        return storedUserID;
+        return storedUserCredentials;
     }
 
-    public void storeUserID(Context appContext, String userID) {
+    public void storeUserCredentials(Context appContext, String userID, String username, String password) {
+        this.userID = userID;
+
         SharedPreferences sharedPreferences = appContext.getSharedPreferences(
-                appContext.getResources().getString(R.string.user_id_preferences_file), Context.MODE_PRIVATE);
+                appContext.getResources().getString(R.string.user_preferences_file), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(appContext.getResources().getString(R.string.user_id), userID);
+        editor.putString(appContext.getString(R.string.user_id), userID);
+        editor.putString(appContext.getString(R.string.user_name), username);
+        editor.putString(appContext.getString(R.string.user_password), password);
         editor.apply(); //Async
 
-        Log.i("USER ID STORED", userID);
+        Log.i("USER CREDENTIALS STORED", userID);
+    }
 
-        this.userID = userID;
+    public String getUserID() {
+        return userID;
     }
 }

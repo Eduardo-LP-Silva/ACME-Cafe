@@ -2,7 +2,6 @@ package com.ejn.cmov.acmecafe.mobile.ui.start;
 
 import com.ejn.cmov.acmecafe.mobile.data.local.LocalDataRepository;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class StartViewModel extends ViewModel {

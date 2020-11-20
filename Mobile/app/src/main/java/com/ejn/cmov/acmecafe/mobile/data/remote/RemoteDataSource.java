@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.ejn.cmov.acmecafe.mobile.data.Authentication;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
-import com.ejn.cmov.acmecafe.mobile.data.model.LoggedInUser;
 
 import org.json.JSONObject;
 
@@ -173,19 +172,6 @@ public class RemoteDataSource {
         }
 
         return httpConnection;
-    }
-
-    public Result<LoggedInUser> login(String username, String password) {
-        try {
-            // TODO: handle loggedInUser authentication
-            LoggedInUser fakeUser =
-                    new LoggedInUser(
-                            java.util.UUID.randomUUID().toString(),
-                            "Jane Doe");
-            return new Result.Success<>(fakeUser);
-        } catch (Exception e) {
-            return new Result.Error<>(null);
-        }
     }
 
     private String readStream(InputStream in) {

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
-import com.ejn.cmov.acmecafe.mobile.ui.items.ItemAdapter;
 
 public class ReceiptFragment extends Fragment {
     private static final String RECEIPT_PARAM = "receipt";

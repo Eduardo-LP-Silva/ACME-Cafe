@@ -4,39 +4,29 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
-import com.ejn.cmov.acmecafe.mobile.data.Result;
-import com.ejn.cmov.acmecafe.mobile.data.model.LoggedInUser;
 import com.ejn.cmov.acmecafe.mobile.R;
 
 public class LoginViewModel extends ViewModel {
+    private final MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> loginResult = new MutableLiveData<>();
+    private final String userName;
+    private final String userPW;
 
-    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private RemoteDataRepository remoteLocalDataRepository;
-
-    public LoginViewModel(RemoteDataRepository remoteLocalDataRepository) {
-        this.remoteLocalDataRepository = remoteLocalDataRepository;
+    public LoginViewModel(String userName, String userPW) {
+        this.userName = userName;
+        this.userPW = userPW;
     }
 
     LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
     }
 
-    LiveData<LoginResult> getLoginResult() {
+    LiveData<Boolean> getLoginResult() {
         return loginResult;
     }
 
     public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = remoteLocalDataRepository.login(username, password);
-
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+        loginResult.setValue(username.equals(this.userName) && password.equals(this.userPW));
     }
 
     public void loginDataChanged(String username, String password) {

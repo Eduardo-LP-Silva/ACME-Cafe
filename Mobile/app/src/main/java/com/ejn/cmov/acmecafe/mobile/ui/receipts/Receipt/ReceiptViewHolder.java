@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
-import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

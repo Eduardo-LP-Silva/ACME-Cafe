@@ -1,12 +1,10 @@
 package com.ejn.cmov.acmecafe.mobile.ui.order;
 
 import android.content.Context;
-import android.telecom.Call;
 
 import com.ejn.cmov.acmecafe.mobile.data.Callback;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.local.LocalDataRepository;
-import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.VoucherModel;
 import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
 
@@ -88,6 +86,10 @@ public class OrderViewModel extends ViewModel {
 
     public MutableLiveData<Hashtable<Integer, ArrayList<VoucherModel>>> getVouchers() {
         return vouchers;
+    }
+
+    public String getUserID() {
+        return localDataRepository.getUserID();
     }
 
     public MutableLiveData<Boolean> getDataLoaded() {

@@ -1,14 +1,12 @@
 package com.ejn.cmov.acmecafe.mobile.data.remote;
 
 import android.content.Context;
-import android.telecom.Call;
 import android.util.Log;
 
 import com.ejn.cmov.acmecafe.mobile.data.Authentication;
 import com.ejn.cmov.acmecafe.mobile.data.Callback;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
-import com.ejn.cmov.acmecafe.mobile.data.model.LoggedInUser;
 import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.VoucherModel;
 
@@ -29,7 +27,6 @@ public class RemoteDataRepository {
     private final Executor executor;
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
-    private LoggedInUser user = null;
 
     // private constructor : singleton access
     private RemoteDataRepository(RemoteDataSource dataSource, Executor executor) {
@@ -218,24 +215,5 @@ public class RemoteDataRepository {
                 callback.onComplete(res);
             }
         });
-    }
-
-    private void setLoggedInUser(LoggedInUser user) {
-        this.user = user;
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-    }
-
-    public Result<LoggedInUser> login(String username, String password) {
-        // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password);
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
-        }
-        return result;
-    }
-
-    public boolean isLoggedIn() {
-        return user != null;
     }
 }

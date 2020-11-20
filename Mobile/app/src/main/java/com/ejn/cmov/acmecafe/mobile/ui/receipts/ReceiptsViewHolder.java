@@ -19,7 +19,7 @@ public class ReceiptsViewHolder extends RecyclerView.ViewHolder implements View.
     public ReceiptsViewHolder(@NonNull View itemView, OnRecyclerItemClickListener onItemClickListener) {
         super(itemView);
         this.dateView = itemView.findViewById(R.id.receipt_line_text);
-        this.totalView = itemView.findViewById(R.id.receipt_line_cost);;
+        this.totalView = itemView.findViewById(R.id.receipt_line_cost);
         this.quantityView = itemView.findViewById(R.id.receipt_line_quantity);
         this.onItemClickListener = onItemClickListener;
 

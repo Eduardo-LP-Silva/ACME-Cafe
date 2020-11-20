@@ -1,11 +1,5 @@
 package com.ejn.cmov.acmecafe.mobile.ui.order;
 
-import android.content.Intent;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
-import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
-import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -24,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +25,6 @@ import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.Authentication;
 import com.ejn.cmov.acmecafe.mobile.data.model.ItemModel;
 import com.ejn.cmov.acmecafe.mobile.data.model.VoucherModel;
-import com.ejn.cmov.acmecafe.mobile.ui.MainMenuActivity;
 import com.ejn.cmov.acmecafe.mobile.ui.ViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -40,12 +32,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class OrderFragment extends Fragment {
     private static final String ORDER_PARAM = "items";
+    private static final boolean DEBUG = true;
     private OrderViewModel orderViewModel;
     private FloatingActionButton getVouchersBtn;
     private TextView coffeeVoucherEditor;
@@ -123,7 +115,7 @@ public class OrderFragment extends Fragment {
         getVouchersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                orderViewModel.getNewVouchers(getContext(), ((MainMenuActivity) requireActivity()).getUserID());
+                orderViewModel.getNewVouchers(getContext(), orderViewModel.getUserID());
                 Toast.makeText(getContext(), getString(R.string.fetching_vouchers), Toast.LENGTH_SHORT).show();
             }
         });
@@ -142,11 +134,16 @@ public class OrderFragment extends Fragment {
         if(payload == null)
             return;
 
-        //orderViewModel.sendOrder(Authentication.buildBodySignedMessage(payload));
-        payload = Authentication.buildBodySignedMessage(payload);
-        Bundle sendOrderArgs = new Bundle();
-        sendOrderArgs.putString(SendOrderActivity.getPayloadArg(), payload.toString());
-        Navigation.findNavController(view).navigate(R.id.action_nav_order_to_nav_send_order, sendOrderArgs);
+        if (DEBUG) {
+            orderViewModel.sendOrder(Authentication.buildBodySignedMessage(payload));
+        }
+        else {
+            payload = Authentication.buildBodySignedMessage(payload);
+            Bundle sendOrderArgs = new Bundle();
+            sendOrderArgs.putString(SendOrderActivity.getPayloadArg(), payload.toString());
+            Navigation.findNavController(view).navigate(R.id.action_nav_order_to_nav_send_order, sendOrderArgs);
+        }
+
         Navigation.findNavController(view).navigate(R.id.action_nav_order_to_items_back);
     }
 
@@ -194,7 +191,7 @@ public class OrderFragment extends Fragment {
             }
 
             payload.put("vouchers", jsonVouchers);
-            payload.put("customerId", ((MainMenuActivity) getActivity()).getUserID());
+            payload.put("customerId", orderViewModel.getUserID());
         }
         catch (JSONException e) {
             Log.e("PLACE ORDER", e.toString());

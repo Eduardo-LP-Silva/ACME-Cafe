@@ -27,7 +27,8 @@ public class RegisterViewModel extends ViewModel {
         this.localDataRepository = localDataRepository;
     }
 
-    public void register(Context appContext, String name, String nif, String cardNo, String expirationDate, String cvv, String username, String pw) {
+    public void register(final Context appContext, String name, String nif, String cardNo, String expirationDate, String cvv,
+                         final String username, final String pw) {
         registerResult.setValue(null);
         remoteDataRepository.register(appContext, name, nif, cardNo, expirationDate, cvv, new Callback<String>() {
             @Override
@@ -38,7 +39,7 @@ public class RegisterViewModel extends ViewModel {
                     try {
                         JSONObject resJson = new JSONObject(((Result.Success<String>) result).getData());
                         String userID = resJson.getString("customerId");
-
+                        localDataRepository.storeUserCredentials(appContext, userID, username, pw);
                         registerResult.postValue(userID);
                     }
                     catch (JSONException e) {
@@ -97,10 +98,6 @@ public class RegisterViewModel extends ViewModel {
 
     LiveData<String> getRegisterResult() {
         return registerResult;
-    }
-
-    public LocalDataRepository getLocalDataRepository() {
-        return localDataRepository;
     }
 
     private boolean isTextValid(String text, int minLength) {

@@ -2,18 +2,13 @@ package com.ejn.cmov.acmecafe.mobile.ui.receipts;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.ejn.cmov.acmecafe.mobile.R;
 import com.ejn.cmov.acmecafe.mobile.data.Callback;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
 import com.ejn.cmov.acmecafe.mobile.data.local.LocalDataRepository;
 import com.ejn.cmov.acmecafe.mobile.data.model.ReceiptModel;
 import com.ejn.cmov.acmecafe.mobile.data.remote.RemoteDataRepository;
 
-import java.lang.reflect.Array;
-
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -42,9 +37,9 @@ public class ReceiptsViewModel extends ViewModel {
 
                         for (int i = 0; i < updatedReceipts.length; i++)
                             if (i < oldReceipts.length)
-                                updatedReceipts[i] = oldReceipts[i];
+                                updatedReceipts[i + newReceipts.length] = oldReceipts[i]; //i + new.length = old[i]
                             else
-                                updatedReceipts[i] = newReceipts[i - oldReceipts.length];
+                                updatedReceipts[i - newReceipts.length] = newReceipts[i - oldReceipts.length]; //i - new.length = ....
 
                         receipts.postValue(updatedReceipts);
                     }
@@ -78,6 +73,10 @@ public class ReceiptsViewModel extends ViewModel {
                 receipts.postValue(localReceipts);
             }
         });
+    }
+
+    public String getUserID() {
+        return localDataRepository.getUserID();
     }
 
     public MutableLiveData<ReceiptModel[]> getReceipts() {

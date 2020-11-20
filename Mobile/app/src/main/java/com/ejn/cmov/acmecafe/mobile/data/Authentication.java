@@ -24,12 +24,10 @@ import androidx.annotation.Nullable;
 
 public class Authentication {
     private static final int KEY_SIZE = 512;
-    private static final int NUM_KEY_BYTES = KEY_SIZE / Byte.SIZE;
     private static final String ANDROID_KEYSTORE = "AndroidKeyStore";
     private static final String KEY_ALGO = "RSA";                    // cryptography family
     private static final String SIGN_ALGO = "SHA256WithRSA";         // signature algorithm
     private static final int CERT_SERIAL = 12121212;                 // certificate serial number (any one does the job)
-    private static final String ENC_ALGO = "RSA/ECB/PKCS1Padding";   // encrypt/decrypt algorithm
     private static final String keyname = "ejn.acme.cafe";           // common name in the KeyStore and public key certificate
 
     public static String getCertificate(Context appContext) {
@@ -96,7 +94,7 @@ public class Authentication {
         try {
             KeyStore keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
             keyStore.load(null);
-            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry)keyStore.getEntry(keyname, null);;
+            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry)keyStore.getEntry(keyname, null);
             Signature s = Signature.getInstance(SIGN_ALGO);
             s.initSign(privateKeyEntry.getPrivateKey());
             s.update(data.toString().getBytes());
@@ -119,7 +117,7 @@ public class Authentication {
             data.put("timestamp", getTimeStamp());
             KeyStore keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
             keyStore.load(null);
-            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry)keyStore.getEntry(keyname, null);;
+            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry)keyStore.getEntry(keyname, null);
             Signature s = Signature.getInstance(SIGN_ALGO);
             s.initSign(privateKeyEntry.getPrivateKey());
             s.update(data.toString().getBytes());

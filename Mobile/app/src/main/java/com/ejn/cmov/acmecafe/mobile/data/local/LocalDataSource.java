@@ -108,12 +108,18 @@ public class LocalDataSource {
         }
     }
 
-    public Result<String> getUserID(Context appContext) {
+    public Result<String[]> getUserCredentials(Context appContext) {
         SharedPreferences sharedPreferences = appContext.getSharedPreferences(
-                appContext.getResources().getString(R.string.user_id_preferences_file), Context.MODE_PRIVATE);
-        String storedUserID = sharedPreferences.getString(appContext.getResources().getString(R.string.user_id),
-                appContext.getResources().getString(R.string.empty));
+                appContext.getString(R.string.user_preferences_file), Context.MODE_PRIVATE);
+        String[] credentials = new String[3];
 
-        return new Result.Success<>(storedUserID);
+        credentials[0] = sharedPreferences.getString(appContext.getString(R.string.user_id),
+                appContext.getString(R.string.empty));
+        credentials[1] = sharedPreferences.getString(appContext.getString(R.string.user_name),
+                appContext.getString(R.string.empty));
+        credentials[2] = sharedPreferences.getString(appContext.getString(R.string.user_password),
+                appContext.getString(R.string.empty));
+
+        return new Result.Success<>(credentials);
     }
 }
