@@ -9,6 +9,8 @@
     <string name="thank_order">Thank you for ordering</string>
     <string name="order_number">Order number:</string>
     <string name="waiting_order">Please make an order</string>
+    <string name="display_rejected_order_icon">Displays a rejected order icon</string>
+    <string name="reject_text">Error registering order!\nTry again</string>
 
 
 </resources>

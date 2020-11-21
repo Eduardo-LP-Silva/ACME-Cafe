@@ -93,7 +93,10 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="159dp"
         android:layout_marginEnd="31dp"
-        android:layout_marginBottom="177dp"/>
+        android:layout_marginBottom="177dp"
+        tools:visibility="gone">
+
+    </ListView>
 
     <TextView
         android:id="@+id/thankOrderTextView"
@@ -111,5 +114,21 @@
         android:text="@string/thank_order"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/rejectImageView"
+        android:layout_width="217dp"
+        android:layout_height="199dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="192dp"
+        android:layout_marginEnd="95dp"
+        android:layout_marginBottom="340dp"
+        android:contentDescription="@string/display_rejected_order_icon"
+        app:srcCompat="@mipmap/ic_reject_foreground" />
 
 </RelativeLayout>

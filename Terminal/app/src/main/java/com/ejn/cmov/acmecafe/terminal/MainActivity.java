@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
                 // Simulate an NFC order
                 try {
-                    String orderMsg = "{ \"data\": { \"items\": [ { \"itemId\": \"e43d8eb0-1df3-11eb-8bf4-0346e6a5d6a0\", \"quantity\": \"1\" }, { \"itemId\": \"c2fbeb40-1e87-11eb-930b-6bf5be424b1f\", \"quantity\": \"1\" } ], \"vouchers\": [], \"customerId\": \"f08aa2d0-24ff-11eb-9e41-995bcb66b787\", \"timestamp\": \"1605378731\" }, \"signature\": \"68ffc857ba50b3ad06c5a90be13edd28e711ca04db3b2a1a7fa11b9ea351249352e5ffc3ad1f11eb3130b1654c3df210897eee2e404abe8c46dab9c9650ac4e7\" }";
+//                    String orderMsg = "{ \"data\": { \"items\": [ { \"itemId\": \"e43d8eb0-1df3-11eb-8bf4-0346e6a5d6a0\", \"quantity\": \"1\" }, { \"itemId\": \"c2fbeb40-1e87-11eb-930b-6bf5be424b1f\", \"quantity\": \"1\" } ], \"vouchers\": [], \"customerId\": \"f08aa2d0-24ff-11eb-9e41-995bcb66b787\", \"timestamp\": \"1605378731\" }, \"signature\": \"68ffc857ba50b3ad06c5a90be13edd28e711ca04db3b2a1a7fa11b9ea351249352e5ffc3ad1f11eb3130b1654c3df210897eee2e404abe8c46dab9c9650ac4e7\" }"; // Error
+                    String orderMsg = "{ \"data\": { \"items\": [ { \"itemId\": \"c2fbeb40-1e87-11eb-930b-6bf5be424b1f\", \"quantity\": \"1\" } ], \"vouchers\": [], \"customerId\": \"f08aa2d0-24ff-11eb-9e41-995bcb66b787\", \"timestamp\": \"1605206410\" }, \"signature\": \"48ce88884fce7bf2e883d153f62a2940319992af877c9bd0b730f978ec952ff9ca2cb23d04fabcfb20c1091a3c7032bee2820d446b047d55094acd9277b38da0\" }";
                     JSONObject orderJson = new JSONObject(orderMsg);
                     ProcessIncomingOrder(orderJson);
 
@@ -128,6 +130,24 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.e("NFC Response", "Code: " + errorJson.get("errorCode"));
                         Log.e("NFC Response", "Message: " + errorJson.get("errorMsg"));
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                ChangeOrderUIVisibility(false);
+
+                                TextView textView = (TextView) findViewById(R.id.waitingOrderTextView);
+                                textView.setTextColor(getColor(R.color.colorAccent));
+                                textView.setText(R.string.reject_text);
+
+                                ImageView imageView = (ImageView) findViewById(R.id.rejectImageView);
+                                imageView.setVisibility(View.VISIBLE);
+
+                                ScheduleUIReset(false);
+                            }
+                        });
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -191,18 +211,22 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
                 int vis = visibility ? View.VISIBLE : View.INVISIBLE;
-                int opostiveVis = visibility ?  View.INVISIBLE : View.VISIBLE;
+                int oppositeVis = visibility ?  View.INVISIBLE : View.VISIBLE;
 
                 TextView textView = (TextView) findViewById(R.id.orderIDTextView);
                 textView.setVisibility(vis);
                 textView = (TextView) findViewById(R.id.waitingOrderTextView);
-                textView.setVisibility(opostiveVis);
+                textView.setVisibility(oppositeVis);
+                textView.setText(R.string.waiting_order);
+                textView.setTextColor(getResources().getColor(R.color.colorPrimaryDark, getTheme()));
                 textView = (TextView) findViewById(R.id.orderIDValueTextView);
                 textView.setVisibility(vis);
                 textView = (TextView) findViewById(R.id.thankOrderTextView);
                 textView.setVisibility(vis);
                 ListView listView = (ListView) findViewById(R.id.listView);
                 listView.setVisibility(vis);
+                ImageView imageView = (ImageView) findViewById(R.id.rejectImageView);
+                imageView.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -230,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                         ReceiptItem receiptItem = new ReceiptItem(name, amount, unitPrice);
                         list.add(receiptItem);
                     }
-//                    list.add(new ReceiptItem("Total", -1, orderResponse.getDouble("totalPrice")));
+                    list.add(new ReceiptItem("Total", -1, orderResponse.getDouble("totalPrice")));
 
                     final ReceiptItemListAdapter adapter = new ReceiptItemListAdapter(ACME_Cafe_Terminal.getAppContext(), R.layout.adapter_view_layout, list);
                     ListView listView = (ListView) findViewById(R.id.listView);
@@ -238,17 +262,7 @@ public class MainActivity extends AppCompatActivity {
 
                     ChangeOrderUIVisibility(true);
 
-
-                    Calendar calendar = Calendar.getInstance(); // gets a calendar using the default time zone and locale.
-                    calendar.add(Calendar.SECOND, 5);
-                    Timer timer = new Timer(); // creating timer
-                    TimerTask task = new TimerTask() {
-                        @Override
-                        public void run() {
-                            ChangeOrderUIVisibility(false);
-                        }
-                    }; // creating timer task
-                    timer.schedule(task, calendar.getTime()); // scheduling the task
+                    ScheduleUIReset(false);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -258,6 +272,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void ScheduleUIReset(final boolean visibility)
+    {
+        ScheduleUIReset(visibility, 5);
+    }
+
+    private void ScheduleUIReset(final boolean visibility, int delay)
+    {
+        Calendar calendar = Calendar.getInstance(); // gets a calendar using the default time zone and locale.
+        calendar.add(Calendar.SECOND, delay);
+        Timer timer = new Timer(); // creating timer
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                ChangeOrderUIVisibility(visibility);
+            }
+        }; // creating timer task
+        timer.schedule(task, calendar.getTime()); // scheduling the task
     }
 
     /* The NFC messages are received in their own activities and sent to the MainActivity */
