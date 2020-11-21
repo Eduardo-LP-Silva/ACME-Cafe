@@ -37,7 +37,7 @@ import java.util.Hashtable;
 
 public class OrderFragment extends Fragment {
     private static final String ORDER_PARAM = "items";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private OrderViewModel orderViewModel;
     private FloatingActionButton getVouchersBtn;
     private TextView coffeeVoucherEditor;
