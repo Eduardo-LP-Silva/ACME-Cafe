@@ -1,46 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
      android:orientation="horizontal"
-     android:layout_height="match_parent"
+     android:layout_height="wrap_content"
      android:layout_width="match_parent"
-     android:weightSum="95">
+     android:weightSum="100">
 
     <TextView
-        android:gravity="left"
-        android:textAlignment="gravity"
-        android:text="Item name"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="match_parent"
+        android:gravity="center|start"
+        android:text="Item name"
         android:id="@+id/item_name_view"
-        android:layout_weight="20"
+        android:layout_weight="25"
         android:textColor="@color/colorPrimaryDark" />
 
     <TextView
-        android:gravity="left"
-        android:textAlignment="gravity"
-        android:text="Amount"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Amount"
         android:id="@+id/item_amount_view"
         android:layout_weight="25"
         android:textColor="@color/colorPrimaryDark" />
 
     <TextView
-        android:gravity="left"
-        android:textAlignment="gravity"
-        android:text="Unit Price"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Unit Price"
         android:id="@+id/unit_price_view"
         android:layout_weight="25"
         android:textColor="@color/colorPrimaryDark" />
 
     <TextView
-        android:gravity="left"
-        android:textAlignment="gravity"
-        android:text="Sub Total"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="Sub Total"
         android:id="@+id/sub_total_view"
         android:layout_weight="25"
         android:textColor="@color/colorPrimaryDark" />
