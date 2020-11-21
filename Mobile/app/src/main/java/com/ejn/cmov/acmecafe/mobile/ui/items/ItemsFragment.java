@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class ItemsFragment extends Fragment implements OnRecyclerItemClickListen
 
     private ItemsViewModel itemsViewModel = null;
     private FloatingActionButton newOrderBtn;
+    private ProgressBar loadingProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class ItemsFragment extends Fragment implements OnRecyclerItemClickListen
         itemsViewModel.getItems().observe(requireActivity(), new Observer<ItemModel[]>() {
             @Override
             public void onChanged(ItemModel[] itemModels) {
+                loadingProgressBar.setVisibility(View.INVISIBLE);
+
                 if (!newOrderBtn.isActivated())
                     newOrderBtn.setActivated(true);
 
@@ -62,7 +66,10 @@ public class ItemsFragment extends Fragment implements OnRecyclerItemClickListen
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_items, container, false);
+        loadingProgressBar = view.findViewById(R.id.loading);
+
         itemsViewModel.populateItems(getContext());
+        loadingProgressBar.setVisibility(View.VISIBLE);
 
         newOrderBtn = view.findViewById(R.id.new_order);
         newOrderBtn.setActivated(false);

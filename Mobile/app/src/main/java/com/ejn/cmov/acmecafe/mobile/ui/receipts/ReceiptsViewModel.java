@@ -2,6 +2,8 @@ package com.ejn.cmov.acmecafe.mobile.ui.receipts;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.ejn.cmov.acmecafe.mobile.data.Callback;
 import com.ejn.cmov.acmecafe.mobile.data.Result;
@@ -36,21 +38,21 @@ public class ReceiptsViewModel extends ViewModel {
                         updatedReceipts = new ReceiptModel[newReceipts.length + oldReceipts.length];
 
                         for (int i = 0; i < updatedReceipts.length; i++)
-                            if (i < oldReceipts.length)
-                                updatedReceipts[i + newReceipts.length] = oldReceipts[i]; //i + new.length = old[i]
+                            if (i < newReceipts.length)
+                                updatedReceipts[i] = newReceipts[i];
                             else
-                                updatedReceipts[i - newReceipts.length] = newReceipts[i - oldReceipts.length]; //i - new.length = ....
-
-                        receipts.postValue(updatedReceipts);
+                                updatedReceipts[i] = oldReceipts[i - newReceipts.length];
                     }
                     else {
                         updatedReceipts = newReceipts;
                     }
 
+                    receipts.postValue(updatedReceipts);
                     localDataRepository.storeReceipts(appContext, updatedReceipts);
                 }
                 else {
                     Log.e("RVM \\ GET REM. RECEIPTS", "COULDN'T FETCH RECEIPTS");
+                    receipts.postValue(receipts.getValue() != null ? receipts.getValue() : new ReceiptModel[0]);
                 }
 
             }

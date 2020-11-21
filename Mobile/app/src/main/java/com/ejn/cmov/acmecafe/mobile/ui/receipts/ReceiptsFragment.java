@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -24,6 +24,7 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
 
     private ReceiptsViewModel receiptsViewModel;
     private FloatingActionButton getReceiptsBtn;
+    private ProgressBar loadingProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
         receiptsViewModel.getReceipts().observe(requireActivity(), new Observer<ReceiptModel[]>() {
             @Override
             public void onChanged(ReceiptModel[] receipts) {
+                loadingProgressBar.setVisibility(View.INVISIBLE);
+
                 // Prevent race condition
                 if (!getReceiptsBtn.isActivated())
                     getReceiptsBtn.setActivated(true);
@@ -54,7 +57,9 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_receipts, container, false);
 
+        loadingProgressBar = view.findViewById(R.id.loading);
         receiptsViewModel.loadLocalReceipts(getContext());
+        loadingProgressBar.setVisibility(View.VISIBLE);
 
         getReceiptsBtn = view.findViewById(R.id.get_receipts);
         getReceiptsBtn.setActivated(false);
@@ -63,7 +68,7 @@ public class ReceiptsFragment extends Fragment implements OnRecyclerItemClickLis
             @Override
             public void onClick(View view) {
                 receiptsViewModel.loadRemoteReceipts(getContext(), receiptsViewModel.getUserID());
-                Toast.makeText(getContext(), "Updating Receipts...", Toast.LENGTH_SHORT).show();
+                loadingProgressBar.setVisibility(View.VISIBLE);
             }
         });
 

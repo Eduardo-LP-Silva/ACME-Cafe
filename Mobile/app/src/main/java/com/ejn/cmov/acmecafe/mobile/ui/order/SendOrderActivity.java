@@ -8,6 +8,9 @@ import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ejn.cmov.acmecafe.mobile.R;
@@ -50,11 +53,16 @@ public class SendOrderActivity extends AppCompatActivity implements NfcAdapter.O
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "Order sent", Toast.LENGTH_LONG).show();
+                TextView centerText = findViewById(R.id.send_order_text);
+                centerText.setText("");
+                final ProgressBar progressBar = findViewById(R.id.loading);
+                progressBar.setVisibility(View.VISIBLE);
+
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        progressBar.setVisibility(View.INVISIBLE);
                         finish();
                     }
                 }, 1000);

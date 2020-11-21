@@ -25,6 +25,9 @@ public class OrderItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(final ItemModel itemModel) {
+        final int maxQuantity = Integer.parseInt(itemModel.getQuantity());
+
+        itemModel.setQuantity("1");
         itemNameView.setText(itemModel.getName());
         itemPriceView.setText(String.format("%s€", itemModel.getPrice()));
         itemQuantityEditor.addTextChangedListener(new TextWatcher() {
@@ -40,6 +43,8 @@ public class OrderItemViewHolder extends RecyclerView.ViewHolder {
 
                 if (itemQuantity <= 0)
                     itemQuantityEditor.setError("Item quantity must be greater than 0");
+                else if (itemQuantity > maxQuantity)
+                    itemQuantityEditor.setError(String.format("There are only %s units available", maxQuantity));
 
                 itemModel.setQuantity(Integer.toString(itemQuantity));
             }

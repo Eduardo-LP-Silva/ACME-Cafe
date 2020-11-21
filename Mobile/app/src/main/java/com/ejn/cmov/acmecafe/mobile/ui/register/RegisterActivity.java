@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ejn.cmov.acmecafe.mobile.R;
@@ -37,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText passwordEditText = findViewById(R.id.password);
         final EditText confirmPasswordEditText = findViewById(R.id.confirm_password);
         final Button registerBtn = findViewById(R.id.create_account);
+        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
         registerViewModel.getRegisterFormState().observe(this, new Observer<RegisterFormState>() {
             @Override
@@ -77,6 +79,8 @@ public class RegisterActivity extends AppCompatActivity {
             public void onChanged(String registerResult) {
                 if (registerResult == null)
                     return;
+
+                loadingProgressBar.setVisibility(View.INVISIBLE);
 
                 if (registerResult.equals(getApplicationContext().getResources().getString(R.string.error_string))) {
                     Toast.makeText(getApplicationContext(), "An error occurred, please try again.", Toast.LENGTH_SHORT).show();
@@ -124,6 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loadingProgressBar.setVisibility(View.VISIBLE);
                 registerViewModel.register(getApplicationContext(), nameEditText.getText().toString(),
                         nifEditText.getText().toString(),
                         cardNoEditText.getText().toString(),
@@ -131,8 +136,6 @@ public class RegisterActivity extends AppCompatActivity {
                         cvvEditText.getText().toString(),
                         usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
-
-                Toast.makeText(getApplicationContext(), "Processing...", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -10,8 +10,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,31 +38,14 @@ public class LoginActivity extends AppCompatActivity {
 
         registerButton.setEnabled(true);
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
-            @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-
-                loginButton.setEnabled(loginFormState.isDataValid());
-
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
-                }
-
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
-            }
-        });
-
         loginViewModel.getLoginResult().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean loginResult) {
                 if (loginResult == null) {
                     return;
                 }
+
+                loadingProgressBar.setVisibility(View.INVISIBLE);
 
                 if (loginResult) {
                     Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
@@ -80,27 +61,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-        TextWatcher afterTextChangedListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        };
-
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override

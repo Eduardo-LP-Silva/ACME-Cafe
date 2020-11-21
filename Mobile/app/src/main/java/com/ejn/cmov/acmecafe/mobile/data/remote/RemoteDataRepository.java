@@ -170,7 +170,7 @@ public class RemoteDataRepository {
                         for (int i = 0; i < items.length; i++) {
                             JSONObject item = jsonArray.getJSONObject(i);
                             items[i] = new ItemModel(item.getString("_id"), item.getString("name"), item.getString("price"),
-                                    item.getString("icon"), item.getString("updatedAt"), null);
+                                    item.getString("icon"), item.getString("updatedAt"), item.getString("quantity"));
                         }
 
                         Log.i("RDR \\ GET ITEMS", String.format("%d fetched", items.length));

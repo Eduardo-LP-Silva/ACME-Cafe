@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -44,6 +44,7 @@ public class OrderFragment extends Fragment {
     private CheckBox discountVoucherCheckBox;
     private Button placeOrderBtn;
     private ArrayList<ItemModel> orderItems;
+    private ProgressBar loadingProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,9 +60,6 @@ public class OrderFragment extends Fragment {
         if (getArguments() != null) {
             orderItems = (ArrayList<ItemModel>) getArguments().getSerializable(ORDER_PARAM);
 
-            for (ItemModel item: orderItems) {
-                item.setQuantity("1");
-            }
 
             OrderItemsAdapter adapter = new OrderItemsAdapter(orderItems);
             RecyclerView recyclerView = requireActivity().findViewById(R.id.order_items_list);
@@ -91,6 +89,8 @@ public class OrderFragment extends Fragment {
         orderViewModel.getVouchers().observe(requireActivity(), new Observer<Hashtable<Integer, ArrayList<VoucherModel>>>() {
             @Override
             public void onChanged(Hashtable<Integer, ArrayList<VoucherModel>> voucherTable) {
+                loadingProgressBar.setVisibility(View.INVISIBLE);
+
                 Hashtable<Integer, ArrayList<VoucherModel>> vouchers = orderViewModel.getVouchers().getValue();
                 final TextView coffeeDiscountVoucherLabel = requireActivity().findViewById(R.id.order_coffee_vouchers_label);
                 final TextView priceDiscountVoucherLabel = requireActivity().findViewById(R.id.order_discount_voucher_label);
@@ -116,7 +116,7 @@ public class OrderFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 orderViewModel.getNewVouchers(getContext(), orderViewModel.getUserID());
-                Toast.makeText(getContext(), getString(R.string.fetching_vouchers), Toast.LENGTH_SHORT).show();
+                loadingProgressBar.setVisibility(View.VISIBLE);
             }
         });
 
@@ -240,7 +240,12 @@ public class OrderFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_orders, container, false);
+
+        loadingProgressBar = view.findViewById(R.id.loading);
         orderViewModel.loadLocalVouchers(getContext());
-        return inflater.inflate(R.layout.fragment_orders, container, false);
+        loadingProgressBar.setVisibility(View.VISIBLE);
+
+        return view;
     }
 }
