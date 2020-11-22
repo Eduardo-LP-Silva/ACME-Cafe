@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class ReceiptItemListAdapter extends ArrayAdapter<ReceiptItem> {
         TextView subTotalView = (TextView) convertView.findViewById(R.id.sub_total_view);
 
         itemNameView.setText(name);
+
+        subTotal = Math.round(subTotal * 100.0)/100.0;
 
         if (type == 0) {
             amountView.setText(String.valueOf( amount));
