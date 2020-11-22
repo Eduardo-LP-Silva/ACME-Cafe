@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     // Holds the (orderId,orderNumber) relationship
     ArrayList<Pair<String, Integer>> orderNumbers;
     // Tracks the current order number
-    int currentOrderNumber;
+    int currentOrderNumber = 0;
 
 
     @Override
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         repository = RemoteDataRepository.getInstance(executor, "192.168.1.88", 8080);
 
         orderNumbers = new ArrayList<>();
-        currentOrderNumber = 0;
+//        currentOrderNumber = 0;
 
         final Button button = (Button) findViewById(R.id.button);
 //        button.setVisibility(View.INVISIBLE);
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 //                    String orderMsg = "{ \"data\": { \"items\": [ { \"itemId\": \"c2fbeb40-1e87-11eb-930b-6bf5be424b1f\", \"quantity\": \"1\" } ], \"vouchers\": [\"e4c1dfc0-268c-11eb-908b-69792046c821\"], \"customerId\": \"f08aa2d0-24ff-11eb-9e41-995bcb66b787\", \"timestamp\": \"1605206410\" }, \"signature\": \"48ce88884fce7bf2e883d153f62a2940319992af877c9bd0b730f978ec952ff9ca2cb23d04fabcfb20c1091a3c7032bee2820d446b047d55094acd9277b38da0\" }";
                     String orderMsg = "{\"data\":{\"items\":[{\"itemId\":\"e43d8eb0-1df3-11eb-8bf4-0346e6a5d6a0\",\"quantity\":\"1\"},{\"itemId\":\"11ead340-1df4-11eb-8bf4-0346e6a5d6a0\",\"quantity\":\"2\"},{\"itemId\":\"c2fbeb40-1e87-11eb-930b-6bf5be424b1f\",\"quantity\":\"1\"}],\"vouchers\":[{\"id\":\"e4c1dfc0-268c-11eb-908b-69792046c821\",\"type\":0},{\"id\":\"e8bed6f0-268c-11eb-908b-69792046c821\",\"type\":1}],\"customerId\":\"f08aa2d0-24ff-11eb-9e41-995bcb66b787\",\"timestamp\":\"1606019479\"},\"signature\":\"d059898765f50f760664411acbc30af5f43b9e6d7aef28631b5dbbda247f70f06be2c3c2862b4229ad7d67306916e234e64e64ed55432aee1e4c2180287c6e0a\"}";
                     JSONObject orderJson = new JSONObject(orderMsg);
-                    button.setVisibility(View.INVISIBLE);
+//                    button.setVisibility(View.INVISIBLE);
                     ProcessIncomingOrder(orderJson);
 
                 } catch (JSONException e) {
@@ -112,28 +112,28 @@ public class MainActivity extends AppCompatActivity {
 
                             // Remove vouchers that were not received from the server
                             JSONArray returnedVouchers = orderResponseJson.getJSONArray("vouchers");
-                            for (int i = 0; i < vouchers.length(); i++) {
-                                int foundIndex = -1;
-                                String originalVoucher = vouchers.getJSONObject(i).getString("id");
-
-                                for (int j = 0; j < returnedVouchers.length(); j++) {
-                                    if (returnedVouchers.getString(i).equals(originalVoucher)) {
-                                        foundIndex = j;
-                                        break;
-                                    }
-                                }
-
-                                // Not found
-                                if (foundIndex == -1) {
-                                    vouchers.remove(i);
-                                    i--;
-                                }
-                            }
+//                            for (int i = 0; i < vouchers.length(); i++) {
+//                                int foundIndex = -1;
+//                                String originalVoucher = vouchers.getJSONObject(i).getString("id");
+//
+//                                for (int j = 0; j < returnedVouchers.length(); j++) {
+//                                    if (returnedVouchers.getString(i).equals(originalVoucher)) {
+//                                        foundIndex = j;
+//                                        break;
+//                                    }
+//                                }
+//
+//                                // Not found
+//                                if (foundIndex == -1) {
+//                                    vouchers.remove(i);
+//                                    i--;
+//                                }
+//                            }
 
                             if (GenerateOrderNumber(orderResponseJson)) {
                                 orderReceived = order;
                                 orderResponse = orderResponseJson;
-                                orderVouchers = vouchers;
+                                orderVouchers = returnedVouchers;
                                 showOrder();
                             }
 
@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+
                         }
                     }
                 }));
@@ -284,12 +285,12 @@ public class MainActivity extends AppCompatActivity {
                     orderIdTextView.setText(String.valueOf(currentOrderNumber));
 
                     // Check vouchers
-                    boolean hasType0Voucher = false;
+                    int type0VoucherCount = 0;
                     boolean hasType1Voucher = false;
 
                     for (int i = 0; i < orderVouchers.length(); i++) {
                         if (orderVouchers.getJSONObject(i).getInt("type") == 0)
-                            hasType0Voucher = true;
+                            type0VoucherCount++;
 
                         if (orderVouchers.getJSONObject(i).getInt("type") == 1)
                             hasType1Voucher = true;
@@ -315,14 +316,15 @@ public class MainActivity extends AppCompatActivity {
                         item = new ReceiptItem(name, amount, unitPrice);
 
                         if (name.equals("Coffee")) {
-                            if (hasType0Voucher) {
-                                item.previousPrice = item.unitPrice;
-                                item.unitPrice = 0;
+                            if (type0VoucherCount > 0) {
                                 item.CalculateSubTotal();
+                                item.previousPrice = item.subTotal;
+                                item.subTotal = (item.amount - type0VoucherCount) * item.unitPrice;
                             }
                         }
                         else if (hasType1Voucher) {
-                            item.previousPrice = item.unitPrice * item.amount;
+                            item.CalculateSubTotal();
+                            item.previousPrice = item.subTotal
                             item.unitPrice = item.unitPrice*0.95; // 5% discount
                             item.CalculateSubTotal();
                         }
