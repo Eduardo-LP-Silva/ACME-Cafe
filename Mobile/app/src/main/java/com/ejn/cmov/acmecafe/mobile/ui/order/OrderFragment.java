@@ -158,7 +158,6 @@ public class OrderFragment extends Fragment {
             JSONArray jsonItems = new JSONArray();
             JSONArray jsonVouchers = new JSONArray();
 
-
             for (ItemModel item : orderItems) {
                 if (item.getQuantity() == null || Integer.parseInt(item.getQuantity()) <= 0)
                     return null;
@@ -178,10 +177,7 @@ public class OrderFragment extends Fragment {
             if (coffeeVouchersUsed > 0) {
                 for (int i = 0; i < coffeeVouchersUsed; i++) {
                     VoucherModel usedCoffeeVoucher = coffeeVouchers.remove(0);
-                    JSONObject obj = new JSONObject();
-                    obj.put("id", usedCoffeeVoucher.getId());
-                    obj.put("type", usedCoffeeVoucher.getType());
-                    jsonVouchers.put(obj);
+                    jsonVouchers.put(usedCoffeeVoucher.getId());
                 }
 
                 usedVouchers = true;
@@ -189,10 +185,7 @@ public class OrderFragment extends Fragment {
 
             if (discountVoucherCheckBox.isChecked()) {
                 VoucherModel usedDiscountVoucher = discountVouchers.remove(0);
-                JSONObject obj = new JSONObject();
-                obj.put("id", usedDiscountVoucher.getId());
-                obj.put("type", usedDiscountVoucher.getType());
-                jsonVouchers.put(obj);
+                jsonVouchers.put(usedDiscountVoucher.getId());
                 usedVouchers = true;
             }
 
