@@ -3,7 +3,7 @@
      android:orientation="horizontal"
      android:layout_height="wrap_content"
      android:layout_width="match_parent"
-     android:weightSum="100">
+     android:weightSum="99">
 
     <TextView
         android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         android:gravity="center|start"
         android:text="Item name"
         android:id="@+id/item_name_view"
-        android:layout_weight="25"
+        android:layout_weight="19"
         android:textColor="@color/colorPrimaryDark" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:gravity="center"
         android:text="Amount"
         android:id="@+id/item_amount_view"
-        android:layout_weight="25"
+        android:layout_weight="19"
         android:textColor="@color/colorPrimaryDark" />
 
     <TextView
@@ -29,7 +29,16 @@
         android:gravity="center"
         android:text="Unit Price"
         android:id="@+id/unit_price_view"
-        android:layout_weight="25"
+        android:layout_weight="19"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/previous_price_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Previous Price"
+        android:layout_weight="21"
         android:textColor="@color/colorPrimaryDark" />
 
     <TextView
@@ -38,7 +47,7 @@
         android:gravity="center"
         android:text="Sub Total"
         android:id="@+id/sub_total_view"
-        android:layout_weight="25"
+        android:layout_weight="21"
         android:textColor="@color/colorPrimaryDark" />
 
 </LinearLayout>
