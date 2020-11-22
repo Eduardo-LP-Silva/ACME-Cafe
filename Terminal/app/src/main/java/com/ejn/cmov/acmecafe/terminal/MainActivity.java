@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         orderNumbers = new ArrayList<>();
 
         final Button button = (Button) findViewById(R.id.button);
-//        button.setVisibility(View.INVISIBLE);
+        button.setVisibility(View.INVISIBLE);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
