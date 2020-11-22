@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 public class RemoteDataSource {
 
     private static volatile RemoteDataSource instance;
-    public static String host = "192.168.1.88";
+    public static String host = "192.168.1.70";
     public static int port = 8080;
 
     // private constructor : singleton access
