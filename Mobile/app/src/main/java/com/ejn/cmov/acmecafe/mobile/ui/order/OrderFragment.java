@@ -178,7 +178,10 @@ public class OrderFragment extends Fragment {
             if (coffeeVouchersUsed > 0) {
                 for (int i = 0; i < coffeeVouchersUsed; i++) {
                     VoucherModel usedCoffeeVoucher = coffeeVouchers.remove(0);
-                    jsonVouchers.put(usedCoffeeVoucher.getId());
+                    JSONObject obj = new JSONObject();
+                    obj.put("id", usedCoffeeVoucher.getId());
+                    obj.put("type", usedCoffeeVoucher.getType());
+                    jsonVouchers.put(obj);
                 }
 
                 usedVouchers = true;
@@ -186,7 +189,10 @@ public class OrderFragment extends Fragment {
 
             if (discountVoucherCheckBox.isChecked()) {
                 VoucherModel usedDiscountVoucher = discountVouchers.remove(0);
-                jsonVouchers.put(usedDiscountVoucher.getId());
+                JSONObject obj = new JSONObject();
+                obj.put("id", usedDiscountVoucher.getId());
+                obj.put("type", usedDiscountVoucher.getType());
+                jsonVouchers.put(obj);
                 usedVouchers = true;
             }
 
