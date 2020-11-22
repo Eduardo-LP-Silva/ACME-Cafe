@@ -76,7 +76,7 @@ router.post('/', async (req, res) => {
   authenticateRequest(res, data.customerId, JSON.stringify(data), signature, data.timestamp).then(() => {
     const order = new Order(data);
     order.save().then((obj) => {
-      obj.populate('items.itemId').execPopulate().then((newOrder) => {
+      obj.populate('items.itemId').populate('vouchers').execPopulate().then((newOrder) => {
         res.status(statusCode.CREATED).json({
           orderId: newOrder._id, totalPrice: newOrder.totalPrice, vouchers: newOrder.vouchers, items: newOrder.items,
         });

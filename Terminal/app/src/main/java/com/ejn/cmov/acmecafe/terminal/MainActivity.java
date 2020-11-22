@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         ChangeOrderUIVisibility(false);
 
         executor = new ThreadExecutor();
-        repository = RemoteDataRepository.getInstance(executor, "192.168.1.88", 8080);
+        repository = RemoteDataRepository.getInstance(executor, "192.168.1.70", 8080);
 
         orderNumbers = new ArrayList<>();
         currentOrderNumber = 0;
