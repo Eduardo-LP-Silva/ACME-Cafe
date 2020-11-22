@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     // Holds the (orderId,orderNumber) relationship
     ArrayList<Pair<String, Integer>> orderNumbers;
     // Tracks the current order number
-    int currentOrderNumber = 0;
+    static int currentOrderNumber = 0;
 
 
     @Override
@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         repository = RemoteDataRepository.getInstance(executor, "192.168.1.70", 8080);
 
         orderNumbers = new ArrayList<>();
-//        currentOrderNumber = 0;
 
         final Button button = (Button) findViewById(R.id.button);
 //        button.setVisibility(View.INVISIBLE);
@@ -324,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else if (hasType1Voucher) {
                             item.CalculateSubTotal();
-                            item.previousPrice = item.subTotal
+                            item.previousPrice = item.subTotal;
                             item.unitPrice = item.unitPrice*0.95; // 5% discount
                             item.CalculateSubTotal();
                         }
