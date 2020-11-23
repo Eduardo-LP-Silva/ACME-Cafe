@@ -1,20 +1,15 @@
 package com.ejn.cmov.acmecafe.terminal;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,23 +106,6 @@ public class MainActivity extends AppCompatActivity {
 
                             // Remove vouchers that were not received from the server
                             JSONArray returnedVouchers = orderResponseJson.getJSONArray("vouchers");
-//                            for (int i = 0; i < vouchers.length(); i++) {
-//                                int foundIndex = -1;
-//                                String originalVoucher = vouchers.getJSONObject(i).getString("id");
-//
-//                                for (int j = 0; j < returnedVouchers.length(); j++) {
-//                                    if (returnedVouchers.getString(i).equals(originalVoucher)) {
-//                                        foundIndex = j;
-//                                        break;
-//                                    }
-//                                }
-//
-//                                // Not found
-//                                if (foundIndex == -1) {
-//                                    vouchers.remove(i);
-//                                    i--;
-//                                }
-//                            }
 
                             if (GenerateOrderNumber(orderResponseJson)) {
                                 orderReceived = order;
