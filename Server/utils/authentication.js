@@ -29,13 +29,12 @@ const authenticateRequest = (res, customerId, data, signature, timestamp) => new
         reject();
       }
 
-      // TODO: UNCOMMENT TO VERIFY REQUESTS TOLERANCE
-      // const currentTime = Math.floor(Date.now() / 1000);
-      // const requestTime = parseInt(timestamp, 10);
-      // if ((requestTime + REQUEST_TOLERANCE < currentTime) || (requestTime > currentTime)) {
-      //   handleError(errorTypes.INVALID_TIMESTAMP, null, res);
-      //   reject();
-      // }
+      const currentTime = Math.floor(Date.now() / 1000);
+      const requestTime = parseInt(timestamp, 10);
+      if ((requestTime + REQUEST_TOLERANCE < currentTime) || (requestTime > currentTime)) {
+        handleError(errorTypes.INVALID_TIMESTAMP, null, res);
+        reject();
+      }
 
       resolve();
     }
